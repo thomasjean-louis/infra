@@ -3,10 +3,8 @@ jobs:
   deploy:
     runs-on: ubuntu-latest    
     env:
-      TF_VAR_ACCESS_KEY_STATE: ${{ secrets.ACCESS_KEY_STATE }}
-      TF_VAR_SECRET_ACCESS_KEY_STATE: ${{ secrets.SECRET_ACCESS_KEY_STATE }}
-      TF_VAR_ACCESS_KEY_INFRA: ${{ secrets.ACCESS_KEY_INFRA}}
-      TF_VAR_SECRET_ACCESS_KEY_INFRA: ${{ secrets.SECRET_ACCESS_KEY_INFRA }}      
+      AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY_INFRA }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY_INFRA }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
