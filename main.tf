@@ -1,9 +1,7 @@
 provider "aws" {
   region     = "us-east-1"
-  #access_key = "TF_VAR_ACCESS_KEY_INFRA"
-  #secret_key = "TF_VAR_SECRET_ACCESS_KEY_INFRA"
-  access_key = "AKIA5FTZENNJHATMDM3W"
-  secret_key = "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"
+  access_key = "TF_VAR_ACCESS_KEY_INFRA"
+  secret_key = "TF_VAR_SECRET_ACCESS_KEY_INFRA"
 
 }
 
