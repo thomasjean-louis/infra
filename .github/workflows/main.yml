@@ -1,0 +1,13 @@
+on: push
+jobs:   
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - run: terraform apply -auto-approve
+    env:
+      TF_VAR_ACCESS_KEY_STATE: ${{ secrets.ACCESS_KEY_INFRA }}
+      TF_VAR_SECRET_ACCESS_KEY_STATE: ${{ secrets.ACCESS_KEY_STATE }}
+      TF_VAR_ACCESS_KEY_INFRA: ${{ secrets.SECRET_ACCESS_KEY_INFRA }}
+      TF_VAR_SECRET_ACCESS_KEY_INFRA: ${{ secrets.SECRET_ACCESS_KEY_STATE }}
