@@ -79,7 +79,7 @@ resource "aws_route_table_association" "public_table_association_internet_gatewa
 
 resource "aws_route_table_association" "public_table_association_a" {
   route_table_id = aws_route_table.public_route_table.id
-  subnet_id      = aws_subnet.public_subnet_a
+  subnet_id      = aws_subnet.public_subnet_a.id
 
 }
 
