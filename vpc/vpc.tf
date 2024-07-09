@@ -59,6 +59,10 @@ resource "aws_subnet" "private_subnet_b" {
 
 }
 
+resource "aws_internet_gateway" "internet_gateway" {
+  vpc_id = aws_vpc.vpc.id
+}
+
 resource "aws_route_table" "private_route_table" {
   depends_on = [aws_vpc.vpc]
   vpc_id     = aws_vpc.vpc.id
