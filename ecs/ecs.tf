@@ -46,6 +46,10 @@ variable "target_group_game_server_arn" {
   type = string
 }
 
+variable "gameserver_name_container" {
+  type=string
+}
+
 resource "aws_ecs_cluster" "quakejs_cluster" {
   name = "quakejs-cluster"
 }
@@ -53,7 +57,7 @@ resource "aws_ecs_cluster" "quakejs_cluster" {
 data "template_file" "gameServerTemplate" {
   template = file("./ecs/taskdefinition.json.tpl")
   vars = {
-    name   = "gameserver"
+    name   = var.gameserver_name_container
     port   = var.game_server_port
     cpu    = var.game_server_cpu
     ram    = var.game_server_ram
@@ -73,7 +77,7 @@ resource "aws_ecs_task_definition" "game_server_task_definition" {
 }
 
 resource "aws_security_group" "sg_game_server_ecs" {
-  name   = "sg_game_server_ecs"
+  name   = "sg_${var.gameserver_name_container}_ecs"
   vpc_id = var.vpc_id
 }
 
@@ -86,7 +90,7 @@ resource "aws_vpc_security_group_ingress_rule" "ecs" {
 }
 
 resource "aws_ecs_service" "game_server_service" {
-  name            = "game-server-service"
+  name            = "${var.gameserver_name_container}-service"
   cluster         = aws_ecs_cluster.quakejs_cluster.id
   task_definition = aws_ecs_task_definition.game_server_task_definition.arn
   desired_count   = 1
@@ -100,7 +104,7 @@ resource "aws_ecs_service" "game_server_service" {
 
   load_balancer {
     target_group_arn = var.target_group_game_server_arn
-    container_name   = "gameserver"
+    container_name   = var.gameserver_name_container
     container_port   = var.game_server_port
   }
 }
