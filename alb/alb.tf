@@ -14,7 +14,7 @@ resource "aws_security_group" "sg_alb" {
 
 
 resource "aws_vpc_security_group_ingress_rule" "allow_http_ipv4" {
-  security_group_id = aws_security_group.allow_tls.id
+  security_group_id = aws_security_group.sg_alb.id
   cidr_ipv4         = var.vpc_cidr_block
   from_port         = 80
   ip_protocol       = "tcp"
