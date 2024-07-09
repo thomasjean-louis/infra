@@ -39,3 +39,11 @@ resource "aws_iam_role" "task_role" {
   })
 
 }
+
+output "task_execution_role_arn" {
+  value = aws_iam_role.task_execution_role.arn
+}
+
+output "task_role_arn" {
+  value = aws_iam_role.task_role.arn
+}
