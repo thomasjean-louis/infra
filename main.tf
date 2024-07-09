@@ -18,3 +18,9 @@ module "vpc" {
 module "iam" {
   source = "./iam"
 }
+
+module "alb" {
+  source = "./alb"
+  vpc_id = module.vpc.vpc_id
+  vpc_cidr_block = module.vpc.vpc_cidr_block
+}
