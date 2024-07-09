@@ -47,7 +47,7 @@ variable "target_group_game_server_arn" {
 }
 
 variable "gameserver_name_container" {
-  type=string
+  type = string
 }
 
 resource "aws_ecs_cluster" "quakejs_cluster" {

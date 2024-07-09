@@ -34,6 +34,10 @@ variable "private_subnet_b_cidr_block" {
 
 
 ###### ECS
+variable "gameserver_name_container" {
+  default= "gameserver"
+}
+
 variable "game_server_cpu" {
   default = 1024
 }
@@ -47,5 +51,5 @@ variable "game_server_port" {
 }
 
 variable "game_server_image" {
-  default = "thomasjeanlouis1/gameserver"
+  default = "thomasjeanlouis1/gameserver:dev_12"
 }
