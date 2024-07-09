@@ -79,6 +79,14 @@ output "public_subnet_id_b" {
   value = aws_subnet.public_subnet_b.id
 }
 
+output "private_subnet_id_a" {
+  value = aws_subnet.private_subnet_a.id
+}
+
+output "private_subnet_id_b" {
+  value = aws_subnet.private_subnet_b.id
+}
+
 resource "aws_subnet" "private_subnet_b" {
   depends_on        = [aws_vpc.vpc]
   vpc_id            = aws_vpc.vpc.id

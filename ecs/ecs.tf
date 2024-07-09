@@ -2,6 +2,14 @@ variable "region" {
   type = string
 }
 
+variable "vpc_id" {
+  type = string
+}
+
+variable "vpc_cidr_block" {
+  type = string
+}
+
 variable "task_execution_role_arn" {
   type = string
 }
@@ -26,28 +34,73 @@ variable "game_server_image" {
   type = string
 }
 
-resource "aws_ecs_cluster" "main" {
-    name = "quakejs-cluster"
+variable "private_subnet_id_a" {
+  type = string
 }
 
-data "template_file" "gameServerTemplate"{
-    template = file("./ecs/taskdefinition.json.tpl")
-    vars = {
-      name = "gameserver"
-      port = var.game_server_port
-      cpu = var.game_server_cpu
-      ram = var.game_server_ram
-      region = var.region
-      image = var.game_server_image
-    }
+variable "private_subnet_id_b" {
+  type = string
 }
 
-resource "aws_ecs_task_definition" "game_server" {
-    family                   = "quakejs"
-    execution_role_arn       = var.task_execution_role_arn
-    network_mode             = "awsvpc"
-    requires_compatibilities = ["FARGATE"]
-    cpu                      = var.game_server_cpu
-    memory                   = var.game_server_ram
-    container_definitions = data.template_file.gameServerTemplate.rendered
+variable "target_group_game_server_arn" {
+  type = string
+}
+
+resource "aws_ecs_cluster" "quakejs_cluster" {
+  name = "quakejs-cluster"
+}
+
+data "template_file" "gameServerTemplate" {
+  template = file("./ecs/taskdefinition.json.tpl")
+  vars = {
+    name   = "gameserver"
+    port   = var.game_server_port
+    cpu    = var.game_server_cpu
+    ram    = var.game_server_ram
+    region = var.region
+    image  = var.game_server_image
+  }
+}
+
+resource "aws_ecs_task_definition" "game_server_task_definition" {
+  family                   = "quakejs"
+  execution_role_arn       = var.task_execution_role_arn
+  network_mode             = "awsvpc"
+  requires_compatibilities = ["FARGATE"]
+  cpu                      = var.game_server_cpu
+  memory                   = var.game_server_ram
+  container_definitions    = data.template_file.gameServerTemplate.rendered
+}
+
+resource "aws_security_group" "sg_game_server_ecs" {
+  name   = "sg_game_server_ecs"
+  vpc_id = var.vpc_id
+}
+
+resource "aws_vpc_security_group_ingress_rule" "ecs" {
+  security_group_id = aws_security_group.sg_alb.id
+  cidr_ipv4         = var.vpc_cidr_block
+  from_port         = var.game_server_port
+  ip_protocol       = "tcp"
+  to_port           = var.game_server_port
+}
+
+resource "aws_ecs_service" "game_server_service" {
+  name            = "game-server-service"
+  cluster         = aws_ecs_cluster.quakejs_cluster.id
+  task_definition = aws_ecs_task_definition.game_server_task_definition.arn
+  desired_count   = 1
+  launch_type     = "FARGATE"
+
+  network_configuration {
+    security_groups  = [sg_game_server_ecs.id]
+    subnets          = [var.private_subnet_id_a, var.private_subnet_id_b]
+    assign_public_ip = false
+  }
+
+  load_balancer {
+    target_group_arn = var.target_group_game_server_arn
+    container_name   = "game_server"
+    container_port   = var.game_server_port
+  }
 }
