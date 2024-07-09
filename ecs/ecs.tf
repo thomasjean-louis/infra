@@ -31,7 +31,7 @@ resource "aws_ecs_cluster" "main" {
 }
 
 data "template_file" "gameServerTemplate"{
-    template = file("taskdefinition.json.tpl")
+    template = file("./ecs/taskdefinition.json.tpl")
     vars = {
       name = "gameserver"
       port = var.game_server_port
