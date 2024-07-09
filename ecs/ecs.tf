@@ -78,7 +78,7 @@ resource "aws_security_group" "sg_game_server_ecs" {
 }
 
 resource "aws_vpc_security_group_ingress_rule" "ecs" {
-  security_group_id = aws_security_group.sg_alb.id
+  security_group_id = aws_security_group.sg_game_server_ecs.id
   cidr_ipv4         = var.vpc_cidr_block
   from_port         = var.game_server_port
   ip_protocol       = "tcp"
@@ -93,7 +93,7 @@ resource "aws_ecs_service" "game_server_service" {
   launch_type     = "FARGATE"
 
   network_configuration {
-    security_groups  = [sg_game_server_ecs.id]
+    security_groups  = [aws_security_group.sg_game_server_ecs.id]
     subnets          = [var.private_subnet_id_a, var.private_subnet_id_b]
     assign_public_ip = false
   }
