@@ -12,7 +12,12 @@ terraform {
 
 
 module "vpc" {
-  source = "./vpc"
+  source                      = "./vpc"
+  vpc_cidr_block              = var.vpc_cidr_block
+  public_subnet_a_cidr_block  = var.public_subnet_a_cidr_block
+  private_subnet_a_cidr_block = var.private_subnet_a_cidr_block
+  public_subnet_b_cidr_block  = var.public_subnet_b_cidr_block
+  private_subnet_b_cidr_block = var.private_subnet_b_cidr_block
 }
 
 module "iam" {
@@ -22,8 +27,10 @@ module "iam" {
 module "alb" {
   source             = "./alb"
   vpc_id             = module.vpc.vpc_id
-  vpc_cidr_block     = module.vpc.vpc_cidr_block
+  vpc_cidr_block     = var.vpc_cidr_block
   public_subnet_id_a = module.vpc.public_subnet_id_a
   public_subnet_id_b = module.vpc.public_subnet_id_b
 
 }
+
+

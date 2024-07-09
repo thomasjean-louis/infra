@@ -1,20 +1,35 @@
+variable "vpc_cidr_block" {
+  type = string
+}
+
+variable "public_subnet_a_cidr_block" {
+  type = string
+}
+
+variable "private_subnet_a_cidr_block" {
+  type = string
+}
+
+variable "public_subnet_b_cidr_block" {
+  type = string
+}
+
+variable "private_subnet_b_cidr_block" {
+  type = string
+}
+
 resource "aws_vpc" "vpc" {
-  cidr_block = "10.0.0.0/16"
+  cidr_block = var.vpc_cidr_block
 }
 
 output "vpc_id" {
   value = aws_vpc.vpc.id
 }
 
-output "vpc_cidr_block" {
-  value = aws_vpc.vpc.cidr_block
-}
-
-
 resource "aws_subnet" "public_subnet_a" {
   depends_on        = [aws_vpc.vpc]
   vpc_id            = aws_vpc.vpc.id
-  cidr_block        = "10.0.1.0/24"
+  cidr_block        = var.public_subnet_a_cidr_block
   availability_zone = "us-east-1a"
 
   tags = {
@@ -26,7 +41,7 @@ resource "aws_subnet" "public_subnet_a" {
 resource "aws_subnet" "private_subnet_a" {
   depends_on        = [aws_vpc.vpc]
   vpc_id            = aws_vpc.vpc.id
-  cidr_block        = "10.0.2.0/24"
+  cidr_block        = var.private_subnet_a_cidr_block
   availability_zone = "us-east-1a"
 
   tags = {
@@ -38,7 +53,7 @@ resource "aws_subnet" "private_subnet_a" {
 resource "aws_subnet" "public_subnet_b" {
   depends_on        = [aws_vpc.vpc]
   vpc_id            = aws_vpc.vpc.id
-  cidr_block        = "10.0.3.0/24"
+  cidr_block        = var.public_subnet_b_cidr_block
   availability_zone = "us-east-1b"
 
   tags = {
@@ -58,7 +73,7 @@ output "public_subnet_id_b" {
 resource "aws_subnet" "private_subnet_b" {
   depends_on        = [aws_vpc.vpc]
   vpc_id            = aws_vpc.vpc.id
-  cidr_block        = "10.0.4.0/24"
+  cidr_block        = var.private_subnet_b_cidr_block
   availability_zone = "us-east-1b"
 
   tags = {
