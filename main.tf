@@ -54,3 +54,8 @@ module "ecs" {
 }
 
 
+module "logs" {
+  source                    = "./logs"
+  gameserver_name_container = var.gameserver_name_container
+}
+
