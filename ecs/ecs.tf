@@ -100,7 +100,7 @@ resource "aws_ecs_service" "game_server_service" {
 
   load_balancer {
     target_group_arn = var.target_group_game_server_arn
-    container_name   = "game_server"
+    container_name   = "gameserver"
     container_port   = var.game_server_port
   }
 }
