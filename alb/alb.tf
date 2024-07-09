@@ -4,10 +4,10 @@ variable "vpc_id" {
 variable "vpc_cidr_block" {
   type = string
 }
-variable "public_subnet_cidr_a" {
+variable "public_subnet_id_a" {
   type = string
 }
-variable "public_subnet_cidr_b" {
+variable "public_subnet_id_b" {
   type = string
 }
 
@@ -33,7 +33,7 @@ resource "aws_lb" "alb" {
     internal = false
     load_balancer_type = "application"
     security_groups = [aws_security_group.sg_alb.id]
-    subnets = [var.public_subnet_cidr_a, var.public_subnet_cidr_b ]
+    subnets = [var.public_subnet_id_a, var.public_subnet_id_b ]
   
 }
 

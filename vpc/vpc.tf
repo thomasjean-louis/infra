@@ -47,12 +47,12 @@ resource "aws_subnet" "public_subnet_b" {
 
 }
 
-output "public_subnet_cidr_a" {
-  value = aws_subnet.public_subnet_a.cidr_block
+output "public_subnet_id_a" {
+  value = aws_subnet.public_subnet_a.id
 }
 
-output "public_subnet_cidr_b" {
-  value = aws_subnet.public_subnet_b.cidr_block
+output "public_subnet_id_b" {
+  value = aws_subnet.public_subnet_b.id
 }
 
 resource "aws_subnet" "private_subnet_b" {
