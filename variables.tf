@@ -35,11 +35,11 @@ variable "private_subnet_b_cidr_block" {
 
 ###### ECS
 variable "game_server_cpu" {
-  default = 1
+  default = 1024
 }
 
 variable "game_server_ram" {
-  default = 1
+  default = 2048
 }
 
 variable "game_server_port" {
