@@ -20,16 +20,35 @@ resource "aws_security_group" "sg_alb" {
   description = "ALB security group"
   vpc_id      = var.vpc_id
 
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 }
 
-
-resource "aws_vpc_security_group_ingress_rule" "allow_http_ipv4" {
-  security_group_id = aws_security_group.sg_alb.id
-  cidr_ipv4         = var.vpc_cidr_block
-  from_port         = 80
-  ip_protocol       = "tcp"
-  to_port           = 80
-}
 
 
 resource "aws_lb" "alb" {
