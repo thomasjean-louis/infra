@@ -34,26 +34,18 @@ variable "private_subnet_b_cidr_block" {
 
 
 ###### ECS
-variable "task_execution_role_arn" {
-  type = string
-}
-
-variable "task_execution_role_arn" {
-  type = string
-}
-
 variable "game_server_cpu" {
   default = 1
 }
 
 variable "game_server_ram" {
-  type = 1
+  default = 1
 }
 
 variable "game_server_port" {
-  type = 27960
+  default = 27960
 }
 
 variable "game_server_image" {
-  type = "thomasjeanlouis1/gameserver"
+  default = "thomasjeanlouis1/gameserver"
 }
