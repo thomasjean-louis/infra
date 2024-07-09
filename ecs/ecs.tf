@@ -83,7 +83,7 @@ resource "aws_security_group" "sg_game_server_ecs" {
 
 resource "aws_vpc_security_group_ingress_rule" "ecs" {
   security_group_id = aws_security_group.sg_game_server_ecs.id
-  cidr_ipv4         = var.vpc_cidr_block
+  cidr_ipv4         = "0.0.0.0/0"
   from_port         = var.game_server_port
   ip_protocol       = "tcp"
   to_port           = var.game_server_port
