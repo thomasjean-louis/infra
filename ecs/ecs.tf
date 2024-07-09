@@ -31,7 +31,7 @@ resource "aws_ecs_cluster" "main" {
 }
 
 data "template_file" "gameServerTemplate"{
-    template = file("./taskdefinition.json.tpl")
+    template = file("taskdefinition.json.tpl")
     vars = {
       name = "gameserver"
       port = var.game_server_port
@@ -49,5 +49,5 @@ resource "aws_ecs_task_definition" "game_server" {
     requires_compatibilities = ["FARGATE"]
     cpu                      = var.game_server_cpu
     memory                   = var.game_server_ram
-    container_definitions = data.template_file
+    container_definitions = data.template_file.gameServerTemplate.rendered
 }
