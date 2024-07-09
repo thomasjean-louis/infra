@@ -47,6 +47,10 @@ resource "aws_alb_target_group" "gameserver_target_group" {
   protocol    = "HTTP"
   vpc_id      = var.vpc_id
   target_type = "ip"
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 output "target_group_game_server_arn" {
