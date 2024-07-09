@@ -29,7 +29,7 @@ resource "aws_vpc_security_group_ingress_rule" "allow_http_ipv4" {
 
 
 resource "aws_lb" "alb" {
-    name = "quakejs_alb"
+    name = "quakejs-alb"
     internal = false
     load_balancer_type = "application"
     security_groups = [aws_security_group.sg_alb.id]
