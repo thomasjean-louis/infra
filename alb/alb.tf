@@ -46,7 +46,7 @@ resource "aws_alb_target_group" "gameserver_target_group" {
   port        = var.game_server_port
   protocol    = "HTTP"
   vpc_id      = var.vpc_id
-  target_type = "instance"
+  target_type = "ip"
 }
 
 output "target_group_game_server_arn" {
