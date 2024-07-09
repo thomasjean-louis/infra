@@ -63,6 +63,17 @@ resource "aws_internet_gateway" "internet_gateway" {
   vpc_id = aws_vpc.vpc.id
 }
 
+resource "aws_route_table" "public_route_table" {
+  depends_on = [aws_vpc.vpc]
+  vpc_id     = aws_vpc.vpc.id
+}
+
+resource "aws_route_table_association" "public_table_association" {
+  gateway_id     = aws_internet_gateway.internet_gateway.id
+  route_table_id = aws_route_table.public_route_table.id
+}
+
+
 resource "aws_route_table" "private_route_table" {
   depends_on = [aws_vpc.vpc]
   vpc_id     = aws_vpc.vpc.id
