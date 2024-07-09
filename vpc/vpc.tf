@@ -47,6 +47,14 @@ resource "aws_subnet" "public_subnet_b" {
 
 }
 
+output "public_subnet_cidr_a" {
+  value = aws_subnet.public_subnet_a.cidr_block
+}
+
+output "public_subnet_cidr_b" {
+  value = aws_subnet.public_subnet_b.cidr_block
+}
+
 resource "aws_subnet" "private_subnet_b" {
   depends_on        = [aws_vpc.vpc]
   vpc_id            = aws_vpc.vpc.id

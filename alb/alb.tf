@@ -4,6 +4,12 @@ variable "vpc_id" {
 variable "vpc_cidr_block" {
   type = string
 }
+variable "public_subnet_cidr_a" {
+  type = string
+}
+variable "public_subnet_cidr_b" {
+  type = string
+}
 
 resource "aws_security_group" "sg_alb" {
     name = "sg_alb"
@@ -21,13 +27,13 @@ resource "aws_vpc_security_group_ingress_rule" "allow_http_ipv4" {
   to_port           = 80
 }
 
-/*
+
 resource "aws_lb" "alb" {
     name = "quakejs_alb"
     internal = false
     load_balancer_type = "application"
     security_groups = [aws_security_group.sg_alb.id]
-    subnets = [for subnet in aws_subnet. ]
+    subnets = [var.public_subnet_cidr_a, var.public_subnet_cidr_b ]
   
 }
-*/
+
