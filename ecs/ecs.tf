@@ -30,7 +30,7 @@ resource "aws_ecs_cluster" "main" {
     name = "quakejs-cluster"
 }
 
-data "template_file" "gameServerTemplate "{
+data "template_file" "gameServerTemplate"{
     template = file("./taskdefinition.json.tpl")
     vars = {
       name = "gameserver"
