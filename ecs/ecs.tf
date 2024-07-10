@@ -159,6 +159,7 @@ resource "aws_ecs_service" "game_server_service" {
 
 # Get private IP of running gameserver container
 data "aws_network_interface" "interface_tags" {
+  depends_on = [  aws_ecs_service.game_server_service ]
   filter {
     name   = "tag:aws:ecs:serviceName"
     values = ["${var.gameserver_name_container}-service"]
