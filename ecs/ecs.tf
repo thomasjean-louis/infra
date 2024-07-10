@@ -50,6 +50,14 @@ variable "gameserver_name_container" {
   type = string
 }
 
+variable "content_server_address" {
+  type = string
+}
+
+variable "game_server_address" {
+  type = string
+}
+
 resource "aws_ecs_cluster" "quakejs_cluster" {
   name = "quakejs-cluster"
 }
@@ -57,12 +65,14 @@ resource "aws_ecs_cluster" "quakejs_cluster" {
 data "template_file" "gameServerTemplate" {
   template = file("./ecs/taskdefinition.json.tpl")
   vars = {
-    name   = var.gameserver_name_container
-    port   = var.game_server_port
-    cpu    = var.game_server_cpu
-    ram    = var.game_server_ram
-    region = var.region
-    image  = var.game_server_image
+    name          = var.gameserver_name_container
+    port          = var.game_server_port
+    cpu           = var.game_server_cpu
+    ram           = var.game_server_ram
+    region        = var.region
+    image         = var.game_server_image
+    contentserver = var.content_server_address
+    gameserver    = var.game_server_address
   }
 }
 

@@ -53,3 +53,16 @@ variable "game_server_port" {
 variable "game_server_image" {
   default = "thomasjeanlouis1/gameserver:dev_12"
 }
+
+variable "game_server_image" {
+  default = "thomasjeanlouis1/gameserver:dev_12"
+}
+
+variable "content_server_address" {
+  default = "localhost"
+}
+
+variable "game_server_address" {
+  default = "localhost"
+}
+
