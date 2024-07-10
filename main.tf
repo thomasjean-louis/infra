@@ -88,7 +88,7 @@ module "webserver" {
   vpc_cidr_block              = var.vpc_cidr_block
   private_subnet_id_a         = module.vpc.private_subnet_id_a
   private_subnet_id_b         = module.vpc.private_subnet_id_b
-  target_group_web_server_arn = module.alb_web_server.target_group_game_server_arn
+  target_group_web_server_arn = module.alb_web_server.target_group_web_server_arn
 
   content_server_address = var.content_server_address
 
