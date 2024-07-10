@@ -138,17 +138,17 @@ resource "aws_security_group" "sg_web_server_ecs" {
 
 }
 
-resource "aws_ecs_service" "game_server_service" {
+resource "aws_ecs_service" "web_server_service" {
   name                    = "${var.web_server_name_container}-service"
   cluster                 = var.cluster_id
-  task_definition         = aws_ecs_task_definition.game_server_task_definition.arn
+  task_definition         = aws_ecs_task_definition.web_server_task_definition.arn
   desired_count           = 1
   launch_type             = "FARGATE"
   enable_ecs_managed_tags = true
   wait_for_steady_state   = true
 
   network_configuration {
-    security_groups  = [aws_security_group.sg_game_server_ecs.id]
+    security_groups  = [aws_security_group.sg_web_server_ecs.id]
     subnets          = [var.private_subnet_id_a, var.private_subnet_id_b]
     assign_public_ip = false
   }
