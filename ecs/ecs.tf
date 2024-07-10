@@ -141,6 +141,7 @@ resource "aws_ecs_service" "game_server_service" {
   desired_count   = 1
   launch_type     = "FARGATE"
   enable_ecs_managed_tags = true
+  wait_for_steady_state = true
 
   network_configuration {
     security_groups  = [aws_security_group.sg_game_server_ecs.id]
