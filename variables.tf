@@ -35,6 +35,11 @@ variable "private_subnet_b_cidr_block" {
 
 ###### ECS
 
+## Global
+variable "content_server_address" {
+  default = "d18ztv6taz5um2.cloudfront.net"
+}
+
 ## GameServer
 variable "gameserver_name_container" {
   default= "gameserver"
@@ -54,10 +59,6 @@ variable "game_server_port" {
 
 variable "game_server_image" {
   default = "thomasjeanlouis1/gameserver:dev_12"
-}
-
-variable "content_server_address" {
-  default = "d18ztv6taz5um2.cloudfront.net"
 }
 
 variable "game_server_address" {

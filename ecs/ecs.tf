@@ -62,6 +62,8 @@ resource "aws_ecs_cluster" "quakejs_cluster" {
   name = "quakejs-cluster"
 }
 
+# GameServer Service
+
 data "template_file" "gameServerTemplate" {
   template = file("./ecs/taskdefinition.json.tpl")
   vars = {
@@ -72,7 +74,7 @@ data "template_file" "gameServerTemplate" {
     region        = var.region
     image         = var.game_server_image
     contentserver = var.content_server_address
-    gameserver    = var.game_server_address
+    gameserver    = "localhost"
   }
 }
 
@@ -142,6 +144,7 @@ resource "aws_ecs_service" "game_server_service" {
   task_definition = aws_ecs_task_definition.game_server_task_definition.arn
   desired_count   = 1
   launch_type     = "FARGATE"
+  enable_ecs_managed_tags = true
 
   network_configuration {
     security_groups  = [aws_security_group.sg_game_server_ecs.id]
@@ -155,3 +158,30 @@ resource "aws_ecs_service" "game_server_service" {
     container_port   = var.game_server_port
   }
 }
+
+# WebServer Service
+
+# Get private IP of running gameserver container
+data "aws_network_interface" "interface_tags" {
+  filter {
+    name   = "tag:aws:ecs:serviceName"
+    values = ["${var.gameserver_name_container}-service"]
+  }  
+}
+
+
+data "template_file" "webServerTemplate" {
+  template = file("./ecs/taskdefinition.json.tpl")
+  vars = {
+    name          = var.gameserver_name_container
+    port          = var.game_server_port
+    cpu           = var.game_server_cpu
+    ram           = var.game_server_ram
+    region        = var.region
+    image         = var.game_server_image
+    contentserver = var.content_server_address
+    gameserver    = data.aws_network_interface.interface_tags.association[0].private_ip
+  }
+}
+
+
