@@ -108,10 +108,8 @@ module "logs_game_server" {
   name_container = var.game_server_name_container
 }
 
-/*
+
 module "logs_web_server" {
   source                    = "./logs"
   name_container = var.web_server_name_container
 }
-
-*/

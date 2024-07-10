@@ -79,6 +79,6 @@ variable "web_server_port" {
 }
 
 variable "web_server_image" {
-  default = "thomasjeanlouis1/thomasjeanlouis1/webserver:dev_1"
+  default = "thomasjeanlouis1/webserver:dev_1"
 }
 
