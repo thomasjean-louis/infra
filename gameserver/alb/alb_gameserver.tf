@@ -15,6 +15,14 @@ variable "game_server_port" {
   type = number
 }
 
+variable "game_server_port" {
+  type = number
+}
+
+variable "game_server_name_container" {
+  type = string
+}
+
 resource "aws_security_group" "sg_alb" {
   name        = "sg_alb"
   description = "ALB security group"
@@ -52,7 +60,7 @@ resource "aws_security_group" "sg_alb" {
 
 
 resource "aws_lb" "alb" {
-  name               = "quakejs-alb"
+  name               = "quakejs-alb-${var.game_server_name_container}"
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.sg_alb.id]
@@ -61,7 +69,7 @@ resource "aws_lb" "alb" {
 }
 
 resource "aws_alb_target_group" "gameserver_target_group" {
-  name        = "gameserver-target-group"
+  name        = "target-group-${var.game_server_name_container}"
   port        = var.game_server_port
   protocol    = "HTTP"
   vpc_id      = var.vpc_id

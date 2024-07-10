@@ -41,7 +41,7 @@ variable "content_server_address" {
 }
 
 ## GameServer
-variable "gameserver_name_container" {
+variable "game_server_name_container" {
   default= "gameserver"
 }
 
@@ -61,9 +61,9 @@ variable "game_server_image" {
   default = "thomasjeanlouis1/gameserver:dev_12"
 }
 
-## WebServer - To update
-variable "webs_server_name_container" {
-  default= "gameserver"
+## WebServer 
+variable "web_server_name_container" {
+  default= "webserver"
 }
 
 variable "web_server_cpu" {
@@ -79,6 +79,6 @@ variable "web_server_port" {
 }
 
 variable "web_server_image" {
-  default = "thomasjeanlouis1/gameserver:dev_12"
+  default = "thomasjeanlouis1/thomasjeanlouis1/webserver:dev_1"
 }
 
