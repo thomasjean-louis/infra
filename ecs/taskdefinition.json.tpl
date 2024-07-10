@@ -7,10 +7,17 @@
     "networkMode": "awsvpc",
     "environment": [
       {
-        "HTTP_PORT": "80",
-        "CONTENT_SERVER": "${contentserver}",
-        "GAME_SERVER": "${gameserver}"
-      }
+        "name": "HTTP_PORT",
+        "value": "80"
+      },
+      {
+        "name": "CONTENT_SERVER",
+        "value": "${contentserver}"
+      },
+      {
+        "name": "GAME_SERVER",
+        "value": "${gameserver}"
+      }      
     ],
     "logConfiguration": {
         "logDriver": "awslogs",
