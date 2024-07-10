@@ -19,6 +19,26 @@ resource "aws_iam_role" "task_execution_role" {
 
 }
 
+resource "aws_iam_role_policy" "logs_policy" {
+  name = "quakejs_policy_logs"
+  role = aws_iam_role.task_execution_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+    ]
+  })
+
+}
+
 resource "aws_iam_role" "task_role" {
   name = "quakejs_task_role"
 
