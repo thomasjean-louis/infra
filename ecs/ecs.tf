@@ -54,10 +54,6 @@ variable "content_server_address" {
   type = string
 }
 
-variable "game_server_address" {
-  type = string
-}
-
 resource "aws_ecs_cluster" "quakejs_cluster" {
   name = "quakejs-cluster"
 }

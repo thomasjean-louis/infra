@@ -51,8 +51,7 @@ module "ecs" {
   private_subnet_id_b          = module.vpc.private_subnet_id_b
   target_group_game_server_arn = module.alb.target_group_game_server_arn
   gameserver_name_container    = var.gameserver_name_container
-  content_server_address = var.content_server_address
-  game_server_address = var.game_server_address
+  content_server_address = var.content_server_address    
 }
 
 
