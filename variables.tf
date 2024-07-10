@@ -61,10 +61,6 @@ variable "game_server_image" {
   default = "thomasjeanlouis1/gameserver:dev_12"
 }
 
-variable "game_server_address" {
-  default = "localhost"
-}
-
 ## WebServer - To update
 variable "webs_server_name_container" {
   default= "gameserver"

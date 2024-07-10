@@ -180,7 +180,7 @@ data "template_file" "webServerTemplate" {
     region        = var.region
     image         = var.game_server_image
     contentserver = var.content_server_address
-    gameserver    = data.aws_network_interface.interface_tags.association[0].private_ip
+    gameserver    = data.aws_network_interface.interface_tags.private_ip
   }
 }
 
