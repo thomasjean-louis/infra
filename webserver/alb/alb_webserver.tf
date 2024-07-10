@@ -79,12 +79,12 @@ output "target_group_web_server_arn" {
 }
 
 resource "aws_alb_listener" "game_server_alb_listener" {
-  load_balancer_arn = aws_lb.alb.arn
+  load_balancer_arn = aws_lb.alb_web_server.arn
   port              = var.web_server_port
   protocol          = "HTTP"
 
   default_action {
-    target_group_arn = aws_alb_target_group.gameserver_target_group.arn
+    target_group_arn = aws_alb_target_group.web_server_target_group.arn
     type             = "forward"
   }
 

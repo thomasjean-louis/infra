@@ -56,7 +56,7 @@ resource "aws_security_group" "sg_alb" {
 
 
 
-resource "aws_lb" "alb" {
+resource "aws_lb" "alb_game_server" {
   name               = "quakejs-alb-${var.game_server_name_container}"
   internal           = false
   load_balancer_type = "application"
@@ -79,7 +79,7 @@ output "target_group_game_server_arn" {
 }
 
 resource "aws_alb_listener" "game_server_alb_listener" {
-  load_balancer_arn = aws_lb.alb.arn
+  load_balancer_arn = aws_lb.alb_game_server.arn
   port              = var.game_server_port
   protocol          = "HTTP"
 

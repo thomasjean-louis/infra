@@ -140,7 +140,7 @@ resource "aws_security_group" "sg_web_server_ecs" {
 
 resource "aws_ecs_service" "game_server_service" {
   name                    = "${var.web_server_name_container}-service"
-  cluster                 = aws_ecs_cluster.quakejs_cluster.id
+  cluster                 = var.cluster_id
   task_definition         = aws_ecs_task_definition.game_server_task_definition.arn
   desired_count           = 1
   launch_type             = "FARGATE"
