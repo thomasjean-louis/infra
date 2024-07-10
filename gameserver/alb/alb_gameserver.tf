@@ -15,9 +15,6 @@ variable "game_server_port" {
   type = number
 }
 
-variable "game_server_port" {
-  type = number
-}
 
 variable "game_server_name_container" {
   type = string

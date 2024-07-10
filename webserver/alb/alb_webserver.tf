@@ -15,9 +15,6 @@ variable "web_server_port" {
   type = number
 }
 
-variable "web_server_port" {
-  type = number
-}
 
 variable "web_server_name_container" {
     type = string
