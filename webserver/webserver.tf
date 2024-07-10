@@ -75,7 +75,7 @@ data "template_file" "webServerTemplate" {
     ram                = var.web_server_ram
     region             = var.region
     image              = var.web_server_image
-    contentserver      = var.content_server_address
+    contentserver_address      = var.content_server_address
     gameserver_address = var.gameserver_address
   }
 }

@@ -12,11 +12,11 @@
       },
       {
         "name": "CONTENT_SERVER",
-        "value": "${contentserver}"
+        "value": "${contentserver_address}"
       },
       {
         "name": "GAME_SERVER",
-        "value": "${gameserver}"
+        "value": "${gameserver_address}"
       }      
     ],
     "logConfiguration": {

@@ -64,14 +64,14 @@ variable "game_server_image" {
 data "template_file" "gameServerTemplate" {
   template = file("./ecs/taskdefinition.json.tpl")
   vars = {
-    name          = var.game_server_name_container
-    port          = var.game_server_port
-    cpu           = var.game_server_cpu
-    ram           = var.game_server_ram
-    region        = var.region
-    image         = var.game_server_image
-    contentserver = var.content_server_address
-    gameserver    = "localhost"
+    name                  = var.game_server_name_container
+    port                  = var.game_server_port
+    cpu                   = var.game_server_cpu
+    ram                   = var.game_server_ram
+    region                = var.region
+    image                 = var.game_server_image
+    contentserver_address = var.content_server_address
+    gameserver_address    = "localhost"
   }
 }
 
