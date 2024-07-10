@@ -34,6 +34,8 @@ variable "private_subnet_b_cidr_block" {
 
 
 ###### ECS
+
+## GameServer
 variable "gameserver_name_container" {
   default= "gameserver"
 }
@@ -55,10 +57,31 @@ variable "game_server_image" {
 }
 
 variable "content_server_address" {
-  default = "localhost"
+  default = "d18ztv6taz5um2.cloudfront.net"
 }
 
 variable "game_server_address" {
   default = "localhost"
+}
+
+## WebServer - To update
+variable "webs_server_name_container" {
+  default= "gameserver"
+}
+
+variable "web_server_cpu" {
+  default = 1024
+}
+
+variable "web_server_ram" {
+  default = 2048
+}
+
+variable "web_server_port" {
+  default = 80
+}
+
+variable "web_server_image" {
+  default = "thomasjeanlouis1/gameserver:dev_12"
 }
 

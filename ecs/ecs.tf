@@ -76,6 +76,7 @@ data "template_file" "gameServerTemplate" {
   }
 }
 
+
 resource "aws_ecs_task_definition" "game_server_task_definition" {
   family                   = "quakejs"
   execution_role_arn       = var.task_execution_role_arn
@@ -96,6 +97,12 @@ resource "aws_security_group" "sg_game_server_ecs" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+   egress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
   ingress {
     from_port   = 443
@@ -105,15 +112,22 @@ resource "aws_security_group" "sg_game_server_ecs" {
   }
 
   egress {
-    from_port   = 80
-    to_port     = 80
+    from_port   = 443
+    to_port     = 443
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  ingress {
+    from_port   = 27960
+    to_port     = 27960
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  
   egress {
-    from_port   = 443
-    to_port     = 443
+    from_port   = 27960
+    to_port     = 27960
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
