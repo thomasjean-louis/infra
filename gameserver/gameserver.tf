@@ -131,7 +131,6 @@ resource "aws_security_group" "sg_game_server_ecs" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-
 }
 
 

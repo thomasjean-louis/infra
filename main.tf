@@ -105,11 +105,11 @@ module "webserver" {
 
 module "logs_game_server" {
   source                    = "./logs"
-  gameserver_name_container = var.game_server_name_container
+  name_container = var.game_server_name_container
 }
 
 module "logs_web_server" {
   source                    = "./logs"
-  gameserver_name_container = var.web_server_name_container
+  name_container = var.web_server_name_container
 }
 

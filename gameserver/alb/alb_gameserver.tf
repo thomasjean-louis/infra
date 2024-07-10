@@ -21,7 +21,7 @@ variable "game_server_name_container" {
 }
 
 resource "aws_security_group" "sg_alb" {
-  name        = "sg_alb"
+  name        = "sg_alb_${var.game_server_name_container}"
   description = "ALB security group"
   vpc_id      = var.vpc_id
 
