@@ -94,7 +94,7 @@ output "target_group_game_server_arn" {
 
 resource "aws_alb_listener" "game_server_alb_listener" {
   load_balancer_arn = aws_lb.alb_game_server.arn
-  port              = var.game_server_port
+  port              = 80
   protocol          = "HTTP"
 
   default_action {
