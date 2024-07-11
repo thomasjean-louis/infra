@@ -90,4 +90,8 @@ resource "aws_alb_listener" "game_server_alb_listener" {
 
 }
 
+output "alb_game_server_DNS" {
+  value = aws_lb.alb_game_server.dns_name
+}
+
 
