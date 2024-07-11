@@ -54,7 +54,7 @@ variable "game_server_ram" {
 }
 
 variable "game_server_port" {
-  default = 27960
+  default = 80
 }
 
 variable "game_server_image" {
@@ -79,6 +79,6 @@ variable "web_server_port" {
 }
 
 variable "web_server_image" {
-  default = "thomasjeanlouis1/webserver:dev_1"
+  default = "thomasjeanlouis1/webserver:dev_2"
 }
 
