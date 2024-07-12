@@ -16,6 +16,7 @@ jobs:
     steps:
       - run: 'echo "BRANCH: ${{ github.event.client_payload.ref }}"'
       - run: 'echo "ENV: ${{ github.ref_name }}"'
+      - run: 'echo "branche dev"'
       - name: Checkout code
         uses: actions/checkout@v4
         with:
