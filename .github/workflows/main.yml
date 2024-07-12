@@ -1,7 +1,7 @@
 on: push
 jobs:   
   deploy:
-   environment: ${{ github.ref_name }}
+    environment: ${{ github.ref_name }}
     runs-on: ubuntu-latest    
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY_INFRA }}
