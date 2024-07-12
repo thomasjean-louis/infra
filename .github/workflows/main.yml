@@ -4,9 +4,9 @@ on:
     types: [trigger-workflow]
     inputs:
       repository:
-        default: infra
+        default: "infra"
       environment:
-        default: ${{ github.ref_name }}
+        default: "${{ github.ref_name }}"
   
 jobs:   
   deploy:
