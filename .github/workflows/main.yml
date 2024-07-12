@@ -2,6 +2,11 @@ on:
   push:
   workflow_dispatch:
     types: [trigger-workflow]
+    inputs:
+      repository:
+        default: "infra"
+      environment:
+        default: "dev"
   
 jobs:   
   deploy:
