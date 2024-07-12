@@ -1,6 +1,7 @@
 on: push
 jobs:   
   deploy:
+   environment: ${{ github.ref_name }}
     runs-on: ubuntu-latest    
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY_INFRA }}
@@ -10,3 +11,6 @@ jobs:
         uses: actions/checkout@v4
       - run: terraform init -backend-config="access_key=${{ secrets.ACCESS_KEY_STATE }}" -backend-config="secret_key=${{ secrets.SECRET_ACCESS_KEY_STATE }}"           
       - run: terraform apply -auto-approve
+        env:
+          TF_VAR_game_server_image: "thomasjeanlouis1/gameserver:${{ secrets.GAME_SERVER_DOCKER_IMAGE }}"
+          TF_VAR_web_server_image: "thomasjeanlouis1/webserver:${{ secrets.WEB_SERVER_DOCKER_IMAGE }}"
