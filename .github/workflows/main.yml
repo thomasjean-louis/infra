@@ -6,7 +6,7 @@ on:
       repository:
         default: "infra"
       environment:
-        default: "${{ github.ref_name }}"
+        default: "dev"
   
 jobs:   
   deploy:
