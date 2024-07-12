@@ -58,7 +58,7 @@ variable "game_server_port" {
 }
 
 variable "game_server_image" {
-  default = "thomasjeanlouis1/gameserver:dev_12"
+  default = ""
 }
 
 ## WebServer 
@@ -79,7 +79,7 @@ variable "web_server_port" {
 }
 
 variable "web_server_image" {
-  default = "thomasjeanlouis1/webserver:dev_4"
+  default = ""
 
 }
 
