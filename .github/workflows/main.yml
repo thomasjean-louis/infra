@@ -6,11 +6,12 @@ jobs:
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY_INFRA }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY_INFRA }}
+      TF_VAR_game_server_image: "thomasjeanlouis1/gameserver:${{ github.GAME_SERVER_DOCKER_IMAGE }}"
+      TF_VAR_web_server_image: "thomasjeanlouis1/webserver:${{ github.WEB_SERVER_DOCKER_IMAGE }}"
     steps:
+      - run: echo "thomasjeanlouis1/gameserver:${{ github.GAME_SERVER_DOCKER_IMAGE }}"
       - name: Checkout code
         uses: actions/checkout@v4
       - run: terraform init -backend-config="access_key=${{ secrets.ACCESS_KEY_STATE }}" -backend-config="secret_key=${{ secrets.SECRET_ACCESS_KEY_STATE }}"           
       - run: terraform apply -auto-approve
-        env:
-          TF_VAR_game_server_image: "thomasjeanlouis1/gameserver:${{ github.GAME_SERVER_DOCKER_IMAGE }}"
-          TF_VAR_web_server_image: "thomasjeanlouis1/webserver:${{ github.WEB_SERVER_DOCKER_IMAGE }}"
+          
