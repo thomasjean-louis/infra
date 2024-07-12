@@ -1,7 +1,8 @@
 on: 
   push:
-  repository_dispatch:
+  workflow_dispatch:
     types: [trigger-workflow]
+  
 jobs:   
   deploy:
     environment: ${{ github.ref_name }}
@@ -11,6 +12,7 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY_INFRA }}
       TF_VAR_game_server_image: "thomasjeanlouis1/gameserver:${{ vars.GAME_SERVER_DOCKER_IMAGE }}"
       TF_VAR_web_server_image: "thomasjeanlouis1/webserver:${{ vars.WEB_SERVER_DOCKER_IMAGE }}"
+    if: ${{ !github.event.client_payload.passed == github.ref_name }} 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
