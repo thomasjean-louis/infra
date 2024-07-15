@@ -2,6 +2,7 @@ name: "infraWorkflow"
 on: 
   push:
   workflow_dispatch:
+    inputs:
   
 jobs:   
   deploy:
