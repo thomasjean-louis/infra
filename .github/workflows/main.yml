@@ -1,7 +1,6 @@
 on: 
   push:
-  repository_dispatch:
-    types: [trigger-workflow]
+  workflow_dispatch:
   
 jobs:   
   deploy:
@@ -14,12 +13,10 @@ jobs:
       TF_VAR_web_server_image: "thomasjeanlouis1/webserver:${{ vars.WEB_SERVER_DOCKER_IMAGE }}"
     #if: ${{ !github.event.client_payload.passed == github.ref_name }} 
     steps:
-      - run: 'echo "BRANCH: ${{ github.event.client_payload.ref }}"'
       - run: 'echo "ENV: ${{ github.ref_name }}"'
+      - run: 'echo "branche dev"'
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.client_payload.ref }}
       # - run: terraform init -backend-config="access_key=${{ secrets.ACCESS_KEY_STATE }}" -backend-config="secret_key=${{ secrets.SECRET_ACCESS_KEY_STATE }}"           
       # - run: terraform apply -auto-approve
           
