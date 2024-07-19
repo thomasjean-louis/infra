@@ -133,7 +133,8 @@ resource "aws_security_group" "sg_game_server_ecs" {
 
 }
 
-
+// ECS Service will be created during runtime
+/*
 resource "aws_ecs_service" "game_server_service" {
   name                    = "${var.game_server_name_container}-service"
   cluster                 = var.cluster_id
@@ -155,6 +156,7 @@ resource "aws_ecs_service" "game_server_service" {
     container_port   = var.game_server_port
   }
 }
+*/
 
 # Get private IP of running gameserver container
 /*data "aws_network_interface" "interface_tags" {

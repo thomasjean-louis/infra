@@ -69,14 +69,14 @@ variable "web_server_image" {
 data "template_file" "webServerTemplate" {
   template = file("./ecs/taskdefinition.json.tpl")
   vars = {
-    name               = var.web_server_name_container
-    port               = var.web_server_port
-    cpu                = var.web_server_cpu
-    ram                = var.web_server_ram
-    region             = var.region
-    image              = var.web_server_image
-    contentserver_address      = var.content_server_address
-    gameserver_address = var.gameserver_address
+    name                  = var.web_server_name_container
+    port                  = var.web_server_port
+    cpu                   = var.web_server_cpu
+    ram                   = var.web_server_ram
+    region                = var.region
+    image                 = var.web_server_image
+    contentserver_address = var.content_server_address
+    gameserver_address    = var.gameserver_address
   }
 }
 
@@ -138,6 +138,9 @@ resource "aws_security_group" "sg_web_server_ecs" {
 
 }
 
+
+//ECS Service will be created during runtime
+/*
 resource "aws_ecs_service" "web_server_service" {
   name                    = "${var.web_server_name_container}-service"
   cluster                 = var.cluster_id
@@ -159,3 +162,4 @@ resource "aws_ecs_service" "web_server_service" {
     container_port   = var.web_server_port
   }
 }
+*/
