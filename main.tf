@@ -122,6 +122,6 @@ module "lambda_gameserver" {
   private_subnet_id_b             = module.vpc.private_subnet_id_b
   security_group_game_server_task = module.gameserver.security_group_game_server_task
   target_group_game_server_task   = module.alb_gameserver.target_group_game_server_arn
-  task_definition_game_server     = aws_ecs_task_definition.game_server_task_definition.id
+  task_definition_game_server     = module.gameserver.task_definition_game_server
 
 }
