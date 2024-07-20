@@ -10,6 +10,10 @@ variable "cluster_id" {
   type = string
 }
 
+variable "cluster_name" {
+  type = string
+}
+
 variable "private_subnet_id_a" {
   type = string
 }
@@ -72,7 +76,7 @@ resource "aws_iam_role_policy" "ecs_service_policy" {
           "ecs:CreateService"
         ]
         Effect   = "Allow"
-        Resource = "arn:aws:ecs:${var.region}:${var.account_id}:service/${var.cluster_id}/*"
+        Resource = "arn:aws:ecs:${var.region}:${var.account_id}:service/${var.cluster_name}/*"
       },
     ]
   })

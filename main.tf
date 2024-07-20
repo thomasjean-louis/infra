@@ -123,6 +123,7 @@ module "lambda_gameserver" {
   account_id                      = data.aws_caller_identity.account_data.account_id
   region                          = var.region
   cluster_id                      = module.ecs.cluster_id
+  cluster_name                    = module.ecs.cluster_name
   private_subnet_id_a             = module.vpc.private_subnet_id_a
   private_subnet_id_b             = module.vpc.private_subnet_id_b
   security_group_game_server_task = module.gameserver.security_group_game_server_task
