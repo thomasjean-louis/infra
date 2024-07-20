@@ -52,7 +52,7 @@ module "ecs" {
 }
 
 module "gameserver" {
-  source = "./gameserver"
+  source     = "./gameserver"
   cluster_id = module.ecs.cluster_id
 
   vpc_id                  = module.vpc.vpc_id
@@ -67,10 +67,10 @@ module "gameserver" {
 
   content_server_address = var.content_server_address
 
-  game_server_cpu           = var.game_server_cpu
-  game_server_ram           = var.game_server_ram
-  game_server_port          = var.game_server_port
-  game_server_image         = var.game_server_image
+  game_server_cpu            = var.game_server_cpu
+  game_server_ram            = var.game_server_ram
+  game_server_port           = var.game_server_port
+  game_server_image          = var.game_server_image
   game_server_name_container = var.game_server_name_container
 }
 
@@ -79,7 +79,7 @@ module "webserver" {
   depends_on = [module.gameserver]
 
   cluster_id = module.ecs.cluster_id
-  
+
   vpc_id                  = module.vpc.vpc_id
   region                  = var.region
   task_execution_role_arn = module.iam.task_execution_role_arn
@@ -103,12 +103,12 @@ module "webserver" {
 
 
 module "logs_game_server" {
-  source                    = "./logs"
+  source         = "./logs"
   name_container = var.game_server_name_container
 }
 
 
 module "logs_web_server" {
-  source                    = "./logs"
+  source         = "./logs"
   name_container = var.web_server_name_container
 }

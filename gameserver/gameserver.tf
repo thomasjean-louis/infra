@@ -133,41 +133,15 @@ resource "aws_security_group" "sg_game_server_ecs" {
 
 }
 
-// ECS Service will be created during runtime
-/*
-resource "aws_ecs_service" "game_server_service" {
-  name                    = "${var.game_server_name_container}-service"
-  cluster                 = var.cluster_id
-  task_definition         = aws_ecs_task_definition.game_server_task_definition.arn
-  desired_count           = 1
-  launch_type             = "FARGATE"
-  enable_ecs_managed_tags = true
-  wait_for_steady_state   = true
+# Lambda functions
+module "lambda_gameserver" {
+  source                          = "./lambda_gameserver"
+  cluster_id                      = var.cluster_id
+  private_subnet_id_a             = var.private_subnet_id_a
+  private_subnet_id_b             = var.private_subnet_id_b
+  security_group_game_server_task = aws_security_group.sg_game_server_ecs.id
+  target_group_game_server_task   = var.target_group_game_server_arn
+  task_definition_game_server     = aws_ecs_task_definition.game_server_task_definition.name
 
-  network_configuration {
-    security_groups  = [aws_security_group.sg_game_server_ecs.id]
-    subnets          = [var.private_subnet_id_a, var.private_subnet_id_b]
-    assign_public_ip = false
-  }
-
-  load_balancer {
-    target_group_arn = var.target_group_game_server_arn
-    container_name   = var.game_server_name_container
-    container_port   = var.game_server_port
-  }
-}
-*/
-
-# Get private IP of running gameserver container
-/*data "aws_network_interface" "interface_tags" {
-  depends_on = [aws_ecs_service.game_server_service]
-  filter {
-    name   = "tag:aws:ecs:serviceName"
-    values = ["${var.game_server_name_container}-service"]
-  }
 }
 
-output "game_server_address" {
-  value = data.aws_network_interface.interface_tags.private_ip
-}
-*/
