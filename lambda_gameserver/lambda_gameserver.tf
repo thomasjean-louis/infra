@@ -1,3 +1,11 @@
+variable "region" {
+  type = string
+}
+
+variable "account_id" {
+  type = string
+}
+
 variable "cluster_id" {
   type = string
 }
@@ -50,6 +58,28 @@ resource "aws_iam_role" "lambda_game_server_service_role" {
   })
 
 }
+
+
+resource "aws_iam_role_policy" "ecs_service_policy" {
+  name = "quakejs_lambda_ecs_policy"
+  role = aws_iam_role.lambda_game_server_service_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "ecs:CreateService"
+        ]
+        Effect   = "Allow"
+        Resource = "arn:aws:ecs:${var.region}:${var.account_id}:service/${var.cluster_id}/*"
+      },
+    ]
+  })
+
+}
+
+
 
 # Lambda creating GameServer ECS Service function
 resource "aws_lambda_function" "lambda_game_server" {

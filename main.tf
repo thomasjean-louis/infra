@@ -10,6 +10,9 @@ terraform {
   }
 }
 
+data "aws_caller_identity" "account_data" {}
+
+
 
 module "vpc" {
   source                      = "./vpc"
@@ -117,6 +120,8 @@ module "logs_web_server" {
 module "lambda_gameserver" {
   depends_on                      = [module.gameserver]
   source                          = "./lambda_gameserver"
+  account_id                      = aws_caller_identity.account_data.account_id
+  region                          = var.region
   cluster_id                      = module.ecs.cluster_id
   private_subnet_id_a             = module.vpc.private_subnet_id_a
   private_subnet_id_b             = module.vpc.private_subnet_id_b
