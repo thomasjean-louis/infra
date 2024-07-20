@@ -25,8 +25,8 @@ variable "task_definition_game_server" {
 
 data "archive_file" "zip" {
   type        = "zip"
-  source_file = "create_game_server_ecs_service.py"
-  output_path = "create_game_server_ecs_service.zip"
+  source_file = "${path.module}/create_game_server_ecs_service.py"
+  output_path = "${path.module}/create_game_server_ecs_service.zip"
 }
 
 # iam Lambda role
