@@ -133,15 +133,13 @@ resource "aws_security_group" "sg_game_server_ecs" {
 
 }
 
-# Lambda functions
-module "lambda_gameserver" {
-  source                          = "./lambda_gameserver"
-  cluster_id                      = var.cluster_id
-  private_subnet_id_a             = var.private_subnet_id_a
-  private_subnet_id_b             = var.private_subnet_id_b
-  security_group_game_server_task = aws_security_group.sg_game_server_ecs.id
-  target_group_game_server_task   = var.target_group_game_server_arn
-  task_definition_game_server     = aws_ecs_task_definition.game_server_task_definition.id
-
+output "security_group_game_server_task" {
+  value = aws_security_group.sg_game_server_ecs.id
 }
+
+output "task_definition_game_server" {
+  value = aws_ecs_task_definition.game_server_task_definition.id
+}
+
+
 

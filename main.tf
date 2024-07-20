@@ -112,3 +112,16 @@ module "logs_web_server" {
   source         = "./logs"
   name_container = var.web_server_name_container
 }
+
+# Lambda functions
+module "lambda_gameserver" {
+  depends_on                      = [module.gameserver]
+  source                          = "./lambda_gameserver"
+  cluster_id                      = module.ecs.cluster_id
+  private_subnet_id_a             = module.vpc.private_subnet_id_a
+  private_subnet_id_b             = module.vpc.private_subnet_id_b
+  security_group_game_server_task = module.gameserver.security_group_game_server_task
+  target_group_game_server_task   = module.alb_gameserver.target_group_game_server_arn
+  task_definition_game_server     = aws_ecs_task_definition.game_server_task_definition.id
+
+}
