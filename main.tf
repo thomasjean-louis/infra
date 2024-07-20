@@ -129,5 +129,5 @@ module "lambda_gameserver" {
   security_group_game_server_task = module.gameserver.security_group_game_server_task
   target_group_game_server_task   = module.alb_gameserver.target_group_game_server_arn
   task_definition_game_server     = module.gameserver.task_definition_game_server
-
+  role_task_execution_name        = module.iam.task_execution_role_name
 }

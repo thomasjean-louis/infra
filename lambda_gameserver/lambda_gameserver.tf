@@ -34,6 +34,10 @@ variable "task_definition_game_server" {
   type = string
 }
 
+variable "role_task_execution_name" {
+  type = string
+}
+
 
 data "archive_file" "zip" {
   type        = "zip"
@@ -65,7 +69,7 @@ resource "aws_iam_role" "lambda_game_server_service_role" {
 
 
 resource "aws_iam_role_policy" "ecs_service_policy" {
-  name = "quakejs_lambda_ecs_policy"
+  name = "quakejs_lambda_create_ecs_service"
   role = aws_iam_role.lambda_game_server_service_role.id
 
   policy = jsonencode({
@@ -77,6 +81,25 @@ resource "aws_iam_role_policy" "ecs_service_policy" {
         ]
         Effect   = "Allow"
         Resource = "arn:aws:ecs:${var.region}:${var.account_id}:service/${var.cluster_name}/*"
+      },
+    ]
+  })
+
+}
+
+resource "aws_iam_role_policy" "ecs_pass_role" {
+  name = "quakejs_lambda_pass_role_task_definition"
+  role = aws_iam_role.lambda_game_server_service_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "iam:PassRole"
+        ]
+        Effect   = "Allow"
+        Resource = "arn:aws:iam::${var.account_id}:role/${var.role_task_execution_name}"
       },
     ]
   })
