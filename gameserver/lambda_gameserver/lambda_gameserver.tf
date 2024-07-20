@@ -22,7 +22,7 @@ variable "task_definition_game_server" {
   type = string
 }
 
-provider "archive" {}
+
 data "archive_file" "zip" {
   type        = "zip"
   source_file = "createGameServerService.py"
