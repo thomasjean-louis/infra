@@ -46,6 +46,16 @@ resource "aws_iam_role" "amplify_service_role" {
 
 }
 
+data "aws_iam_policy" "administratorAccessamplify" {
+  arn = "arn:aws:iam::aws:policy/AdministratorAccess-Amplify"
+}
+
+resource "aws_iam_role_policy_attachment" "AdministratorAccess-Amplify-attach" {
+  role       = aws_iam_role.amplify_service_role.name
+  policy_arn = data.aws_iam_policy.administratorAccessamplify.arn
+}
+
+
 
 resource "aws_amplify_app" "homepage_app" {
   name                     = var.amplify_app_name
