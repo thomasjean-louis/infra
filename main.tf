@@ -135,6 +135,7 @@ module "lambda_gameserver" {
 # Homepage
 module "homepage" {
   source                = "./homepage"
+  region                = var.region
   amplify_app_name      = var.amplify_app_name
   homepage_repository   = var.homepage_repository
   homepage_branch       = var.homepage_branch

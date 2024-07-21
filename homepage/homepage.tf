@@ -1,4 +1,9 @@
 
+
+variable "region" {
+  type = string
+}
+
 variable "amplify_app_name" {
   type = string
 }
@@ -19,12 +24,35 @@ variable "homepage_github_token" {
   type = string
 }
 
+# iam Amplify role
+resource "aws_iam_role" "amplify_service_role" {
+  name = "amplify_service_role"
+
+  # Terraform's "jsonencode" function converts a
+  # Terraform expression result to valid JSON syntax.
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Sid    = ""
+        Principal = {
+          Service = ["amplify.amazonaws.com", "amplify.${var.region}.amazonaws.com"]
+        }
+      },
+    ]
+  })
+
+}
+
 
 resource "aws_amplify_app" "homepage_app" {
   name                     = var.amplify_app_name
   oauth_token              = var.homepage_github_token
   repository               = var.homepage_repository
   enable_branch_auto_build = true
+  iam_service_role_arn     = aws_iam_role.amplify_service_role.arn
   build_spec               = <<-EOT
     version: 0.1
     frontend:
