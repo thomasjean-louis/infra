@@ -1,22 +1,25 @@
 name: "infraWorkflow"
-on: 
+on:
   push:
   workflow_dispatch: {}
-  
-jobs:   
+
+jobs:
   deploy:
     environment: ${{ github.ref_name }}
-    runs-on: ubuntu-latest    
+    runs-on: ubuntu-latest
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY_INFRA }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY_INFRA }}
       TF_VAR_game_server_image: "thomasjeanlouis1/gameserver:${{ vars.GAME_SERVER_DOCKER_IMAGE }}"
       TF_VAR_web_server_image: "thomasjeanlouis1/webserver:${{ vars.WEB_SERVER_DOCKER_IMAGE }}"
+      TF_VAR_homepage_repository: ${{secrets.HOMEPAGE_REPOSITORY}}
+      TF_VAR_homepage_branch: ${{vars.HOMEPAGE_BRANCH}}
+      TF_VAR_homepage_domain_name: ${{secrets.HOMEPAGE_DOMAIN_NAME}}
+      TF_VAR_homepage_github_token: ${{secrets.HOMEPAGE_GITHUB_TOKEN}}
+
     steps:
       - run: 'echo "ENV: ${{ github.ref_name }}"'
-      - run: 'echo "branche dev"'
       - name: Checkout code
         uses: actions/checkout@v4
-      - run: terraform init -backend-config="access_key=${{ secrets.ACCESS_KEY_STATE }}" -backend-config="secret_key=${{ secrets.SECRET_ACCESS_KEY_STATE }}"           
+      - run: terraform init -backend-config="access_key=${{ secrets.ACCESS_KEY_STATE }}" -backend-config="secret_key=${{ secrets.SECRET_ACCESS_KEY_STATE }}"
       - run: terraform apply -auto-approve
-          

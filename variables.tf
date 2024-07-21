@@ -42,7 +42,7 @@ variable "content_server_address" {
 
 ## GameServer
 variable "game_server_name_container" {
-  default= "gameserver"
+  default = "gameserver"
 }
 
 variable "game_server_cpu" {
@@ -63,7 +63,7 @@ variable "game_server_image" {
 
 ## WebServer 
 variable "web_server_name_container" {
-  default= "webserver"
+  default = "webserver"
 }
 
 variable "web_server_cpu" {
@@ -83,3 +83,27 @@ variable "web_server_image" {
 
 }
 
+## Homepage
+variable "amplify_app_name" {
+  default = "homepage"
+}
+
+variable "homepage_repository" {
+  type      = string
+  sensitive = true
+}
+
+variable "homepage_branch" {
+  default = "default_branch"
+}
+
+variable "homepage_domain_name" {
+  type      = string
+  sensitive = true
+}
+
+
+variable "homepage_github_token" {
+  type      = string
+  sensitive = true
+}

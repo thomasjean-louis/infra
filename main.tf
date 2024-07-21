@@ -131,3 +131,14 @@ module "lambda_gameserver" {
   task_definition_game_server     = module.gameserver.task_definition_game_server
   role_task_execution_name        = module.iam.task_execution_role_name
 }
+
+# Homepage
+module "homepage" {
+  source                = "./homepage"
+  amplify_app_name      = var.amplify_app_name
+  homepage_repository   = var.homepage_repository
+  homepage_branch       = var.homepage_branch
+  homepage_domain_name  = var.homepage_domain_name
+  homepage_github_token = var.homepage_github_token
+
+}
