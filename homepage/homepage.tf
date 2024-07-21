@@ -74,7 +74,7 @@ resource "aws_amplify_app" "homepage_app" {
           commands:
             - yarn run build
       artifacts:
-        baseDirectory: /
+        baseDirectory: build
         files:
           - '**/*'
       cache:
