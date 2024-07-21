@@ -21,9 +21,34 @@ variable "homepage_github_token" {
 
 
 resource "aws_amplify_app" "homepage_app" {
-  name        = var.amplify_app_name
-  oauth_token = var.homepage_github_token
-  repository  = var.homepage_repository
+  name                     = var.amplify_app_name
+  oauth_token              = var.homepage_github_token
+  repository               = var.homepage_repository
+  enable_branch_auto_build = true
+  build_spec               = <<-EOT
+    version: 0.1
+    frontend:
+      phases:
+        preBuild:
+          commands:
+            - yarn install
+        build:
+          commands:
+            - yarn run build
+      artifacts:
+        baseDirectory: /
+        files:
+          - '**/*'
+      cache:
+        paths:
+          - node_modules/**/*
+  EOT
+
+  custom_rule {
+    source = "/<*>"
+    status = "404"
+    target = "/index.html"
+  }
 
 }
 
