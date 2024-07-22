@@ -5,7 +5,7 @@ provider "aws" {
 terraform {
   backend "s3" {
     bucket = "terraform-tjl"
-    key    = "quakejs/terraform.tfstate"
+    key    = "${var.app_name}/terraform.tfstate"
     region = "eu-west-3"
   }
 }
@@ -26,11 +26,13 @@ module "vpc" {
 }
 
 module "iam" {
-  source = "./iam"
+  source   = "./iam"
+  app_name = var.app_name
 }
 
 module "alb_gameserver" {
   source                     = "./gameserver/alb"
+  app_name                   = var.app_name
   vpc_id                     = module.vpc.vpc_id
   vpc_cidr_block             = var.vpc_cidr_block
   public_subnet_id_a         = module.vpc.public_subnet_id_a
@@ -42,6 +44,7 @@ module "alb_gameserver" {
 
 module "alb_web_server" {
   source                    = "./webserver/alb"
+  app_name                  = var.app_name
   vpc_id                    = module.vpc.vpc_id
   vpc_cidr_block            = var.vpc_cidr_block
   public_subnet_id_a        = module.vpc.public_subnet_id_a
@@ -51,13 +54,14 @@ module "alb_web_server" {
 }
 
 module "ecs" {
-  source = "./ecs"
+  source   = "./ecs"
+  app_name = var.app_name
 }
 
 module "gameserver" {
-  source     = "./gameserver"
-  cluster_id = module.ecs.cluster_id
-
+  source                  = "./gameserver"
+  cluster_id              = module.ecs.cluster_id
+  app_name                = var.app_name
   vpc_id                  = module.vpc.vpc_id
   region                  = var.region
   task_execution_role_arn = module.iam.task_execution_role_arn
@@ -80,7 +84,7 @@ module "gameserver" {
 module "webserver" {
   source     = "./webserver"
   depends_on = [module.gameserver]
-
+  app_name   = var.app_name
   cluster_id = module.ecs.cluster_id
 
   vpc_id                  = module.vpc.vpc_id
@@ -120,6 +124,7 @@ module "logs_web_server" {
 module "lambda_gameserver" {
   depends_on                      = [module.gameserver]
   source                          = "./lambda_gameserver"
+  app_name                        = var.app_name
   account_id                      = data.aws_caller_identity.account_data.account_id
   region                          = var.region
   cluster_id                      = module.ecs.cluster_id

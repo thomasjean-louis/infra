@@ -1,12 +1,19 @@
+variable "app_name" {
+  type = string
+}
+
 variable "vpc_id" {
   type = string
 }
+
 variable "vpc_cidr_block" {
   type = string
 }
+
 variable "public_subnet_id_a" {
   type = string
 }
+
 variable "public_subnet_id_b" {
   type = string
 }
@@ -44,7 +51,7 @@ resource "aws_security_group" "sg_alb" {
     to_port     = 443
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
-  } 
+  }
 
   egress {
     from_port   = 443
@@ -58,7 +65,7 @@ resource "aws_security_group" "sg_alb" {
     to_port     = 27960
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
-  } 
+  }
 
   egress {
     from_port   = 27960
@@ -71,7 +78,7 @@ resource "aws_security_group" "sg_alb" {
 
 
 resource "aws_lb" "alb_game_server" {
-  name               = "quakejs-alb-${var.game_server_name_container}"
+  name               = "${app_name}-alb-${var.game_server_name_container}"
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.sg_alb.id]

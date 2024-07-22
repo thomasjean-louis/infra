@@ -1,3 +1,7 @@
+variable "app_name" {
+  type = string
+}
+
 variable "cluster_id" {
   type = string
 }
@@ -77,7 +81,7 @@ data "template_file" "gameServerTemplate" {
 
 
 resource "aws_ecs_task_definition" "game_server_task_definition" {
-  family                   = "quakejs-${var.game_server_name_container}"
+  family                   = "${var.app_name}-${var.game_server_name_container}"
   execution_role_arn       = var.task_execution_role_arn
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]

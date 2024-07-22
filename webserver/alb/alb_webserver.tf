@@ -1,12 +1,19 @@
+variable "app_name" {
+  type = string
+}
+
 variable "vpc_id" {
   type = string
 }
+
 variable "vpc_cidr_block" {
   type = string
 }
+
 variable "public_subnet_id_a" {
   type = string
 }
+
 variable "public_subnet_id_b" {
   type = string
 }
@@ -17,7 +24,7 @@ variable "web_server_port" {
 
 
 variable "web_server_name_container" {
-    type = string
+  type = string
 }
 
 resource "aws_security_group" "sg_alb" {
@@ -56,8 +63,8 @@ resource "aws_security_group" "sg_alb" {
 
 
 
-resource "aws_lb" "alb_web_server" {    
-  name               = "quakejs-alb-${var.web_server_name_container}"
+resource "aws_lb" "alb_web_server" {
+  name               = "${var.app_name}-alb-${var.web_server_name_container}"
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.sg_alb.id]

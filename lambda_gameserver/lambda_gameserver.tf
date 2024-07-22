@@ -2,6 +2,10 @@ variable "region" {
   type = string
 }
 
+variable "app_name" {
+  type = string
+}
+
 variable "account_id" {
   type = string
 }
@@ -47,7 +51,7 @@ data "archive_file" "zip" {
 
 # iam Lambda role
 resource "aws_iam_role" "lambda_game_server_service_role" {
-  name = "quakejs_lambda_game_server_service_role"
+  name = "${var.app_name}_lambda_game_server_service_role"
 
   # Terraform's "jsonencode" function converts a
   # Terraform expression result to valid JSON syntax.
@@ -69,7 +73,7 @@ resource "aws_iam_role" "lambda_game_server_service_role" {
 
 
 resource "aws_iam_role_policy" "ecs_service_policy" {
-  name = "quakejs_lambda_create_ecs_service"
+  name = "${var.app_name}_lambda_create_ecs_service"
   role = aws_iam_role.lambda_game_server_service_role.id
 
   policy = jsonencode({
@@ -88,7 +92,7 @@ resource "aws_iam_role_policy" "ecs_service_policy" {
 }
 
 resource "aws_iam_role_policy" "ecs_pass_role" {
-  name = "quakejs_lambda_pass_role_task_definition"
+  name = "${var.app_name}_lambda_pass_role_task_definition"
   role = aws_iam_role.lambda_game_server_service_role.id
 
   policy = jsonencode({

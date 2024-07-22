@@ -31,18 +31,24 @@ variable "private_subnet_b_cidr_block" {
   default = "10.0.4.0/24"
 }
 
-
+###### Project
+variable "app_name" {
+  type      = string
+  sensitive = true
+}
 
 ###### ECS
 
 ## Global
 variable "content_server_address" {
-  default = "d18ztv6taz5um2.cloudfront.net"
+  type      = string
+  sensitive = true
 }
 
 ## GameServer
 variable "game_server_name_container" {
-  default = "gameserver"
+  type      = string
+  sensitive = true
 }
 
 variable "game_server_cpu" {
