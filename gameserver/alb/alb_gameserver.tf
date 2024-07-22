@@ -89,7 +89,7 @@ resource "aws_lb" "alb_game_server" {
 resource "aws_alb_target_group" "gameserver_target_group" {
   name        = "target-group-${var.game_server_name_container}"
   port        = var.game_server_port
-  protocol    = "HTTP"
+  protocol    = "HTTPS"
   vpc_id      = var.vpc_id
   target_type = "ip"
 
@@ -101,8 +101,8 @@ output "target_group_game_server_arn" {
 
 resource "aws_alb_listener" "game_server_alb_listener" {
   load_balancer_arn = aws_lb.alb_game_server.arn
-  port              = 80
-  protocol          = "HTTP"
+  port              = 443
+  protocol          = "HTTPS"
 
   default_action {
     target_group_arn = aws_alb_target_group.gameserver_target_group.arn

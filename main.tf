@@ -42,16 +42,16 @@ module "alb_gameserver" {
 
 }
 
-module "alb_web_server" {
-  source                    = "./webserver/alb"
-  app_name                  = var.app_name
-  vpc_id                    = module.vpc.vpc_id
-  vpc_cidr_block            = var.vpc_cidr_block
-  public_subnet_id_a        = module.vpc.public_subnet_id_a
-  public_subnet_id_b        = module.vpc.public_subnet_id_b
-  web_server_port           = var.web_server_port
-  web_server_name_container = var.web_server_name_container
-}
+# module "alb_web_server" {
+#   source                    = "./webserver/alb"
+#   app_name                  = var.app_name
+#   vpc_id                    = module.vpc.vpc_id
+#   vpc_cidr_block            = var.vpc_cidr_block
+#   public_subnet_id_a        = module.vpc.public_subnet_id_a
+#   public_subnet_id_b        = module.vpc.public_subnet_id_b
+#   web_server_port           = var.web_server_port
+#   web_server_name_container = var.web_server_name_container
+# }
 
 module "ecs" {
   source   = "./ecs"
@@ -81,32 +81,32 @@ module "gameserver" {
   game_server_name_container = var.game_server_name_container
 }
 
-module "webserver" {
-  source     = "./webserver"
-  depends_on = [module.gameserver]
-  app_name   = var.app_name
-  cluster_id = module.ecs.cluster_id
+# module "webserver" {
+#   source     = "./webserver"
+#   depends_on = [module.gameserver]
+#   app_name   = var.app_name
+#   cluster_id = module.ecs.cluster_id
 
-  vpc_id                  = module.vpc.vpc_id
-  region                  = var.region
-  task_execution_role_arn = module.iam.task_execution_role_arn
-  task_role_arn           = module.iam.task_role_arn
+#   vpc_id                  = module.vpc.vpc_id
+#   region                  = var.region
+#   task_execution_role_arn = module.iam.task_execution_role_arn
+#   task_role_arn           = module.iam.task_role_arn
 
-  vpc_cidr_block              = var.vpc_cidr_block
-  private_subnet_id_a         = module.vpc.private_subnet_id_a
-  private_subnet_id_b         = module.vpc.private_subnet_id_b
-  target_group_web_server_arn = module.alb_web_server.target_group_web_server_arn
+#   vpc_cidr_block              = var.vpc_cidr_block
+#   private_subnet_id_a         = module.vpc.private_subnet_id_a
+#   private_subnet_id_b         = module.vpc.private_subnet_id_b
+#   target_group_web_server_arn = module.alb_web_server.target_group_web_server_arn
 
-  content_server_address = var.content_server_address
+#   content_server_address = var.content_server_address
 
-  web_server_cpu            = var.web_server_cpu
-  web_server_ram            = var.web_server_ram
-  web_server_port           = var.web_server_port
-  web_server_image          = var.web_server_image
-  web_server_name_container = var.web_server_name_container
-  gameserver_address        = module.alb_gameserver.alb_game_server_DNS
-  game_server_port          = var.game_server_port
-}
+#   web_server_cpu            = var.web_server_cpu
+#   web_server_ram            = var.web_server_ram
+#   web_server_port           = var.web_server_port
+#   web_server_image          = var.web_server_image
+#   web_server_name_container = var.web_server_name_container
+#   gameserver_address        = module.alb_gameserver.alb_game_server_DNS
+#   game_server_port          = var.game_server_port
+# }
 
 
 module "logs_game_server" {
@@ -115,10 +115,10 @@ module "logs_game_server" {
 }
 
 
-module "logs_web_server" {
-  source         = "./logs"
-  name_container = var.web_server_name_container
-}
+# module "logs_web_server" {
+#   source         = "./logs"
+#   name_container = var.web_server_name_container
+# }
 
 # Lambda functions
 module "lambda_gameserver" {
