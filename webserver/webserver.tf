@@ -70,6 +70,10 @@ variable "web_server_image" {
   type = string
 }
 
+variable "game_server_port" {
+  type = number
+}
+
 data "template_file" "webServerTemplate" {
   template = file("./ecs/taskdefinition.json.tpl")
   vars = {
@@ -126,15 +130,15 @@ resource "aws_security_group" "sg_web_server_ecs" {
   }
 
   ingress {
-    from_port   = 27960
-    to_port     = 27960
+    from_port   = var.game_server_port
+    to_port     = var.game_server_port
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
-    from_port   = 27960
-    to_port     = 27960
+    from_port   = var.game_server_port
+    to_port     = var.game_server_port
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }

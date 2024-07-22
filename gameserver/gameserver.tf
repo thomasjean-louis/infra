@@ -122,15 +122,15 @@ resource "aws_security_group" "sg_game_server_ecs" {
   }
 
   ingress {
-    from_port   = 27960
-    to_port     = 27960
+    from_port   = var.game_server_port
+    to_port     = var.game_server_port
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
-    from_port   = 27960
-    to_port     = 27960
+    from_port   = var.game_server_port
+    to_port     = var.game_server_port
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
