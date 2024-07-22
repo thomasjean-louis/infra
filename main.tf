@@ -105,7 +105,7 @@ module "webserver" {
   web_server_image          = var.web_server_image
   web_server_name_container = var.web_server_name_container
   gameserver_address        = module.alb_gameserver.alb_game_server_DNS
-
+  game_server_port          = game_server_port
 }
 
 
