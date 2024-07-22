@@ -103,6 +103,9 @@ resource "aws_alb_listener" "game_server_alb_listener" {
   load_balancer_arn = aws_lb.alb_game_server.arn
   port              = 443
   protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
+  certificate_arn   = "arn:aws:acm:us-east-1:992382381231:certificate/461e6e8d-a3cd-4fdd-a673-5a89cb7cff6a"
+
 
   default_action {
     target_group_arn = aws_alb_target_group.gameserver_target_group.arn
