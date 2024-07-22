@@ -78,7 +78,7 @@ resource "aws_security_group" "sg_alb" {
 
 
 resource "aws_lb" "alb_game_server" {
-  name               = "${app_name}-alb-${var.game_server_name_container}"
+  name               = "${var.app_name}-alb-${var.game_server_name_container}"
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.sg_alb.id]
