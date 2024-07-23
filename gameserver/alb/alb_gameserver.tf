@@ -104,7 +104,7 @@ resource "aws_alb_listener" "game_server_alb_listener" {
   port              = 443
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-2016-08"
-  certificate_arn   = "arn:aws:acm:us-east-1:992382381231:certificate/461e6e8d-a3cd-4fdd-a673-5a89cb7cff6a"
+  certificate_arn   = "arn:aws:acm:us-east-1:533267334585:certificate/b7e18917-c1c6-4862-b103-5b8b0df571d4"
 
 
   default_action {
