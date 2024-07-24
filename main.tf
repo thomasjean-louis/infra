@@ -39,6 +39,7 @@ module "alb_gameserver" {
   public_subnet_id_b         = module.vpc.public_subnet_id_b
   game_server_port           = var.game_server_port
   game_server_name_container = var.game_server_name_container
+  hosted_zone_name           = var.hosted_zone_name
 
 }
 
@@ -74,11 +75,18 @@ module "gameserver" {
 
   content_server_address = var.content_server_address
 
+  proxy_server_cpu            = var.proxy_server_cpu
+  proxy_server_ram            = var.proxy_server_ram
+  proxy_server_port           = var.proxy_server_port
+  proxy_server_image          = var.proxy_server_image
+  proxy_server_name_container = var.proxy_server_name_container
+
   game_server_cpu            = var.game_server_cpu
   game_server_ram            = var.game_server_ram
   game_server_port           = var.game_server_port
   game_server_image          = var.game_server_image
   game_server_name_container = var.game_server_name_container
+
 }
 
 # module "webserver" {

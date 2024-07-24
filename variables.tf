@@ -37,12 +37,41 @@ variable "app_name" {
   sensitive = true
 }
 
+###### R53
+variable "hosted_zone_name" {
+  type      = string
+  sensitive = true
+}
+
 ###### ECS
 
 ## Global
 variable "content_server_address" {
   type      = string
   sensitive = true
+}
+
+## Proxy
+variable "proxy_server_name_container" {
+  type      = string
+  sensitive = true
+}
+
+
+variable "proxy_server_port" {
+  default = 27961
+}
+
+variable "proxy_server_cpu" {
+  default = 1024
+}
+
+variable "proxy_server_ram" {
+  default = 2048
+}
+
+variable "proxy_server_image" {
+  default = ""
 }
 
 ## GameServer
@@ -60,7 +89,7 @@ variable "game_server_ram" {
 }
 
 variable "game_server_port" {
-  default = 27961
+  default = 27960
 }
 
 variable "game_server_image" {

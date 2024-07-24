@@ -45,6 +45,26 @@ variable "target_group_game_server_arn" {
   type = string
 }
 
+variable "proxy_server_name_container" {
+  type = string
+}
+
+variable "proxy_server_cpu" {
+  type = number
+}
+
+variable "proxy_server_ram" {
+  type = number
+}
+
+variable "proxy_server_port" {
+  type = number
+}
+
+variable "proxy_server_image" {
+  type = string
+}
+
 variable "game_server_name_container" {
   type = string
 }
@@ -65,30 +85,96 @@ variable "game_server_image" {
   type = string
 }
 
-data "template_file" "gameServerTemplate" {
-  template = file("./ecs/taskdefinition.json.tpl")
-  vars = {
-    name                  = var.game_server_name_container
-    port                  = var.game_server_port
-    cpu                   = var.game_server_cpu
-    ram                   = var.game_server_ram
-    region                = var.region
-    image                 = var.game_server_image
-    contentserver_address = var.content_server_address
-    gameserver_address    = "localhost"
-  }
+# data "template_file" "gameServerTemplate" {
+#   template = file("./ecs/taskdefinition.json.tpl")
+#   vars = {
+#     name                  = var.game_server_name_container
+#     port                  = var.game_server_port
+#     cpu                   = var.game_server_cpu
+#     ram                   = var.game_server_ram
+#     region                = var.region
+#     image                 = var.game_server_image
+#     contentserver_address = var.content_server_address
+#     gameserver_address    = "localhost"
+#   }
+# }
+
+module "proxy" {
+  source = "mongodb/ecs-task-definition/aws"
+
+  name = var.proxy_server_name_container
+
+  links = [
+    "${var.game_server_name_container}",
+  ]
+
+  image     = var.proxy_server_image
+  essential = true
+
+  portMappings = [
+    {
+      containerPort = var.proxy_server_port
+      hostPort      = var.proxy_server_port
+    },
+  ]
+
+  memory = var.proxy_server_ram
+  cpu    = var.proxy_server_cpu
+
+  register_task_definition = false
 }
 
+module "gameserver" {
+  source = "mongodb/ecs-task-definition/aws"
 
-resource "aws_ecs_task_definition" "game_server_task_definition" {
+  name = var.game_server_name_container
+
+  links = [
+    "${var.game_server_name_container}",
+  ]
+
+  image     = var.game_server_image
+  essential = true
+
+  portMappings = [
+    {
+      containerPort = var.game_server_port
+      hostPort      = var.game_server_port
+    },
+  ]
+
+  memory = var.game_server_ram
+  cpu    = var.game_server_cpu
+
+  register_task_definition = false
+}
+
+module "merged" {
+  source = "mongodb/ecs-task-definition/aws//modules/merge"
+
+  container_definitions = [
+    "${module.proxy.container_definitions}",
+    "${module.mysgameserverql.container_definitions}",
+  ]
+}
+
+resource "aws_ecs_task_definition" "hellogame_server_task_definition_world" {
   family                   = "${var.app_name}-${var.game_server_name_container}"
   execution_role_arn       = var.task_execution_role_arn
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
-  cpu                      = var.game_server_cpu
-  memory                   = var.game_server_ram
-  container_definitions    = data.template_file.gameServerTemplate.rendered
+  container_definitions    = module.merged.container_definitions
 }
+
+# resource "aws_ecs_task_definition" "game_server_task_definition" {
+#   family                   = "${var.app_name}-${var.game_server_name_container}"
+#   execution_role_arn       = var.task_execution_role_arn
+#   network_mode             = "awsvpc"
+#   requires_compatibilities = ["FARGATE"]
+#   cpu                      = var.game_server_cpu
+#   memory                   = var.game_server_ram
+#   container_definitions    = data.template_file.gameServerTemplate.rendered
+# }
 
 resource "aws_security_group" "sg_game_server_ecs" {
   name   = "sg_${var.game_server_name_container}_ecs"

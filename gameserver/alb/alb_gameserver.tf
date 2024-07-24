@@ -27,21 +27,64 @@ variable "game_server_name_container" {
   type = string
 }
 
+variable "hosted_zone_name" {
+  type = string
+}
+
+
+## ALB ACM
+
+resource "aws_acm_certificate" "alb_certificate" {
+  domain_name       = "test${var.hosted_zone_name}"
+  validation_method = "DNS"
+
+}
+
+data "aws_route53_zone" "project_route_zone" {
+  name         = var.hosted_zone_name
+  private_zone = false
+}
+
+resource "aws_route53_record" "dns_record" {
+  for_each = {
+    for dvo in aws_acm_certificate.alb_certificate.domain_validation_options : dvo.domain_name => {
+      name   = dvo.resource_record_name
+      record = dvo.resource_record_value
+      type   = dvo.resource_record_type
+    }
+  }
+
+  allow_overwrite = true
+  name            = each.value.name
+  records         = [each.value.record]
+  ttl             = 60
+  type            = each.value.type
+  zone_id         = data.aws_route53_zone.project_route_zone.zone_id
+}
+
+resource "aws_acm_certificate_validation" "alb_certificate_validation" {
+  certificate_arn         = aws_acm_certificate.example.arn
+  validation_record_fqdns = [for record in aws_route53_record.example : record.fqdn]
+}
+
+
+## ALB
+
 resource "aws_security_group" "sg_alb" {
   name        = "sg_alb_${var.game_server_name_container}"
   description = "ALB security group"
   vpc_id      = var.vpc_id
 
   ingress {
-    from_port   = 80
-    to_port     = 80
+    from_port   = 29761
+    to_port     = 29761
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
-    from_port   = 80
-    to_port     = 80
+    from_port   = 29761
+    to_port     = 29761
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -86,25 +129,70 @@ resource "aws_lb" "alb_game_server" {
 
 }
 
-resource "aws_alb_target_group" "gameserver_target_group" {
+## Alias
+resource "aws_route53_record" "alb_alias" {
+  zone_id = data.aws_route53_zone.project_route_zone.zone_id
+  name    = "test${var.hosted_zone_name}"
+  type    = "A"
+
+  alias {
+    name                   = aws_lb.alb_game_server.dns_name
+    zone_id                = aws_lb.alb_game_server.zone_id
+    evaluate_target_health = true
+  }
+}
+
+
+## Target groups
+resource "aws_alb_target_group" "gameserver_target_group_ws" {
   name        = "target-group-${var.game_server_name_container}"
-  port        = var.game_server_port
+  port        = 29761
   protocol    = "HTTPS"
   vpc_id      = var.vpc_id
   target_type = "ip"
-
 }
 
-output "target_group_game_server_arn" {
-  value = aws_alb_target_group.gameserver_target_group.arn
+resource "aws_alb_target_group" "gameserver_target_group_https" {
+  name        = "target-group-${var.game_server_name_container}"
+  port        = 29761
+  protocol    = "HTTPS"
+  vpc_id      = var.vpc_id
+  target_type = "ip"
 }
 
+output "target_group_game_server_ws_arn" {
+  value = aws_alb_target_group.gameserver_target_group_ws.arn
+}
+
+output "target_group_game_server_https_arn" {
+  value = aws_alb_target_group.gameserver_target_group_https.arn
+}
+
+## 443 listener
 resource "aws_alb_listener" "game_server_alb_listener" {
+  depends_on        = [aws_acm_certificate_validation.alb_certificate_validation]
   load_balancer_arn = aws_lb.alb_game_server.arn
   port              = 443
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-2016-08"
-  certificate_arn   = "arn:aws:acm:us-east-1:533267334585:certificate/b7e18917-c1c6-4862-b103-5b8b0df571d4"
+  certificate_arn   = var.aws_acm_certificate_validation.alb_certificate_validation
+
+
+  default_action {
+    target_group_arn = aws_alb_target_group.gameserver_target_group.arn
+    type             = "forward"
+  }
+
+}
+
+## 27961 listener
+resource "aws_alb_listener" "game_server_alb_listener" {
+  depends_on        = [aws_acm_certificate_validation.alb_certificate_validation]
+  load_balancer_arn = aws_lb.alb_game_server.arn
+  port              = 29761
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
+  certificate_arn   = var.aws_acm_certificate_validation.alb_certificate_validation
 
 
   default_action {

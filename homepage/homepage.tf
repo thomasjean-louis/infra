@@ -72,6 +72,7 @@ resource "aws_amplify_app" "homepage_app" {
             - yarn install
         build:
           commands:
+            - LOAD_BALANCER_HTTPS_URL="${aws_iam_role.amplify_service_role.arn}"
             - yarn run build
       artifacts:
         baseDirectory: build
@@ -87,6 +88,7 @@ resource "aws_amplify_app" "homepage_app" {
     status = "404"
     target = "/index.html"
   }
+
 
 }
 
