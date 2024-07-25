@@ -22,14 +22,14 @@ def lambda_handler(event, context):
     },
     loadBalancers=[
         {
-            'containerName': os.environ["PROXY_SERVER_SERVICE_TARGET_GROUP_ARN"],
+            'containerName': os.environ["PROXY_SERVER_NAME_CONTAINER"],
             'containerPort': 27961,
-            'targetGroupArn': os.environ["GAME_SERVER_SERVICE_TARGET_GROUP_ARN"],
+            'targetGroupArn': os.environ["GAME_SERVER_SERVICE_TARGET_GROUP_WS_ARN"],
         },
         {
-            'containerName': os.environ["PROXY_SERVER_SERVICE_TARGET_GROUP_ARN"],
+            'containerName': os.environ["PROXY_SERVER_NAME_CONTAINER"],
             'containerPort': 443,
-            'targetGroupArn': os.environ["GAME_SERVER_SERVICE_TARGET_GROUP_ARN"],
+            'targetGroupArn': os.environ["GAME_SERVER_SERVICE_TARGET_GROUP_HTTPS_ARN"],
         },
     ],
     serviceName='gameserver-service',

@@ -30,7 +30,11 @@ variable "security_group_game_server_task" {
   type = string
 }
 
-variable "target_group_game_server_task" {
+variable "target_group_game_server_task_ws" {
+  type = string
+}
+
+variable "target_group_game_server_task_https" {
   type = string
 }
 
@@ -128,13 +132,14 @@ resource "aws_lambda_function" "lambda_game_server" {
 
   environment {
     variables = {
-      GAME_SERVER_SERVICE_CLUSTER_ID       = var.cluster_id,
-      GAME_SERVER_SERVICE_SUBNET_ID_A      = var.private_subnet_id_a,
-      GAME_SERVER_SERVICE_SUBNET_ID_B      = var.private_subnet_id_b,
-      GAME_SERVER_SERVICE_SECURITY_GROUP   = var.security_group_game_server_task,
-      GAME_SERVER_SERVICE_TARGET_GROUP_ARN = var.target_group_game_server_task,
-      GAME_SERVER_SERVICE_TASK_DEFINITION  = var.task_definition_game_server,
-      PROXY_SERVER_NAME_CONTAINER          = var.proxy_server_name_container
+      GAME_SERVER_SERVICE_CLUSTER_ID             = var.cluster_id,
+      GAME_SERVER_SERVICE_SUBNET_ID_A            = var.private_subnet_id_a,
+      GAME_SERVER_SERVICE_SUBNET_ID_B            = var.private_subnet_id_b,
+      GAME_SERVER_SERVICE_SECURITY_GROUP         = var.security_group_game_server_task,
+      GAME_SERVER_SERVICE_TARGET_GROUP_WS_ARN    = var.target_group_game_server_task_ws,
+      GAME_SERVER_SERVICE_TARGET_GROUP_HTTPS_ARN = var.target_group_game_server_task_https,
+      GAME_SERVER_SERVICE_TASK_DEFINITION        = var.task_definition_game_server,
+      PROXY_SERVER_NAME_CONTAINER                = var.proxy_server_name_container
     }
   }
 }
