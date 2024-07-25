@@ -179,7 +179,7 @@ resource "aws_alb_listener" "game_server_alb_listener_443" {
 
 
   default_action {
-    target_group_arn = aws_alb_target_group.gameserver_target_group.arn
+    target_group_arn = aws_alb_target_group.gameserver_target_group_https.arn
     type             = "forward"
   }
 
@@ -196,7 +196,7 @@ resource "aws_alb_listener" "game_server_alb_listener_27961" {
 
 
   default_action {
-    target_group_arn = aws_alb_target_group.gameserver_target_group.arn
+    target_group_arn = aws_alb_target_group.gameserver_target_group_ws.arn
     type             = "forward"
   }
 
