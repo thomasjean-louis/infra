@@ -169,7 +169,7 @@ output "target_group_game_server_https_arn" {
 }
 
 ## 443 listener
-resource "aws_alb_listener" "game_server_alb_listener" {
+resource "aws_alb_listener" "game_server_alb_listener_443" {
   depends_on        = [aws_acm_certificate_validation.alb_certificate_validation]
   load_balancer_arn = aws_lb.alb_game_server.arn
   port              = 443
@@ -186,7 +186,7 @@ resource "aws_alb_listener" "game_server_alb_listener" {
 }
 
 ## 27961 listener
-resource "aws_alb_listener" "game_server_alb_listener" {
+resource "aws_alb_listener" "game_server_alb_listener_27961" {
   depends_on        = [aws_acm_certificate_validation.alb_certificate_validation]
   load_balancer_arn = aws_lb.alb_game_server.arn
   port              = 29761
