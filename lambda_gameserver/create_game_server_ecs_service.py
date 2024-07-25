@@ -32,7 +32,8 @@ def lambda_handler(event, context):
             'targetGroupArn': os.environ["GAME_SERVER_SERVICE_TARGET_GROUP_HTTPS_ARN"],
         },
     ],
-    serviceName='gameserver-service',
+    serviceName='gameserver-service',    
+    healthCheckGracePeriodSeconds =  300
     taskDefinition=os.environ["GAME_SERVER_SERVICE_TASK_DEFINITION"],
 )
 
