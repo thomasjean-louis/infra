@@ -202,8 +202,8 @@ resource "aws_alb_listener" "game_server_alb_listener_27961" {
 
 }
 
-output "alb_game_server_DNS" {
-  value = aws_lb.alb_game_server.dns_name
+output "load_balancer_https_url" {
+  value = "test.${var.hosted_zone_name}"
 }
 
 

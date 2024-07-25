@@ -24,6 +24,10 @@ variable "homepage_github_token" {
   type = string
 }
 
+variable "load_balancer_https_url" {
+  type = string
+}
+
 # iam Amplify role
 resource "aws_iam_role" "amplify_service_role" {
   name = "amplify_service_role"
@@ -72,7 +76,7 @@ resource "aws_amplify_app" "homepage_app" {
             - yarn install
         build:
           commands:
-            - LOAD_BALANCER_HTTPS_URL="${aws_iam_role.amplify_service_role.arn}"
+            - LOAD_BALANCER_HTTPS_URL="${var.load_balancer_https_url}"
             - yarn run build
       artifacts:
         baseDirectory: build

@@ -157,12 +157,12 @@ module "lambda_gameserver" {
 
 # Homepage
 module "homepage" {
-  source                = "./homepage"
-  region                = var.region
-  amplify_app_name      = var.amplify_app_name
-  homepage_repository   = var.homepage_repository
-  homepage_branch       = var.homepage_branch
-  homepage_domain_name  = var.homepage_domain_name
-  homepage_github_token = var.homepage_github_token
-
+  source                  = "./homepage"
+  region                  = var.region
+  amplify_app_name        = var.amplify_app_name
+  homepage_repository     = var.homepage_repository
+  homepage_branch         = var.homepage_branch
+  homepage_domain_name    = var.homepage_domain_name
+  homepage_github_token   = var.homepage_github_token
+  load_balancer_https_url = module.alb_gameserver.load_balancer_https_url
 }
