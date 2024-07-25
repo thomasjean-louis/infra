@@ -128,7 +128,7 @@ module "gameserver" {
   name   = var.game_server_name_container
 
   links = [
-    "${var.game_server_name_container}",
+    "${var.proxy_server_name_container}",
   ]
 
   image     = var.game_server_image
