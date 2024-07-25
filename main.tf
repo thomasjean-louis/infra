@@ -68,10 +68,9 @@ module "gameserver" {
   task_execution_role_arn = module.iam.task_execution_role_arn
   task_role_arn           = module.iam.task_role_arn
 
-  vpc_cidr_block               = var.vpc_cidr_block
-  private_subnet_id_a          = module.vpc.private_subnet_id_a
-  private_subnet_id_b          = module.vpc.private_subnet_id_b
-  target_group_game_server_arn = module.alb_gameserver.target_group_game_server_arn
+  vpc_cidr_block      = var.vpc_cidr_block
+  private_subnet_id_a = module.vpc.private_subnet_id_a
+  private_subnet_id_b = module.vpc.private_subnet_id_b
 
   content_server_address = var.content_server_address
 

@@ -41,10 +41,6 @@ variable "private_subnet_id_b" {
 
 ## Container
 
-variable "target_group_game_server_arn" {
-  type = string
-}
-
 variable "proxy_server_name_container" {
   type = string
 }
