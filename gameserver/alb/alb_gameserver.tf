@@ -35,7 +35,7 @@ variable "hosted_zone_name" {
 ## ALB ACM
 
 resource "aws_acm_certificate" "alb_certificate" {
-  domain_name       = "test${var.hosted_zone_name}"
+  domain_name       = "test.${var.hosted_zone_name}"
   validation_method = "DNS"
 
 }
@@ -132,7 +132,7 @@ resource "aws_lb" "alb_game_server" {
 ## Alias
 resource "aws_route53_record" "alb_alias" {
   zone_id = data.aws_route53_zone.project_route_zone.zone_id
-  name    = "test${var.hosted_zone_name}"
+  name    = "test.${var.hosted_zone_name}"
   type    = "A"
 
   alias {
