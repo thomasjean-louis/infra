@@ -111,7 +111,7 @@ module "proxy" {
   logConfiguration = {
     logDriver : "awslogs",
     options : {
-      "awslogs-group" : "/ecs/var.proxy_server_name_container",
+      "awslogs-group" : "/ecs/${var.proxy_server_name_container}",
       "awslogs-region" : var.region,
       "awslogs-stream-prefix" : "ecs"
     }
@@ -178,7 +178,7 @@ module "gameserver" {
   logConfiguration = {
     logDriver : "awslogs",
     options : {
-      "awslogs-group" : "/ecs/var.game_server_name_container",
+      "awslogs-group" : "/ecs/${var.game_server_name_container}",
       "awslogs-region" : var.region,
       "awslogs-stream-prefix" : "ecs"
     }

@@ -59,6 +59,18 @@ module "ecs" {
   app_name = var.app_name
 }
 
+
+module "logs_game_server" {
+  source         = "./logs"
+  name_container = var.game_server_name_container
+}
+
+module "logs_proxy_server" {
+  source         = "./logs"
+  name_container = var.proxy_server_name_container
+}
+
+
 module "gameserver" {
   source                  = "./gameserver"
   cluster_id              = module.ecs.cluster_id
@@ -116,10 +128,6 @@ module "gameserver" {
 # }
 
 
-module "logs_game_server" {
-  source         = "./logs"
-  name_container = var.game_server_name_container
-}
 
 
 # module "logs_web_server" {
