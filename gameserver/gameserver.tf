@@ -102,10 +102,6 @@ module "proxy" {
 
   name = var.proxy_server_name_container
 
-  links = [
-    "${var.game_server_name_container}",
-  ]
-
   image     = var.proxy_server_image
   essential = true
 
