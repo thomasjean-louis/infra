@@ -175,7 +175,7 @@ resource "aws_alb_listener" "game_server_alb_listener_443" {
   port              = 443
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-2016-08"
-  certificate_arn   = var.aws_acm_certificate_validation.alb_certificate_validation
+  certificate_arn   = aws_acm_certificate_validation.alb_certificate_validation
 
 
   default_action {
@@ -192,7 +192,7 @@ resource "aws_alb_listener" "game_server_alb_listener_27961" {
   port              = 29761
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-2016-08"
-  certificate_arn   = var.aws_acm_certificate_validation.alb_certificate_validation
+  certificate_arn   = aws_acm_certificate_validation.alb_certificate_validation
 
 
   default_action {
