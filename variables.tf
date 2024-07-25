@@ -81,11 +81,11 @@ variable "game_server_name_container" {
 }
 
 variable "game_server_cpu" {
-  default = 1024
+  default = 2048
 }
 
 variable "game_server_ram" {
-  default = 2048
+  default = 4096
 }
 
 variable "game_server_port" {
