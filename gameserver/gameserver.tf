@@ -127,10 +127,6 @@ module "gameserver" {
   family = "${var.app_name}-${var.game_server_name_container}"
   name   = var.game_server_name_container
 
-  links = [
-    "${var.proxy_server_name_container}",
-  ]
-
   image     = var.game_server_image
   essential = true
 
