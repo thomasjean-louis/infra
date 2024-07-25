@@ -110,6 +110,10 @@ module "proxy" {
       containerPort = var.proxy_server_port
       hostPort      = var.proxy_server_port
     },
+    {
+      containerPort = 443
+      hostPort      = 443
+    },
   ]
 
   # memory = var.proxy_server_ram
