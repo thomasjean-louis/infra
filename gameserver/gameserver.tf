@@ -128,7 +128,7 @@ module "proxy" {
     },
     {
       "name" : "GAME_SERVER",
-      "value" : localhost
+      "value" : "localhost"
     }
   ]
 
@@ -171,7 +171,7 @@ module "gameserver" {
     },
     {
       "name" : "GAME_SERVER",
-      "value" : localhost
+      "value" : "localhost"
     }
   ]
 
