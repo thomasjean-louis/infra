@@ -156,11 +156,11 @@ module "merged" {
 
   container_definitions = [
     "${module.proxy.container_definitions}",
-    "${module.mysgameserverql.container_definitions}",
+    "${module.gameserver.container_definitions}",
   ]
 }
 
-resource "aws_ecs_task_definition" "hellogame_server_task_definition_world" {
+resource "aws_ecs_task_definition" "game_server_task_definition" {
   family                   = "${var.app_name}-${var.game_server_name_container}"
   execution_role_arn       = var.task_execution_role_arn
   network_mode             = "awsvpc"
