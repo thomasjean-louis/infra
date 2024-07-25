@@ -271,6 +271,20 @@ resource "aws_security_group" "sg_game_server_ecs" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  ingress {
+    from_port   = var.proxy_server_port
+    to_port     = var.proxy_server_port
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = var.proxy_server_port
+    to_port     = var.proxy_server_port
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
 }
 
 output "security_group_game_server_task" {
