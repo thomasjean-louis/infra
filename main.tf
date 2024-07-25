@@ -139,8 +139,8 @@ module "lambda_gameserver" {
   private_subnet_id_a                 = module.vpc.private_subnet_id_a
   private_subnet_id_b                 = module.vpc.private_subnet_id_b
   security_group_game_server_task     = module.gameserver.security_group_game_server_task
-  target_group_game_server_task_ws    = module.alb_gameserver.target_group_game_server_task_ws
-  target_group_game_server_task_https = module.alb_gameserver.target_group_game_server_task_https
+  target_group_game_server_task_ws    = module.alb_gameserver.target_group_game_server_ws_arn
+  target_group_game_server_task_https = module.alb_gameserver.target_group_game_server_https_arn
   task_definition_game_server         = module.gameserver.task_definition_game_server
   role_task_execution_name            = module.iam.task_execution_role_name
   proxy_server_name_container         = var.proxy_server_name_container
