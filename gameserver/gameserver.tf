@@ -108,6 +108,30 @@ module "proxy" {
   image     = var.proxy_server_image
   essential = true
 
+  logConfiguration = {
+    logDriver : "awslogs",
+    options : {
+      "awslogs-group" : "/ecs/var.proxy_server_name_container",
+      "awslogs-region" : var.region,
+      "awslogs-stream-prefix" : "ecs"
+    }
+  }
+
+  environment = [
+    {
+      "name" : "HTTP_PORT",
+      "value" : "80"
+    },
+    {
+      "name" : "CONTENT_SERVER",
+      "value" : var.content_server_address
+    },
+    {
+      "name" : "GAME_SERVER",
+      "value" : localhost
+    }
+  ]
+
   portMappings = [
     {
       containerPort = var.proxy_server_port
@@ -135,6 +159,30 @@ module "gameserver" {
 
   memory = 2048
   cpu    = 1024
+
+  environment = [
+    {
+      "name" : "HTTP_PORT",
+      "value" : "80"
+    },
+    {
+      "name" : "CONTENT_SERVER",
+      "value" : var.content_server_address
+    },
+    {
+      "name" : "GAME_SERVER",
+      "value" : localhost
+    }
+  ]
+
+  logConfiguration = {
+    logDriver : "awslogs",
+    options : {
+      "awslogs-group" : "/ecs/var.game_server_name_container",
+      "awslogs-region" : var.region,
+      "awslogs-stream-prefix" : "ecs"
+    }
+  }
 
   portMappings = [
     {
