@@ -102,6 +102,9 @@ module "proxy" {
 
   name = var.proxy_server_name_container
 
+  memory = 1024
+  cpu    = 512
+
   image     = var.proxy_server_image
   essential = true
 
