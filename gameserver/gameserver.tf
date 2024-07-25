@@ -112,8 +112,8 @@ module "proxy" {
     },
   ]
 
-  memory = var.proxy_server_ram
-  cpu    = var.proxy_server_cpu
+  # memory = var.proxy_server_ram
+  # cpu    = var.proxy_server_cpu
 
   register_task_definition = false
 }
@@ -133,8 +133,8 @@ module "gameserver" {
     },
   ]
 
-  memory = var.game_server_ram
-  cpu    = var.game_server_cpu
+  # memory = var.game_server_ram
+  # cpu    = var.game_server_cpu
 
   register_task_definition = false
 }
@@ -154,6 +154,8 @@ resource "aws_ecs_task_definition" "game_server_task_definition" {
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   container_definitions    = module.merged.container_definitions
+  memory                   = var.game_server_ram
+  cpu                      = var.game_server_cpu
 }
 
 # resource "aws_ecs_task_definition" "game_server_task_definition" {
