@@ -133,8 +133,8 @@ module "gameserver" {
   image     = var.game_server_image
   essential = true
 
-  memory = var.proxy_server_ram
-  cpu    = var.proxy_server_ram
+  memory = 2048
+  cpu    = 1024
 
   portMappings = [
     {
@@ -164,8 +164,8 @@ resource "aws_ecs_task_definition" "game_server_task_definition" {
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   container_definitions    = module.merged.container_definitions
-  memory                   = var.game_server_ram
-  cpu                      = var.game_server_cpu
+  memory                   = 4096
+  cpu                      = 2048
 }
 
 # resource "aws_ecs_task_definition" "game_server_task_definition" {
