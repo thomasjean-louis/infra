@@ -130,6 +130,9 @@ module "gameserver" {
   image     = var.game_server_image
   essential = true
 
+  memory = var.proxy_server_ram
+  cpu    = var.proxy_server_ram
+
   portMappings = [
     {
       containerPort = var.game_server_port
