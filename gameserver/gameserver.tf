@@ -101,6 +101,8 @@ variable "game_server_image" {
 
 module "proxy" {
   source = "mongodb/ecs-task-definition/aws"
+  family = "${var.app_name}-${var.proxy_server_name_container}"
+
 
   name = var.proxy_server_name_container
 
@@ -126,8 +128,8 @@ module "proxy" {
 
 module "gameserver" {
   source = "mongodb/ecs-task-definition/aws"
-
-  name = var.game_server_name_container
+  family = "${var.app_name}-${var.game_server_name_container}"
+  name   = var.game_server_name_container
 
   links = [
     "${var.game_server_name_container}",
