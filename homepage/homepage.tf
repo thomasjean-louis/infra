@@ -113,12 +113,35 @@ resource "aws_amplify_app" "homepage_app" {
 
 resource "aws_amplify_branch" "homepage_branch" {
   app_id            = aws_amplify_app.homepage_app.id
-  branch_name       = "main"
+  branch_name       = var.homepage_branch
   enable_auto_build = true
 
   stage = "PRODUCTION"
 
 }
+
+resource "aws_amplify_webhook" "build_branch" {
+  app_id      = aws_amplify_app.homepage_app.id
+  branch_name = var.amplify_app_name
+  description = "trigger-amplify-build"
+}
+
+# output "amplify-webhook-url" {
+#   value = aws_amplify_webhook.build_branch.url
+# }
+
+# Build Amplify website
+resource "null_resource" "amplify-webhook-url" {
+  depends_on = [aws_amplify_webhook.build_branch]
+  provisioner "local-exec" {
+    command = <<EOT
+        curl -X POST \
+             -H "Content-Type:application/json" \
+             -d {} "${aws_amplify_webhook.build_branch.url}"
+EOT
+  }
+}
+
 
 # resource "aws_amplify_domain_association" "domain_association" {
 #   app_id                = aws_amplify_app.homepage_app.id
