@@ -73,6 +73,8 @@ resource "aws_amplify_app" "homepage_app" {
 
   enable_auto_branch_creation = true
 
+  auto_branch_creation_patterns = ["main", "dev"]
+
   auto_branch_creation_config {
     # Enable auto build for the created branch.
     enable_auto_build = true
