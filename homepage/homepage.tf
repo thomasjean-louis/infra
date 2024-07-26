@@ -114,14 +114,14 @@ resource "aws_amplify_app" "homepage_app" {
 
 # }
 
-resource "aws_amplify_domain_association" "domain_association" {
-  app_id                = aws_amplify_app.homepage_app.id
-  domain_name           = var.homepage_domain_name
-  wait_for_verification = false
+# resource "aws_amplify_domain_association" "domain_association" {
+#   app_id                = aws_amplify_app.homepage_app.id
+#   domain_name           = var.homepage_domain_name
+#   wait_for_verification = false
 
-  sub_domain {
-    branch_name = aws_amplify_branch.homepage_branch.branch_name
-    prefix      = var.homepage_branch
-  }
+#   sub_domain {
+#     branch_name = aws_amplify_branch.homepage_branch.branch_name
+#     prefix      = var.homepage_branch
+#   }
 
-}
+# }
