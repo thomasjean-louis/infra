@@ -106,13 +106,13 @@ resource "aws_amplify_app" "homepage_app" {
 
 }
 
-# resource "aws_amplify_branch" "homepage_branch" {
-#   app_id            = aws_amplify_app.homepage_app.id
-#   branch_name       = var.homepage_branch
-#   enable_auto_build = true
-#   stage             = "PRODUCTION"
+resource "aws_amplify_branch" "homepage_branch" {
+  app_id            = aws_amplify_app.homepage_app.id
+  branch_name       = var.homepage_branch
+  enable_auto_build = true
+  stage             = "PRODUCTION"
 
-# }
+}
 
 # resource "aws_amplify_domain_association" "domain_association" {
 #   app_id                = aws_amplify_app.homepage_app.id
