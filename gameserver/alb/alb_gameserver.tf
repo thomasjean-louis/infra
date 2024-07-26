@@ -163,7 +163,7 @@ resource "aws_alb_target_group" "gameserver_target_group_ws" {
   health_check {
     path                = "/"
     port                = "traffic-port"
-    protocol            = "HTTP"
+    protocol            = "HTTPS"
     healthy_threshold   = 3
     unhealthy_threshold = 3
     matcher             = "404"
@@ -184,7 +184,7 @@ resource "aws_alb_target_group" "gameserver_target_group_https" {
   health_check {
     path                = "/"
     port                = "traffic-port"
-    protocol            = "HTTP"
+    protocol            = "HTTPS"
     healthy_threshold   = 3
     unhealthy_threshold = 3
     matcher             = "404"
