@@ -112,8 +112,9 @@ resource "aws_amplify_app" "homepage_app" {
 }
 
 resource "aws_amplify_branch" "homepage_branch" {
-  app_id      = aws_amplify_app.homepage_app.id
-  branch_name = "main"
+  app_id            = aws_amplify_app.homepage_app.id
+  branch_name       = "main"
+  enable_auto_build = true
 
   stage = "PRODUCTION"
 
