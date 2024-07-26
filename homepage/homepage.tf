@@ -71,36 +71,36 @@ resource "aws_amplify_app" "homepage_app" {
   oauth_token = var.homepage_github_token
   repository  = var.homepage_repository
 
-  enable_auto_branch_creation = true
+  # enable_auto_branch_creation = true
 
-  auto_branch_creation_patterns = ["main", "dev"]
+  # auto_branch_creation_patterns = ["main", "dev"]
 
-  auto_branch_creation_config {
-    # Enable auto build for the created branch.
-    enable_auto_build = true
-  }
+  # auto_branch_creation_config {
+  #   # Enable auto build for the created branch.
+  #   enable_auto_build = true
+  # }
 
   iam_service_role_arn = aws_iam_role.amplify_service_role.arn
-  build_spec           = <<-EOT
-    version: 0.1
-    frontend:
-      phases:
-        preBuild:
-          commands:
-            - yarn install
-        build:
-          commands:
-            - echo "VITE_LOAD_BALANCER_HTTPS_URL=${var.load_balancer_https_url}:${var.proxy_server_port}" >> .env
-            - cat .env # This is optional, just to verify the contents of .env
-            - yarn run build
-      artifacts:
-        baseDirectory: build
-        files:
-          - '**/*'
-      cache:
-        paths:
-          - node_modules/**/*
-  EOT
+  # build_spec           = <<-EOT
+  #   version: 0.1
+  #   frontend:
+  #     phases:
+  #       preBuild:
+  #         commands:
+  #           - yarn install
+  #       build:
+  #         commands:
+  #           - echo "VITE_LOAD_BALANCER_HTTPS_URL=${var.load_balancer_https_url}:${var.proxy_server_port}" >> .env
+  #           - cat .env # This is optional, just to verify the contents of .env
+  #           - yarn run build
+  #     artifacts:
+  #       baseDirectory: build
+  #       files:
+  #         - '**/*'
+  #     cache:
+  #       paths:
+  #         - node_modules/**/*
+  # EOT
 
   custom_rule {
     source = "/<*>"
