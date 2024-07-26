@@ -18,10 +18,13 @@ variable "public_subnet_id_b" {
   type = string
 }
 
+variable "proxy_server_port" {
+  type = string
+}
+
 variable "game_server_port" {
   type = number
 }
-
 
 variable "game_server_name_container" {
   type = string
@@ -30,6 +33,8 @@ variable "game_server_name_container" {
 variable "hosted_zone_name" {
   type = string
 }
+
+
 
 
 ## ALB ACM
@@ -76,15 +81,15 @@ resource "aws_security_group" "sg_alb" {
   vpc_id      = var.vpc_id
 
   ingress {
-    from_port   = 29761
-    to_port     = 29761
+    from_port   = var.proxy_server_port
+    to_port     = var.proxy_server_port
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
-    from_port   = 29761
-    to_port     = 29761
+    from_port   = var.proxy_server_port
+    to_port     = var.proxy_server_port
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -146,7 +151,7 @@ resource "aws_route53_record" "alb_alias" {
 ## Target groups
 resource "aws_alb_target_group" "gameserver_target_group_ws" {
   name        = "target-group-${var.game_server_name_container}-ws"
-  port        = 29761
+  port        = var.proxy_server_port
   protocol    = "HTTPS"
   vpc_id      = var.vpc_id
   target_type = "ip"
@@ -189,7 +194,7 @@ resource "aws_alb_listener" "game_server_alb_listener_443" {
 resource "aws_alb_listener" "game_server_alb_listener_27961" {
   depends_on        = [aws_acm_certificate_validation.alb_certificate_validation]
   load_balancer_arn = aws_lb.alb_game_server.arn
-  port              = 29761
+  port              = var.proxy_server_port
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-2016-08"
   certificate_arn   = aws_acm_certificate.alb_certificate.arn

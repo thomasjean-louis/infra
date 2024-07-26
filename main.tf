@@ -40,6 +40,7 @@ module "alb_gameserver" {
   game_server_port           = var.game_server_port
   game_server_name_container = var.game_server_name_container
   hosted_zone_name           = var.hosted_zone_name
+  proxy_server_port          = var.proxy_server_port
 
 }
 
