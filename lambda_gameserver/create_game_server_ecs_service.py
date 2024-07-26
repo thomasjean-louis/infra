@@ -28,7 +28,7 @@ def lambda_handler(event, context):
         },
         {
             'containerName': os.environ["PROXY_SERVER_NAME_CONTAINER"],
-            'containerPort': 443,
+            'containerPort': 27961,
             'targetGroupArn': os.environ["GAME_SERVER_SERVICE_TARGET_GROUP_HTTPS_ARN"],
         },
     ],

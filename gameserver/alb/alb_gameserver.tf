@@ -149,12 +149,25 @@ resource "aws_route53_record" "alb_alias" {
 
 
 ## Target groups
+
 resource "aws_alb_target_group" "gameserver_target_group_ws" {
   name        = "target-group-${var.game_server_name_container}-ws"
   port        = var.proxy_server_port
   protocol    = "HTTPS"
   vpc_id      = var.vpc_id
   target_type = "ip"
+  target_health_state {
+    enable_unhealthy_connection_termination = false
+  }
+
+  health_check {
+    path                = "/"
+    port                = "traffic-port"
+    protocol            = "HTTP"
+    healthy_threshold   = 3
+    unhealthy_threshold = 3
+    matcher             = "404"
+  }
 }
 
 resource "aws_alb_target_group" "gameserver_target_group_https" {
@@ -163,6 +176,19 @@ resource "aws_alb_target_group" "gameserver_target_group_https" {
   protocol    = "HTTPS"
   vpc_id      = var.vpc_id
   target_type = "ip"
+
+  target_health_state {
+    enable_unhealthy_connection_termination = false
+  }
+
+  health_check {
+    path                = "/"
+    port                = "traffic-port"
+    protocol            = "HTTP"
+    healthy_threshold   = 3
+    unhealthy_threshold = 3
+    matcher             = "404"
+  }
 }
 
 output "target_group_game_server_ws_arn" {
