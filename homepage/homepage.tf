@@ -76,7 +76,8 @@ resource "aws_amplify_app" "homepage_app" {
             - yarn install
         build:
           commands:
-            - VITE_LOAD_BALANCER_HTTPS_URL="${var.load_balancer_https_url}"
+            - echo "VITE_LOAD_BALANCER_HTTPS_URL=${var.load_balancer_https_url}" >> .env
+            - cat .env # This is optional, just to verify the contents of .env
             - yarn run build
       artifacts:
         baseDirectory: build
