@@ -67,18 +67,24 @@ resource "aws_iam_role_policy_attachment" "AdministratorAccess-Amplify-attach" {
 
 
 resource "aws_amplify_app" "homepage_app" {
-  name                          = var.amplify_app_name
-  oauth_token                   = var.homepage_github_token
-  repository                    = var.homepage_repository
-  enable_auto_branch_creation   = true
-  enable_branch_auto_build      = true
-  auto_branch_creation_patterns = [var.homepage_branch]
-  iam_service_role_arn          = aws_iam_role.amplify_service_role.arn
+  name        = var.amplify_app_name
+  oauth_token = var.homepage_github_token
+  repository  = var.homepage_repository
+
+  enable_auto_branch_creation = true
+
+  auto_branch_creation_patterns = [
+    "*",
+    "*/**",
+  ]
+
   auto_branch_creation_config {
     # Enable auto build for the created branch.
     enable_auto_build = true
   }
-  build_spec = <<-EOT
+
+  iam_service_role_arn = aws_iam_role.amplify_service_role.arn
+  build_spec           = <<-EOT
     version: 0.1
     frontend:
       phases:
@@ -109,10 +115,10 @@ resource "aws_amplify_app" "homepage_app" {
 }
 
 resource "aws_amplify_branch" "homepage_branch" {
-  app_id            = aws_amplify_app.homepage_app.id
-  branch_name       = var.homepage_branch
-  enable_auto_build = true
-  stage             = "PRODUCTION"
+  app_id      = aws_amplify_app.homepage_app.id
+  branch_name = "main"
+
+  stage = "PRODUCTION"
 
 }
 
