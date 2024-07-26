@@ -166,4 +166,5 @@ module "homepage" {
   homepage_domain_name    = var.homepage_domain_name
   homepage_github_token   = var.homepage_github_token
   load_balancer_https_url = module.alb_gameserver.load_balancer_https_url
+  proxy_server_port       = var.proxy_server_port
 }

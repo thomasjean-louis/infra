@@ -28,6 +28,11 @@ variable "load_balancer_https_url" {
   type = string
 }
 
+variable "proxy_server_port" {
+  type = string
+
+}
+
 # iam Amplify role
 resource "aws_iam_role" "amplify_service_role" {
   name = "amplify_service_role"
@@ -76,7 +81,7 @@ resource "aws_amplify_app" "homepage_app" {
             - yarn install
         build:
           commands:
-            - echo "VITE_LOAD_BALANCER_HTTPS_URL=${var.load_balancer_https_url}" >> .env
+            - echo "VITE_LOAD_BALANCER_HTTPS_URL=${var.load_balancer_https_url}:${var.proxy_server_port}" >> .env
             - cat .env # This is optional, just to verify the contents of .env
             - yarn run build
       artifacts:
