@@ -67,11 +67,13 @@ resource "aws_iam_role_policy_attachment" "AdministratorAccess-Amplify-attach" {
 
 
 resource "aws_amplify_app" "homepage_app" {
-  name                     = var.amplify_app_name
-  oauth_token              = var.homepage_github_token
-  repository               = var.homepage_repository
-  enable_branch_auto_build = true
-  iam_service_role_arn     = aws_iam_role.amplify_service_role.arn
+  name                          = var.amplify_app_name
+  oauth_token                   = var.homepage_github_token
+  repository                    = var.homepage_repository
+  enable_auto_branch_creation   = true
+  enable_branch_auto_build      = true
+  auto_branch_creation_patterns = [var.homepage_branch]
+  iam_service_role_arn          = aws_iam_role.amplify_service_role.arn
   auto_branch_creation_config {
     # Enable auto build for the created branch.
     enable_auto_build = true
