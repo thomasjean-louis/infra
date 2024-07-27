@@ -4,43 +4,48 @@ Resources:
     Properties:
       DomainName: !Join
         - .
-        - - !Ref random_string
-          - !Ref hosted_zone_name
+        - - !Ref RandomString
+          - !Ref HostedZoneName
       DomainValidationOptions:
         - DomainName: !Join
             - .
-            - - !Ref random_string
-              - !Ref hosted_zone_name
-          HostedZoneId: !Ref hosted_zone_id
+            - - !Ref RandomString
+              - !Ref HostedZoneName
+          HostedZoneId: !Ref HostedZoneId
       ValidationMethod: DNS
 
 Parameters:
-  vpc_id:
+  VpcId:
     Type: String
     Default: default
     Description: Project Vpc
 
-  hosted_zone_name:
+  HostedZoneName:
     Type: String
     Default: default
     Description: Hosted zone name
 
-  hosted_zone_id:
+  HostedZoneId:
     Type: String
     Default: default
     Description: Hosted zone ID
 
-  subnet_id_a:
+  SubnetIdA:
     Type: String
     Default: default
     Description: First subnet of ALB
 
-  subnet_id_b:
+  SubnetIdB:
     Type: String
     Default: default
     Description: Second subnet of ALB
 
-  security_group_alb_id:
+  SecurityGroupAlbId:
     Type: String
     Default: default
     Description: ALB security group
+
+  RandomString:
+    Type: String
+    Default: default
+    Description: Random string used to get unique resources ID if the CF template is launched several times
