@@ -36,6 +36,8 @@ Resources:
     Properties:
       Port: 443
       Protocol: HTTPS
+      TargetType: ip
+      Matcher: 404
       VpcId: !Ref VpcId
       Tags:
         - Key: Name
@@ -46,6 +48,8 @@ Resources:
     Properties:
       Port: !Ref ProxyServerPort
       Protocol: HTTPS
+      Matcher: 404
+      TargetType: ip
       VpcId: !Ref VpcId
       Tags:
         - Key: Name
