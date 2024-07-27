@@ -106,7 +106,7 @@ Resources:
         AwsvpcConfiguration:
           AssignPublicIp: DISABLED
           SecurityGroups:
-            - !Ref IdSgEcs
+            - !Ref SecurityGroupGameServerTaskId
           Subnets:
             - !Ref PrivateSubnetA
             - !Ref PrivateSubnetB
