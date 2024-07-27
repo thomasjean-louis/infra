@@ -1,5 +1,4 @@
 Resources:
-
   AlbCertificate:
     Type: "AWS::CertificateManager::Certificate"
     Properties:
@@ -16,9 +15,9 @@ Resources:
       ValidationMethod: DNS
       Tags:
         - Key: Name
-          Value: !Sub "Certificate-${RandomString}"
- 
- Alb:
+          Value: !Sub Certificate-${RandomString}
+
+  Alb:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
       Type: application
@@ -30,7 +29,7 @@ Resources:
         - !Ref SecurityGroupAlbId
       Tags:
         - Key: Name
-          Value: !Sub "Alb-${RandomString}"
+          Value: !Sub Alb-${RandomString}
 
 Parameters:
   VpcId:
