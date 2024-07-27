@@ -129,6 +129,7 @@ resource "aws_lambda_function" "lambda_game_server" {
   role             = aws_iam_role.lambda_game_server_service_role.arn
   handler          = "create_game_server_ecs_service.lambda_handler"
   runtime          = "python3.9"
+  timeout          = 20
 
   environment {
     variables = {
