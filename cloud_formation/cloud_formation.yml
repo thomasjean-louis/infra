@@ -29,37 +29,7 @@ Resources:
         - !Ref SecurityGroupAlbId
       Tags:
         - Key: Name
-          Value: !Sub Alb-${RandomString}
-
-  HttpsListener:
-    Type: AWS::ElasticLoadBalancingV2::Listener
-    DependsOn:
-      - Alb
-      - AlbCertificate
-    Properties:
-      Certificates:
-        - CertificateArn: !Ref AlbCertificate
-      DefaultActions:
-        - Type: forward
-          TargetGroupArn: !Ref HttpsTargetGroup
-      LoadBalancerArn: !Ref Alb
-      Port: 443
-      Protocol: HTTPS
-
-  WsListener:
-    Type: AWS::ElasticLoadBalancingV2::Listener
-    DependsOn:
-      - Alb
-      - AlbCertificate
-    Properties:
-      Certificates:
-        - CertificateArn: !Ref AlbCertificate
-      DefaultActions:
-        - Type: forward
-          TargetGroupArn: !Ref WsTargetGroup
-      LoadBalancerArn: !Ref Alb
-      Port: !Ref ProxyServerPort
-      Protocol: HTTPS
+          Value: !Sub Alb-${RandomString} 
 
   HttpsTargetGroup:
     Type: "AWS::ElasticLoadBalancingV2::TargetGroup"
@@ -80,6 +50,40 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub TargetGroup-WS-${RandomString}
+
+   HttpsListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    DependsOn:
+      - Alb
+      - AlbCertificate
+      - HttpsTargetGroup
+    Properties:
+      Certificates:
+        - CertificateArn: !Ref AlbCertificate
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref HttpsTargetGroup
+      LoadBalancerArn: !Ref Alb
+      Port: 443
+      Protocol: HTTPS
+
+  WsListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    DependsOn:
+      - Alb
+      - AlbCertificate
+      - WsTargetGroup
+    Properties:
+      Certificates:
+        - CertificateArn: !Ref AlbCertificate
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref WsTargetGroup
+      LoadBalancerArn: !Ref Alb
+      Port: !Ref ProxyServerPort
+      Protocol: HTTPS
+
+  
 
 Parameters:
   VpcId:
