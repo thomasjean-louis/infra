@@ -29,7 +29,7 @@ Resources:
         - !Ref SecurityGroupAlbId
       Tags:
         - Key: Name
-          Value: !Sub Alb-${RandomString} 
+          Value: !Sub Alb-${RandomString}
 
   HttpsTargetGroup:
     Type: "AWS::ElasticLoadBalancingV2::TargetGroup"
@@ -51,7 +51,7 @@ Resources:
         - Key: Name
           Value: !Sub TargetGroup-WS-${RandomString}
 
-   HttpsListener:
+  HttpsListener:
     Type: AWS::ElasticLoadBalancingV2::Listener
     DependsOn:
       - Alb
@@ -82,8 +82,6 @@ Resources:
       LoadBalancerArn: !Ref Alb
       Port: !Ref ProxyServerPort
       Protocol: HTTPS
-
-  
 
 Parameters:
   VpcId:

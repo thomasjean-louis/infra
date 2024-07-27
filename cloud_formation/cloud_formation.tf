@@ -56,6 +56,6 @@ resource "aws_cloudformation_stack" "game_server_stack" {
 
   }
 
-  template_body = file("${path.module}/cloud_formation.yml")
+  template_body = file("${path.module}/cloud_formation_game_server_stack.yml")
 
 }
