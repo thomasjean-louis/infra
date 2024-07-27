@@ -117,6 +117,7 @@ Resources:
             - !Ref PrivateSubnetA
             - !Ref PrivateSubnetB
       DesiredCount: 1
+      LaunchType: FARGATE
       TaskDefinition: !Ref TaskDefinitionArn
       HealthCheckGracePeriodSeconds: 300
       LoadBalancers:
