@@ -31,6 +31,42 @@ Resources:
         - Key: Name
           Value: !Sub Alb-${RandomString}
 
+  HttpsListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    DependsOn:
+      - Alb
+      - AlbCertificate
+    Properties:
+      Certificates:
+        - CertificateArn: !Ref AlbCertificate
+      DefaultActions:
+        - Type: fixed-response
+          FixedResponseConfig:
+            ContentType: "text/plain"
+            MessageBody: "Default"
+            StatusCode: "503"
+      LoadBalancerArn: !Ref Alb
+      Port: 443
+      Protocol: HTTPS
+
+  WsListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    DependsOn:
+      - Alb
+      - AlbCertificate
+    Properties:
+      Certificates:
+        - CertificateArn: !Ref AlbCertificate
+      DefaultActions:
+        - Type: fixed-response
+          FixedResponseConfig:
+            ContentType: "text/plain"
+            MessageBody: "Default"
+            StatusCode: "503"
+      LoadBalancerArn: !Ref Alb
+      Port: !Ref ProxyServerPort
+      Protocol: HTTPS
+
   HttpsTargetGroup:
     Type: "AWS::ElasticLoadBalancingV2::TargetGroup"
     Properties:
@@ -50,6 +86,30 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub TargetGroup-WS-${RandomString}
+
+  AlbHttpsListenerRule:
+    Type: "AWS::ElasticLoadBalancingV2::ListenerRule"
+    DependsOn:
+      - HttpsListener
+      - ALBTargetGroup
+    Properties:
+      ListenerArn: !Ref HttpsListener
+      Priority: 1
+      Actions:
+        - Type: forward
+          TargetGroupArn: !Ref HttpsTargetGroup
+
+  AlbWsListenerRule:
+    Type: "AWS::ElasticLoadBalancingV2::ListenerRule"
+    DependsOn:
+      - WsListener
+      - ALBTargetGroup
+    Properties:
+      ListenerArn: !Ref WsListener
+      Priority: 1
+      Actions:
+        - Type: forward
+          TargetGroupArn: !Ref WsTargetGroup
 
 Parameters:
   VpcId:
