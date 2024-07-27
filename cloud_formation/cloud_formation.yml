@@ -1,5 +1,6 @@
 Resources:
-  MyCertificate:
+
+  AlbCertificate:
     Type: "AWS::CertificateManager::Certificate"
     Properties:
       DomainName: !Join
@@ -13,6 +14,23 @@ Resources:
               - !Ref HostedZoneName
           HostedZoneId: !Ref HostedZoneId
       ValidationMethod: DNS
+      Tags:
+        - Key: Name
+          Value: !Sub Certificate-${RandomString}
+ 
+ Alb:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Type: application
+      Scheme: internet-facing
+      Subnets:
+        - !Ref SubnetIdA
+        - !Ref SubnetIdB
+      SecurityGroups:
+        - !Ref SecurityGroupAlbId
+      Tags:
+        - Key: Name
+          Value: !Sub Alb-${RandomString}
 
 Parameters:
   VpcId:
