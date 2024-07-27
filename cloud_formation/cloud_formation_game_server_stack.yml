@@ -23,8 +23,8 @@ Resources:
       Type: application
       Scheme: internet-facing
       Subnets:
-        - !Ref SubnetIdA
-        - !Ref SubnetIdB
+        - !Ref PublicSubnetIdA
+        - !Ref PublicSubnetIdB
       SecurityGroups:
         - !Ref SecurityGroupAlbId
       Tags:
@@ -108,10 +108,10 @@ Resources:
           SecurityGroups:
             - !Ref IdSgEcs
           Subnets:
-            - !Ref IdSubnet1
-            - !Ref IdSubnet2
+            - !Ref PrivateSubnetA
+            - !Ref PrivateSubnetB
       DesiredCount: 1
-      TaskDefinition: !Ref TaskDefinition
+      TaskDefinition: !Ref TaskDefinitionArn
       HealthCheckGracePeriodSeconds: 300
       LoadBalancers:
         - TargetGroupArn: !Ref HttpsTargetGroup
@@ -137,12 +137,12 @@ Parameters:
     Default: default
     Description: Hosted zone ID
 
-  SubnetIdA:
+  PublicSubnetIdA:
     Type: String
     Default: default
     Description: First subnet of ALB
 
-  SubnetIdB:
+  PublicSubnetIdB:
     Type: String
     Default: default
     Description: Second subnet of ALB
@@ -176,3 +176,18 @@ Parameters:
     Type: String
     Default: default
     Description: Ecs task security group
+
+  PrivateSubnetA:
+    Type: String
+    Default: default
+    Description: First private subnet of Ecs task
+
+  PrivateSubnetB:
+    Type: String
+    Default: default
+    Description: Second private subnet of Ecs task
+
+  TaskDefinitionArn:
+    Type: String
+    Default: default
+    Description: Arn of the Ecs task definition
