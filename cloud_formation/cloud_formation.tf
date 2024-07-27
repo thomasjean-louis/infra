@@ -20,7 +20,7 @@ variable "security_group_alb_id" {
 }
 
 variable "proxy_server_port" {
-  type = string
+  type = number
 }
 
 
