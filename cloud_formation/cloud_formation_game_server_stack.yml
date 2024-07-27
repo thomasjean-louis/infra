@@ -38,7 +38,7 @@ Resources:
       Protocol: HTTPS
       TargetType: ip
       Matcher:
-        HttpCode: String
+        HttpCode: 404
       VpcId: !Ref VpcId
       Tags:
         - Key: Name
