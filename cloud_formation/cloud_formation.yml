@@ -95,5 +95,5 @@ Parameters:
 
   ProxyServerPort:
     Type: Number
-    Default: default
+    Default: 0
     Description: Port used on proxy server
