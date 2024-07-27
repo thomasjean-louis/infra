@@ -100,8 +100,8 @@ Resources:
   Service:
     Type: "AWS::ECS::Service"
     Properties:
-      Cluster: !Ref clusterId
-      ServiceName: game-server-service-${RandomString}
+      Cluster: !Ref ClusterId
+      ServiceName: !Sub GameServer-service-${RandomString}
       NetworkConfiguration:
         AwsvpcConfiguration:
           AssignPublicIp: DISABLED
@@ -167,7 +167,7 @@ Parameters:
     Default: default
     Description: Name of the proxy container
 
-  clusterId:
+  ClusterId:
     Type: String
     Default: default
     Description: Id of the cluster

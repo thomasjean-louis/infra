@@ -77,7 +77,7 @@ resource "aws_cloudformation_stack" "game_server_stack" {
     SecurityGroupAlbId = var.security_group_alb_id
     ProxyServerPort    = var.proxy_server_port
 
-    clusterId                     = var.cluster_id
+    ClusterId                     = var.cluster_id
     SecurityGroupGameServerTaskId = var.security_group_game_server_task_id
     PrivateSubnetA                = var.private_subnet_id_a
     PrivateSubnetB                = var.private_subnet_id_b
