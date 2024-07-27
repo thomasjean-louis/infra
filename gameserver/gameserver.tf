@@ -295,5 +295,9 @@ output "task_definition_game_server" {
   value = aws_ecs_task_definition.game_server_task_definition.id
 }
 
+output "task_definition_game_server_arn" {
+  value = aws_ecs_task_definition.game_server_task_definition.arn
+}
+
 
 

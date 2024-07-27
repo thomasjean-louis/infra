@@ -7,11 +7,11 @@ variable "hosted_zone_name" {
 }
 
 
-variable "subnet_id_a" {
+variable "public_subnet_id_a" {
   type = string
 }
 
-variable "subnet_id_b" {
+variable "public_subnet_id_b" {
   type = string
 }
 
@@ -21,6 +21,30 @@ variable "security_group_alb_id" {
 
 variable "proxy_server_port" {
   type = number
+}
+
+variable "private_subnet_id_a" {
+  type = string
+}
+
+variable "private_subnet_id_b" {
+  type = string
+}
+
+variable "task_definition_arn" {
+  type = string
+}
+
+variable "proxy_server_name_container" {
+  type = string
+}
+
+variable "cluster_id" {
+  type = string
+}
+
+variable "security_group_game_server_task_id" {
+  type = string
 }
 
 
@@ -48,11 +72,17 @@ resource "aws_cloudformation_stack" "game_server_stack" {
     RandomString   = random_string.random_string.result
 
     HostedZoneId       = data.aws_route53_zone.project_route_zone.zone_id
-    SubnetIdA          = var.subnet_id_a
-    SubnetIdB          = var.subnet_id_b
+    PublicSubnetIdA    = var.public_subnet_id_a
+    PublicSubnetIdB    = var.public_subnet_id_b
     SecurityGroupAlbId = var.security_group_alb_id
     ProxyServerPort    = var.proxy_server_port
 
+    clusterId                     = var.cluster_id
+    SecurityGroupGameServerTaskId = var.security_group_game_server_task_id
+    PrivateSubnetA                = var.private_subnet_id_a
+    PrivateSubnetB                = var.private_subnet_id_b
+    TaskDefinitionArn             = var.task_definition_arn
+    ProxyServerNameContainer      = var.proxy_server_name_container
 
   }
 

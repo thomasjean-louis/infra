@@ -170,12 +170,18 @@ module "homepage" {
 }
 
 module "cloud_formation" {
-  depends_on            = [module.alb_gameserver]
-  source                = "./cloud_formation"
-  vpc_id                = module.vpc.vpc_id
-  hosted_zone_name      = var.hosted_zone_name
-  subnet_id_a           = module.vpc.public_subnet_id_a
-  subnet_id_b           = module.vpc.public_subnet_id_b
-  security_group_alb_id = module.alb_gameserver.security_group_alb_id
-  proxy_server_port     = var.proxy_server_port
+  depends_on                         = [module.alb_gameserver]
+  source                             = "./cloud_formation"
+  vpc_id                             = module.vpc.vpc_id
+  hosted_zone_name                   = var.hosted_zone_name
+  public_subnet_id_a                 = module.vpc.public_subnet_id_a
+  public_subnet_id_b                 = module.vpc.public_subnet_id_b
+  security_group_alb_id              = module.alb_gameserver.security_group_alb_id
+  proxy_server_port                  = var.proxy_server_port
+  private_subnet_id_a                = module.vpc.private_subnet_id_a
+  private_subnet_id_b                = module.vpc.private_subnet_id_b
+  task_definition_arn                = module.gameserver.task_definition_game_server_arn
+  proxy_server_name_container        = var.proxy_server_name_container
+  cluster_id                         = module.ecs.cluster_id
+  security_group_game_server_task_id = module.gameserver.security_group_game_server_task
 }

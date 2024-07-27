@@ -97,6 +97,30 @@ Resources:
         EvaluateTargetHealth: false
         HostedZoneId: !GetAtt Alb.CanonicalHostedZoneID
 
+  Service:
+    Type: "AWS::ECS::Service"
+    Properties:
+      Cluster: !Ref clusterId
+      ServiceName: game-server-service-${RandomString}
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: DISABLED
+          SecurityGroups:
+            - !Ref IdSgEcs
+          Subnets:
+            - !Ref IdSubnet1
+            - !Ref IdSubnet2
+      DesiredCount: 1
+      TaskDefinition: !Ref TaskDefinition
+      HealthCheckGracePeriodSeconds: 300
+      LoadBalancers:
+        - TargetGroupArn: !Ref HttpsTargetGroup
+          ContainerPort: !Ref ProxyServerPort
+          ContainerName: !Ref ProxyServerNameContainer
+        - TargetGroupArn: !Ref WsTargetGroup
+          ContainerPort: !Ref ProxyServerPort
+          ContainerName: !Ref ProxyServerNameContainer
+
 Parameters:
   VpcId:
     Type: String
@@ -137,3 +161,18 @@ Parameters:
     Type: Number
     Default: 0
     Description: Port used on proxy server
+
+  ProxyServerNameContainer:
+    Type: String
+    Default: default
+    Description: Name of the proxy container
+
+  clusterId:
+    Type: String
+    Default: default
+    Description: Id of the cluster
+
+  SecurityGroupGameServerTaskId:
+    Type: String
+    Default: default
+    Description: Ecs task security group
