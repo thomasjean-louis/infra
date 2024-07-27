@@ -32,10 +32,10 @@ resource "aws_cloudformation_stack" "game_server_stack" {
   name = "game-server-stack-${random_string.random_string.result}"
 
   parameters = {
-    vpc_id = var.var.vpc_id
+    vpc_id = var.vpc_id
 
     hosted_zone_name = var.hosted_zone_name
-    random_string    = random_string.random_string
+    random_string    = random_string.random_string.result
 
     hosted_zone_id        = data.aws_route53_zone.project_route_zone.zone_id
     subnet_id_a           = var.subnet_id_a
