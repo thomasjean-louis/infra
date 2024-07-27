@@ -177,4 +177,5 @@ module "cloud_formation" {
   subnet_id_a           = module.vpc.public_subnet_id_a
   subnet_id_b           = module.vpc.public_subnet_id_b
   security_group_alb_id = module.alb_gameserver.security_group_alb_id
+  proxy_server_port     = var.proxy_server_port
 }

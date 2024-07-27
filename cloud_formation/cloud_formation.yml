@@ -31,6 +31,32 @@ Resources:
         - Key: Name
           Value: !Sub Alb-${RandomString}
 
+  HttpsTargetGroup:
+    Type: "AWS::ElasticLoadBalancingV2::TargetGroup"
+    Properties:
+      Port: 443
+      Protocol: HTTPS
+      VpcId: !Ref VpcId
+      Targets:
+        - Id: !Ref EC2Instance
+          Port: 443
+      Tags:
+        - Key: Name
+          Value: !Sub TargetGroup-HTTPS-${RandomString}
+
+  WsTargetGroup:
+    Type: "AWS::ElasticLoadBalancingV2::TargetGroup"
+    Properties:
+      Port: !Ref ProxyServerPort
+      Protocol: HTTPS
+      VpcId: !Ref VpcId
+      Targets:
+        - Id: !Ref EC2Instance
+          Port: !Ref ProxyServerPort
+      Tags:
+        - Key: Name
+          Value: !Sub TargetGroup-WS-${RandomString}
+
 Parameters:
   VpcId:
     Type: String
@@ -66,3 +92,8 @@ Parameters:
     Type: String
     Default: default
     Description: Random string used to get unique resources ID if the CF template is launched several times
+
+  ProxyServerPort:
+    Type: Number
+    Default: default
+    Description: Port used on proxy server

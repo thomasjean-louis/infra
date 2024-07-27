@@ -19,6 +19,10 @@ variable "security_group_alb_id" {
   type = string
 }
 
+variable "proxy_server_port" {
+  type = string
+}
+
 
 ## Data
 
@@ -47,6 +51,9 @@ resource "aws_cloudformation_stack" "game_server_stack" {
     SubnetIdA          = var.subnet_id_a
     SubnetIdB          = var.subnet_id_b
     SecurityGroupAlbId = var.security_group_alb_id
+    ProxyServerPort    = var.proxy_server_port
+
+
   }
 
   template_body = file("${path.module}/cloud_formation.yml")
