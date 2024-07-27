@@ -19,13 +19,19 @@ variable "security_group_alb_id" {
   type = string
 }
 
-resource "random_string" "random_string" {
-  length = 16
-}
+
+## Data
 
 data "aws_route53_zone" "project_route_zone" {
   name         = var.hosted_zone_name
   private_zone = false
+}
+
+## Ressources
+resource "random_string" "random_string" {
+  length  = 16
+  special = false
+  numeric = false
 }
 
 resource "aws_cloudformation_stack" "game_server_stack" {
