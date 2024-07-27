@@ -42,8 +42,8 @@ variable "hosted_zone_name" {
 resource "aws_acm_certificate" "alb_certificate" {
   domain_name       = "test.${var.hosted_zone_name}"
   validation_method = "DNS"
-
 }
+
 
 data "aws_route53_zone" "project_route_zone" {
   name         = var.hosted_zone_name
@@ -121,6 +121,10 @@ resource "aws_security_group" "sg_alb" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+}
+
+output "security_group_alb_id" {
+  value = aws_security_group.sg_alb.id
 }
 
 
@@ -232,6 +236,9 @@ resource "aws_alb_listener" "game_server_alb_listener_27961" {
   }
 
 }
+
+## Outputs
+
 
 output "load_balancer_https_url" {
   value = "test.${var.hosted_zone_name}"

@@ -1,0 +1,46 @@
+Resources:
+  MyCertificate:
+    Type: "AWS::CertificateManager::Certificate"
+    Properties:
+      DomainName: !Join
+        - .
+        - - !Ref random_string
+          - !Ref hosted_zone_name
+      DomainValidationOptions:
+        - DomainName: !Join
+            - .
+            - - !Ref random_string
+              - !Ref hosted_zone_name
+          HostedZoneId: !Ref hosted_zone_id
+      ValidationMethod: DNS
+
+Parameters:
+  vpc_id:
+    Type: String
+    Default: default
+    Description: Project Vpc
+
+  hosted_zone_name:
+    Type: String
+    Default: default
+    Description: Hosted zone name
+
+  hosted_zone_id:
+    Type: String
+    Default: default
+    Description: Hosted zone ID
+
+  subnet_id_a:
+    Type: String
+    Default: default
+    Description: First subnet of ALB
+
+  subnet_id_b:
+    Type: String
+    Default: default
+    Description: Second subnet of ALB
+
+  security_group_alb_id:
+    Type: String
+    Default: default
+    Description: ALB security group
