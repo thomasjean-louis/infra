@@ -83,6 +83,20 @@ Resources:
       Port: !Ref ProxyServerPort
       Protocol: HTTPS
 
+  Route53Record:
+    Type: "AWS::Route53::RecordSet"
+    Properties:
+      HostedZoneId: !Ref HostedZoneId
+      Name: !Join
+        - .
+        - - !Ref RandomString
+          - !Ref HostedZoneName
+      Type: A
+      AliasTarget:
+        DNSName: !GetAtt Alb.DNSName
+        EvaluateTargetHealth: false
+        HostedZoneId: !GetAtt Alb.CanonicalHostedZoneID
+
 Parameters:
   VpcId:
     Type: String
