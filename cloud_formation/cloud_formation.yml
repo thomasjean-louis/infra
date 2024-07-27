@@ -37,9 +37,6 @@ Resources:
       Port: 443
       Protocol: HTTPS
       VpcId: !Ref VpcId
-      Targets:
-        - Id: !Ref EC2Instance
-          Port: 443
       Tags:
         - Key: Name
           Value: !Sub TargetGroup-HTTPS-${RandomString}
@@ -50,9 +47,6 @@ Resources:
       Port: !Ref ProxyServerPort
       Protocol: HTTPS
       VpcId: !Ref VpcId
-      Targets:
-        - Id: !Ref EC2Instance
-          Port: !Ref ProxyServerPort
       Tags:
         - Key: Name
           Value: !Sub TargetGroup-WS-${RandomString}
