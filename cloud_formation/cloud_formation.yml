@@ -91,7 +91,7 @@ Resources:
     Type: "AWS::ElasticLoadBalancingV2::ListenerRule"
     DependsOn:
       - HttpsListener
-      - ALBTargetGroup
+      - HttpsTargetGroup
     Properties:
       ListenerArn: !Ref HttpsListener
       Priority: 1
@@ -103,7 +103,7 @@ Resources:
     Type: "AWS::ElasticLoadBalancingV2::ListenerRule"
     DependsOn:
       - WsListener
-      - ALBTargetGroup
+      - WsTargetGroup
     Properties:
       ListenerArn: !Ref WsListener
       Priority: 1
