@@ -161,7 +161,7 @@ module "dynamodb" {
 }
 
 module "api_gateway_rest" {
-  depends_on            = [dynamodb]
+  depends_on            = [module.dynamodb]
   source                = "./api_gateway_rest"
   gamestacks_table_name = module.dynamodb.gamestacks_table_name
   app_name              = var.app_name
