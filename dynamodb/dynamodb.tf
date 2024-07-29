@@ -13,7 +13,7 @@ resource "aws_dynamodb_table" "gamestacks" {
   billing_mode = "PAY_PER_REQUEST"
   attribute {
     name = var.gamestack_id
-    type = N
+    type = "N"
   }
 
 }
