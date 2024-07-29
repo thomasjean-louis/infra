@@ -78,7 +78,7 @@ data "archive_file" "get_game_stacks_zip" {
 
 resource "aws_lambda_function" "lambda_game_server" {
   function_name    = "get_game_stacks"
-  filename         = data.archive_file.ziget_game_stacks_zipp.output_path
+  filename         = data.archive_file.get_game_stacks_zip.output_path
   source_code_hash = data.archive_file.get_game_stacks_zip.output_base64sha256
   role             = aws_iam_role.lambda_api_service_role.arn
   handler          = "get_game_stacks.lambda_handler"
