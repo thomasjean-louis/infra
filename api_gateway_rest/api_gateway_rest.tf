@@ -72,8 +72,8 @@ resource "aws_iam_role" "lambda_api_service_role" {
 
 data "archive_file" "get_game_stacks_zip" {
   type        = "zip"
-  source_file = "${path.module}/lambda_scripts/api_gateway_rest/get_game_stacks.py"
-  output_path = "${path.module}/lambda_scripts/api_gateway_rest/get_game_stacks.zip"
+  source_file = "${path.module}/lambda_scripts/get_game_stacks.py"
+  output_path = "${path.module}/lambda_scripts/get_game_stacks.zip"
 }
 
 resource "aws_lambda_function" "lambda_game_server" {
