@@ -29,8 +29,8 @@ resource "aws_dynamodb_table_item" "gamestack_01" {
     "Capacity" : {
       "N" : "4"
     },
-    "lastName" : {
-      "ServerLink" : "server_a.com"
+    "ServerLink" : {
+      "S" : "server_a.com"
     },
   })
 }
@@ -46,8 +46,8 @@ resource "aws_dynamodb_table_item" "gamestack_02" {
     "Capacity" : {
       "N" : "7"
     },
-    "lastName" : {
-      "ServerLink" : "server_b.com"
+    "ServerLink" : {
+      "S" : "server_b.com"
     },
   })
 }
@@ -63,8 +63,8 @@ resource "aws_dynamodb_table_item" "gamestack_03" {
     "Capacity" : {
       "N" : "2"
     },
-    "lastName" : {
-      "ServerLink" : "server_c.com"
+    "ServerLink" : {
+      "S" : "server_c.com"
     },
   })
 }
