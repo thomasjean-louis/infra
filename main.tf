@@ -153,3 +153,9 @@ module "cloud_formation" {
 #   cluster_id                         = module.ecs.cluster_id
 #   security_group_game_server_task_id = module.gameserver.security_group_game_server_task
 # }
+
+module "dynamodb" {
+  source                = "./dynamodb"
+  gamestacks_table_name = var.gamestacks_table_name
+  gamestack_id          = var.gamestack_id
+}

@@ -146,3 +146,12 @@ variable "homepage_github_token" {
   type      = string
   sensitive = true
 }
+
+## DynamoDB
+variable "gamestacks_table_name" {
+  default = "gamestacks"
+}
+
+variable "gamestack_id" {
+  default = "ID"
+}
