@@ -17,3 +17,7 @@ resource "aws_s3_bucket" "project-bucket" {
     Name = "s3-${var.region}-${var.app_name}-${var.author}"
   }
 }
+
+output "s3-bucket-name" {
+  value = "s3-${var.region}-${var.app_name}-${var.author}"
+}

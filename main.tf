@@ -131,6 +131,11 @@ module "homepage" {
   proxy_server_port       = var.proxy_server_port
 }
 
+module "cloud_formation" {
+  depends_on     = [module.alb_gameserver]
+  source         = "./cloud_formation"
+  s3-bucket-name = module.s3.s3-bucket-name
+}
 
 # module "cloud_formation" {
 #   depends_on                         = [module.alb_gameserver]
