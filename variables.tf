@@ -32,6 +32,10 @@ variable "private_subnet_b_cidr_block" {
 }
 
 ###### Project
+variable "author" {
+  default = "tjl"
+}
+
 variable "app_name" {
   type      = string
   sensitive = true

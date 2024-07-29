@@ -30,6 +30,13 @@ module "iam" {
   app_name = var.app_name
 }
 
+module "s3" {
+  source   = "./s3"
+  app_name = var.app_name
+  region   = var.region
+  author   = var.author
+}
+
 module "alb_gameserver" {
   source                     = "./gameserver/alb"
   app_name                   = var.app_name
@@ -43,17 +50,6 @@ module "alb_gameserver" {
   proxy_server_port          = var.proxy_server_port
 
 }
-
-# module "alb_web_server" {
-#   source                    = "./webserver/alb"
-#   app_name                  = var.app_name
-#   vpc_id                    = module.vpc.vpc_id
-#   vpc_cidr_block            = var.vpc_cidr_block
-#   public_subnet_id_a        = module.vpc.public_subnet_id_a
-#   public_subnet_id_b        = module.vpc.public_subnet_id_b
-#   web_server_port           = var.web_server_port
-#   web_server_name_container = var.web_server_name_container
-# }
 
 module "ecs" {
   source   = "./ecs"
@@ -101,40 +97,6 @@ module "gameserver" {
 
 }
 
-# module "webserver" {
-#   source     = "./webserver"
-#   depends_on = [module.gameserver]
-#   app_name   = var.app_name
-#   cluster_id = module.ecs.cluster_id
-
-#   vpc_id                  = module.vpc.vpc_id
-#   region                  = var.region
-#   task_execution_role_arn = module.iam.task_execution_role_arn
-#   task_role_arn           = module.iam.task_role_arn
-
-#   vpc_cidr_block              = var.vpc_cidr_block
-#   private_subnet_id_a         = module.vpc.private_subnet_id_a
-#   private_subnet_id_b         = module.vpc.private_subnet_id_b
-#   target_group_web_server_arn = module.alb_web_server.target_group_web_server_arn
-
-#   content_server_address = var.content_server_address
-
-#   web_server_cpu            = var.web_server_cpu
-#   web_server_ram            = var.web_server_ram
-#   web_server_port           = var.web_server_port
-#   web_server_image          = var.web_server_image
-#   web_server_name_container = var.web_server_name_container
-#   gameserver_address        = module.alb_gameserver.alb_game_server_DNS
-#   game_server_port          = var.game_server_port
-# }
-
-
-
-
-# module "logs_web_server" {
-#   source         = "./logs"
-#   name_container = var.web_server_name_container
-# }
 
 # Lambda functions
 module "lambda_gameserver" {
@@ -169,19 +131,20 @@ module "homepage" {
   proxy_server_port       = var.proxy_server_port
 }
 
-module "cloud_formation" {
-  depends_on                         = [module.alb_gameserver]
-  source                             = "./cloud_formation"
-  vpc_id                             = module.vpc.vpc_id
-  hosted_zone_name                   = var.hosted_zone_name
-  public_subnet_id_a                 = module.vpc.public_subnet_id_a
-  public_subnet_id_b                 = module.vpc.public_subnet_id_b
-  security_group_alb_id              = module.alb_gameserver.security_group_alb_id
-  proxy_server_port                  = var.proxy_server_port
-  private_subnet_id_a                = module.vpc.private_subnet_id_a
-  private_subnet_id_b                = module.vpc.private_subnet_id_b
-  task_definition_arn                = module.gameserver.task_definition_game_server_arn
-  proxy_server_name_container        = var.proxy_server_name_container
-  cluster_id                         = module.ecs.cluster_id
-  security_group_game_server_task_id = module.gameserver.security_group_game_server_task
-}
+
+# module "cloud_formation" {
+#   depends_on                         = [module.alb_gameserver]
+#   source                             = "./cloud_formation"
+#   vpc_id                             = module.vpc.vpc_id
+#   hosted_zone_name                   = var.hosted_zone_name
+#   public_subnet_id_a                 = module.vpc.public_subnet_id_a
+#   public_subnet_id_b                 = module.vpc.public_subnet_id_b
+#   security_group_alb_id              = module.alb_gameserver.security_group_alb_id
+#   proxy_server_port                  = var.proxy_server_port
+#   private_subnet_id_a                = module.vpc.private_subnet_id_a
+#   private_subnet_id_b                = module.vpc.private_subnet_id_b
+#   task_definition_arn                = module.gameserver.task_definition_game_server_arn
+#   proxy_server_name_container        = var.proxy_server_name_container
+#   cluster_id                         = module.ecs.cluster_id
+#   security_group_game_server_task_id = module.gameserver.security_group_game_server_task
+# }
