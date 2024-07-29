@@ -68,3 +68,7 @@ resource "aws_dynamodb_table_item" "gamestack_03" {
     },
   })
 }
+
+output "gamestacks_table_name" {
+  value = var.gamestacks_table_name
+}

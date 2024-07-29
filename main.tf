@@ -159,3 +159,10 @@ module "dynamodb" {
   gamestacks_table_name = var.gamestacks_table_name
   gamestack_id          = var.gamestack_id
 }
+
+module "api_gateway_rest" {
+  depends_on            = [dynamodb]
+  source                = "./api_gateway_rest"
+  gamestacks_table_name = module.dynamodb.gamestacks_table_name
+  app_name              = var.app_name
+}

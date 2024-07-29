@@ -97,7 +97,6 @@ resource "aws_iam_role_policy" "ecs_service_policy" {
       },
     ]
   })
-
 }
 
 resource "aws_iam_role_policy" "ecs_pass_role" {
