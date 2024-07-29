@@ -13,7 +13,7 @@ resource "aws_dynamodb_table" "gamestacks" {
   billing_mode = "PAY_PER_REQUEST"
   attribute {
     name = var.gamestack_id
-    type = "N"
+    type = "S"
   }
 
 }
@@ -22,37 +22,49 @@ resource "aws_dynamodb_table_item" "gamestack_01" {
 
   table_name = aws_dynamodb_table.gamestacks.name
   hash_key   = aws_dynamodb_table.gamestacks.hash_key
-  item       = <<EOF
-{
-"ID" : "GameStack_01"
-"Capacity" : "4"
-"ServerLink": "server_A.com"
-}
-    EOF
+  item = jsonencode({
+    "ID" : {
+      "S" : "gamestack_01"
+    },
+    "Capacity" : {
+      "N" : "4"
+    },
+    "lastName" : {
+      "ServerLink" : "server_a.com"
+    },
+  })
 }
 
 resource "aws_dynamodb_table_item" "gamestack_02" {
 
   table_name = aws_dynamodb_table.gamestacks.name
   hash_key   = aws_dynamodb_table.gamestacks.hash_key
-  item       = <<EOF
-{
-"ID" : "GameStack_02"
-"Capacity" : "5"
-"ServerLink": "server_B.com"
-}
-    EOF
+  item = jsonencode({
+    "ID" : {
+      "S" : "gamestack_02"
+    },
+    "Capacity" : {
+      "N" : "7"
+    },
+    "lastName" : {
+      "ServerLink" : "server_b.com"
+    },
+  })
 }
 
 resource "aws_dynamodb_table_item" "gamestack_03" {
 
   table_name = aws_dynamodb_table.gamestacks.name
   hash_key   = aws_dynamodb_table.gamestacks.hash_key
-  item       = <<EOF
-{
-"ID" : "GameStack_03"
-"Capacity" : "2"
-"ServerLink": "server_C.com"
-}
-    EOF
+  item = jsonencode({
+    "ID" : {
+      "S" : "gamestack_03"
+    },
+    "Capacity" : {
+      "N" : "2"
+    },
+    "lastName" : {
+      "ServerLink" : "server_c.com"
+    },
+  })
 }
