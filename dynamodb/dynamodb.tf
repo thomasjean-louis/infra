@@ -26,7 +26,7 @@ resource "aws_dynamodb_table_item" "gamestack_01" {
 {
 "ID" : "GameStack_01"
 "Capacity" : "4"
-"ServerLink": "server_A.com
+"ServerLink": "server_A.com"
 }
     EOF
 }
@@ -39,7 +39,7 @@ resource "aws_dynamodb_table_item" "gamestack_02" {
 {
 "ID" : "GameStack_02"
 "Capacity" : "5"
-"ServerLink": "server_B.com
+"ServerLink": "server_B.com"
 }
     EOF
 }
@@ -52,7 +52,7 @@ resource "aws_dynamodb_table_item" "gamestack_03" {
 {
 "ID" : "GameStack_03"
 "Capacity" : "2"
-"ServerLink": "server_C.com
+"ServerLink": "server_C.com"
 }
     EOF
 }
