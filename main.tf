@@ -132,7 +132,7 @@ module "homepage" {
 }
 
 module "cloud_formation" {
-  depends_on     = [module.alb_gameserver]
+  depends_on     = [module.s3]
   source         = "./cloud_formation"
   s3-bucket-name = module.s3.s3-bucket-name
 }
