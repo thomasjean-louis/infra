@@ -11,10 +11,6 @@ variable "app_name" {
   type = string
 }
 
-variable "" {
-
-}
-
 variable "subdomain_api" {
   type = string
 }
@@ -149,16 +145,4 @@ resource "aws_route53_record" "api_domain_name_record" {
   }
 }
 
-
-
-
-
-
-## Outputs
-
-output "base_url" {
-  description = "Base URL for API Gateway stage."
-
-  value = aws_apigatewayv2_stage.stage.invoke_url
-}
 
