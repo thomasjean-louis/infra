@@ -2,6 +2,10 @@ variable "app_name" {
   type = string
 }
 
+variable "subdomain_game_stacks" {
+  type = string
+}
+
 variable "vpc_id" {
   type = string
 }
@@ -34,13 +38,17 @@ variable "hosted_zone_name" {
   type = string
 }
 
+variable "hosted_zone_id" {
+  type = string
+}
+
 
 
 
 ## ALB ACM
 
 resource "aws_acm_certificate" "alb_certificate" {
-  domain_name       = "test.${var.hosted_zone_name}"
+  domain_name       = "${var.subdomain_game_stacks}.${var.hosted_zone_name}"
   validation_method = "DNS"
 }
 
@@ -64,7 +72,8 @@ resource "aws_route53_record" "dns_record" {
   records         = [each.value.record]
   ttl             = 60
   type            = each.value.type
-  zone_id         = data.aws_route53_zone.project_route_zone.zone_id
+  zone_id         = var.hosted_zone_id
+
 }
 
 resource "aws_acm_certificate_validation" "alb_certificate_validation" {
@@ -149,6 +158,7 @@ resource "aws_route53_record" "alb_alias" {
     zone_id                = aws_lb.alb_game_server.zone_id
     evaluate_target_health = true
   }
+
 }
 
 

@@ -12,8 +12,15 @@ terraform {
 
 data "aws_caller_identity" "account_data" {}
 
+data "aws_route53_zone" "project_route_zone" {
+  name         = var.hosted_zone_name
+  private_zone = false
+}
+
+
 locals {
-  account_id = data.aws_caller_identity.account_data.account_id
+  account_id     = data.aws_caller_identity.account_data.account_id
+  hosted_zone_id = data.aws_route53_zone.project_route_zone.zone_id
 }
 
 
@@ -43,6 +50,7 @@ module "s3" {
 module "alb_gameserver" {
   source                     = "./gameserver/alb"
   app_name                   = var.app_name
+  subdomain_game_stacks      = var.subdomain_game_stacks
   vpc_id                     = module.vpc.vpc_id
   vpc_cidr_block             = var.vpc_cidr_block
   public_subnet_id_a         = module.vpc.public_subnet_id_a
@@ -50,6 +58,7 @@ module "alb_gameserver" {
   game_server_port           = var.game_server_port
   game_server_name_container = var.game_server_name_container
   hosted_zone_name           = var.hosted_zone_name
+  hosted_zone_id             = local.hosted_zone_id
   proxy_server_port          = var.proxy_server_port
 
 }
@@ -176,6 +185,9 @@ module "api_gateway_rest" {
   region                      = var.region
   account_id                  = local.account_id
   app_name                    = var.app_name
+  subdomain_api               = var.subdomain_api
+  hosted_zone_name            = var.hosted_zone_name
+  hosted_zone_id              = local.hosted_zone_id
   homepage_https_url          = module.alb_gameserver.load_balancer_https_url
   lambda_get_game_stacks_uri  = module.lambda_game_stacks.lambda_get_game_stacks_uri
   lambda_get_game_stacks_name = module.lambda_game_stacks.lambda_get_game_stacks_name

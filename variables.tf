@@ -47,6 +47,17 @@ variable "hosted_zone_name" {
   sensitive = true
 }
 
+variable "subdomain_game_stacks" {
+  type      = string
+  sensitive = true
+}
+
+variable "subdomain_api" {
+  type      = string
+  sensitive = true
+}
+
+
 ###### ECS
 
 ## Global

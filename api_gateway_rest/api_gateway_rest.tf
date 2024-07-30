@@ -11,6 +11,21 @@ variable "app_name" {
   type = string
 }
 
+variable "" {
+
+}
+
+variable "subdomain_api" {
+  type = string
+}
+
+variable "hosted_zone_name" {
+  type = string
+}
+
+variable "hosted_zone_id" {
+  type = string
+}
 
 variable "homepage_https_url" {
   type = string
@@ -85,54 +100,65 @@ resource "aws_lambda_permission" "permission_get_game_stacks" {
   source_arn = "${aws_apigatewayv2_api.api.execution_arn}/*/*"
 }
 
+
+# API Gateway domain name
+resource "aws_acm_certificate" "api_domaine_name_certificate" {
+  domain_name       = "${var.subdomain_api}.${var.hosted_zone_name}"
+  validation_method = "DNS"
+}
+
+
+
+resource "aws_route53_record" "dns_record" {
+  for_each = {
+    for dvo in aws_acm_certificate.api_domaine_name_certificate.domain_validation_options : dvo.domain_name => {
+      name   = dvo.resource_record_name
+      record = dvo.resource_record_value
+      type   = dvo.resource_record_type
+    }
+  }
+
+  allow_overwrite = true
+  name            = each.value.name
+  records         = [each.value.record]
+  ttl             = 60
+  type            = each.value.type
+  zone_id         = var.hosted_zone_id
+}
+
+resource "aws_acm_certificate_validation" "api_domaine_name_certificate_validation" {
+  certificate_arn         = aws_acm_certificate.api_domaine_name_certificate.arn
+  validation_record_fqdns = [for record in aws_route53_record.dns_record : record.fqdn]
+}
+
+## Alias
+resource "aws_api_gateway_domain_name" "api_gateway_domain" {
+  depends_on      = [aws_acm_certificate_validation.api_domaine_name_certificate_validation]
+  certificate_arn = aws_acm_certificate_validation.api_domaine_name_certificate_validation.certificate_arn
+  domain_name     = aws_acm_certificate.api_domaine_name_certificate.domain_name
+}
+
+resource "aws_route53_record" "api_domain_name_record" {
+  name    = aws_api_gateway_domain_name.api_gateway_domain.domain_name
+  type    = "A"
+  zone_id = var.hosted_zone_id
+  alias {
+    evaluate_target_health = true
+    name                   = aws_api_gateway_domain_name.api_gateway_domain.domain_name
+    zone_id                = aws_api_gateway_domain_name.api_gateway_domain.regional_zone_id
+  }
+}
+
+
+
+
+
+
+## Outputs
+
 output "base_url" {
   description = "Base URL for API Gateway stage."
 
   value = aws_apigatewayv2_stage.stage.invoke_url
 }
 
-# resource "aws_api_gateway_rest_api" "api" {
-
-#   name = "api-${var.app_name}"
-
-#   endpoint_configuration {
-#     types = ["REGIONAL"]
-#   }
-
-# }
-
-
-# resource "aws_api_gateway_resource" "resource" {
-
-#   rest_api_id = aws_api_gateway_rest_api.api.id
-#   parent_id   = aws_api_gateway_rest_api.api.root_resource_id
-#   path_part   = var.app_name
-# }
-
-# resource "aws_api_gateway_method" "method" {
-#   rest_api_id   = aws_api_gateway_rest_api.api.id
-#   resource_id   = aws_api_gateway_resource.resource.id
-#   http_method   = "ANY"
-#   authorization = "NONE"
-# }
-
-# resource "aws_api_gateway_integration" "integration_get_game_stacks" {
-#   rest_api_id = aws_api_gateway_rest_api.api.id
-#   resource_id = aws_api_gateway_resource.resource.id
-#   http_method = aws_api_gateway_method.method.http_method
-
-#   integration_http_method = "POST"
-#   type                    = "AWS_PROXY"
-#   uri                     = var.lambda_get_game_stacks_uri
-# }
-
-# resource "aws_lambda_permission" "apigw_lambda_get_game_stacks" {
-#   statement_id  = "AllowExecutionFromAPIGateway"
-#   action        = "lambda:InvokeFunction"
-#   function_name = var.lambda_get_game_stacks_name
-#   principal     = "apigateway.amazonaws.com"
-
-#   # More: http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-control-access-using-iam-policies-to-invoke-api.html
-#   source_arn = "arn:aws:execute-api:${var.region}:${var.account_id}:${aws_api_gateway_rest_api.api.id}/*/${aws_api_gateway_method.method.http_method}${aws_api_gateway_resource.resource.path}"
-
-# }
