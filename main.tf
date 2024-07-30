@@ -160,9 +160,16 @@ module "dynamodb" {
   gamestack_id          = var.gamestack_id
 }
 
-module "api_gateway_rest" {
-  depends_on            = [module.dynamodb]
-  source                = "./api_gateway_rest"
-  gamestacks_table_name = module.dynamodb.gamestacks_table_name
+module "lambda_game_stacks" {
+  source                = "./api_gateway_rest/lambda_game_stacks"
   app_name              = var.app_name
+  gamestacks_table_name = module.dynamodb.gamestacks_table_name
+}
+
+module "api_gateway_rest" {
+  depends_on                 = [module.dynamodb, module.lambda_game_stacks]
+  source                     = "./api_gateway_rest"
+  app_name                   = var.app_name
+  homepage_https_url         = module.alb_gameserver.load_balancer_https_url
+  lambda_get_game_stacks_uri = module.lambda_game_stacks.lambda_get_game_stacks_uri
 }
