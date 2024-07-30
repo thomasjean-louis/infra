@@ -128,20 +128,26 @@ resource "aws_acm_certificate_validation" "api_domaine_name_certificate_validati
 }
 
 ## Alias
-resource "aws_api_gateway_domain_name" "api_gateway_domain" {
-  depends_on      = [aws_acm_certificate_validation.api_domaine_name_certificate_validation]
-  certificate_arn = aws_acm_certificate_validation.api_domaine_name_certificate_validation.certificate_arn
-  domain_name     = aws_acm_certificate.api_domaine_name_certificate.domain_name
+resource "aws_apigatewayv2_domain_name" "api_gateway_domain" {
+  depends_on  = [aws_acm_certificate_validation.api_domaine_name_certificate_validation]
+  domain_name = aws_acm_certificate.api_domaine_name_certificate.domain_name
+
+  domain_name_configuration {
+    certificate_arn = aws_acm_certificate_validation.api_domaine_name_certificate_validation.certificate_arn
+    endpoint_type   = "REGIONAL"
+    security_policy = "TLS_1_2"
+  }
 }
 
+
 resource "aws_route53_record" "api_domain_name_record" {
-  name    = aws_api_gateway_domain_name.api_gateway_domain.domain_name
+  name    = aws_apigatewayv2_domain_name.api_gateway_domain.domain_name
   type    = "A"
   zone_id = var.hosted_zone_id
   alias {
-    evaluate_target_health = true
-    name                   = aws_api_gateway_domain_name.api_gateway_domain.domain_name
-    zone_id                = aws_api_gateway_domain_name.api_gateway_domain.regional_zone_id
+    evaluate_target_health = false
+    name                   = aws_apigatewayv2_domain_name.api_gateway_domain.domain_name_configuration[0].target_domain_name
+    zone_id                = aws_apigatewayv2_domain_name.api_gateway_domain.domain_name_configuration[0].hosted_zone_id
   }
 }
 
