@@ -76,3 +76,7 @@ output "lambda_get_game_stacks_uri" {
   value = aws_lambda_function.lambda_get_game_stacks.invoke_arn
 }
 
+output "lambda_get_game_stacks_name" {
+  value = aws_lambda_function.lambda_get_game_stacks.function_name
+}
+
