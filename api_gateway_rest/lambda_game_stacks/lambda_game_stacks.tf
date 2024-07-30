@@ -11,7 +11,7 @@ variable "gamestacks_table_name" {
 # IAM Lambda role
 
 resource "aws_iam_role" "lambda_api_service_role" {
-  name = "${var.app_name}_lambda_api_service_role"
+  name = "${var.app_name}_lambda_gateway_api_service_role"
 
   # Terraform's "jsonencode" function converts a
   # Terraform expression result to valid JSON syntax.
