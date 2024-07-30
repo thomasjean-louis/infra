@@ -87,7 +87,7 @@ resource "aws_lambda_permission" "permission_get_game_stacks" {
 output "base_url" {
   description = "Base URL for API Gateway stage."
 
-  value = aws_apigatewayv2_stage.lambda.invoke_url
+  value = aws_apigatewayv2_stage.stage.invoke_url
 }
 
 # resource "aws_api_gateway_rest_api" "api" {
