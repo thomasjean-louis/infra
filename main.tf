@@ -12,9 +12,8 @@ terraform {
 
 data "aws_caller_identity" "account_data" {}
 
-variable "account_id" {
-  type    = string
-  default = data.aws_caller_identity.account_data.account_id
+output "account_id" {
+  value = data.aws_caller_identity.account_data.account_id
 }
 
 
@@ -107,7 +106,7 @@ module "lambda_gameserver" {
   depends_on                          = [module.gameserver]
   source                              = "./lambda_gameserver"
   app_name                            = var.app_name
-  account_id                          = var.account_id
+  account_id                          = account_id
   region                              = var.region
   cluster_id                          = module.ecs.cluster_id
   cluster_name                        = module.ecs.cluster_name
@@ -119,7 +118,6 @@ module "lambda_gameserver" {
   task_definition_game_server         = module.gameserver.task_definition_game_server
   role_task_execution_name            = module.iam.task_execution_role_name
   proxy_server_name_container         = var.proxy_server_name_container
-
 }
 
 # Homepage
@@ -174,7 +172,7 @@ module "api_gateway_rest" {
   depends_on                  = [module.dynamodb, module.lambda_game_stacks]
   source                      = "./api_gateway_rest"
   region                      = var.region
-  account_id                  = var.account_id
+  account_id                  = account_id
   app_name                    = var.app_name
   homepage_https_url          = module.alb_gameserver.load_balancer_https_url
   lambda_get_game_stacks_uri  = module.lambda_game_stacks.lambda_get_game_stacks_uri
