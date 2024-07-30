@@ -178,3 +178,7 @@ module "api_gateway_rest" {
   lambda_get_game_stacks_uri  = module.lambda_game_stacks.lambda_get_game_stacks_uri
   lambda_get_game_stacks_name = module.lambda_game_stacks.lambda_get_game_stacks_name
 }
+
+output "base_url" {
+  value = module.api_gateway_rest.base_url
+}
