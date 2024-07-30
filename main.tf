@@ -164,6 +164,8 @@ module "dynamodb" {
 
 module "lambda_game_stacks" {
   source                = "./api_gateway_rest/lambda_game_stacks"
+  region                = var.region
+  account_id            = local.account_id
   app_name              = var.app_name
   gamestacks_table_name = module.dynamodb.gamestacks_table_name
 }

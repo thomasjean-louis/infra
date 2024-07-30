@@ -1,3 +1,11 @@
+variable "region" {
+  type = string
+}
+
+variable "account_id" {
+  type = string
+}
+
 variable "app_name" {
   type = string
 }
@@ -5,6 +13,7 @@ variable "app_name" {
 variable "gamestacks_table_name" {
   type = string
 }
+
 
 ## Lambda scripts
 
@@ -30,23 +39,23 @@ resource "aws_iam_role" "lambda_api_service_role" {
   })
 }
 
-# resource "aws_iam_role_policy" "dynamodb_service_policy" {
-#   name = "${var.app_name}_lambda_dynamodb_service"
-#   role = aws_iam_role.lambda_game_server_service_role.id
+resource "aws_iam_role_policy" "dynamodb_service_policy" {
+  name = "${var.app_name}_lambda_dynamodb_service"
+  role = aws_iam_role.lambda_api_service_role.id
 
-#   policy = jsonencode({
-#     Version = "2012-10-17"
-#     Statement = [
-#       {
-#         Action = [
-#           "ecs:CreateService"
-#         ]
-#         Effect   = "Allow"
-#         Resource = "arn:aws:ecs:${var.region}:${var.account_id}:service/${var.cluster_name}/*"
-#       },
-#     ]
-#   })
-# }
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "dynamodb:Scan"
+        ]
+        Effect   = "Allow"
+        Resource = "arn:aws:dynamodb:${var.region}:${var.account_id}:table/${var.gamestacks_table_name}"
+      },
+    ]
+  })
+}
 
 # GET API
 
