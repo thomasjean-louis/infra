@@ -12,7 +12,6 @@ table = dynamodb.Table(os.environ["GAME_STACKS_TABLE_NAME"])
 
 def lambda_handler(event, context):
     logger.info(event)
-    logger.info("event :"+event['routeKey'])
     body = {}
     statusCode = 200
     headers = {
@@ -28,7 +27,7 @@ def lambda_handler(event, context):
             responseBody = []
             for items in body:
                 responseItems = [
-                    {'ID': float(items['ID']), 'Capacity': items['Capacity'], 'ServerLink': items['ServerLink']}]
+                    {'ID': items['ID'], 'Capacity': items['Capacity'], 'ServerLink': items['ServerLink']}]
                 responseBody.append(responseItems)
             body = responseBody
     except KeyError:
