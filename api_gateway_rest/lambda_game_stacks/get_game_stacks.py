@@ -27,7 +27,7 @@ def lambda_handler(event, context):
             responseBody = []
             for items in body:
                 responseItems = [
-                    {'ID': items['ID'], 'Capacity': items['Capacity'], 'ServerLink': items['ServerLink']}]
+                    {'ID': items['ID'], 'Capacity': float(items['Capacity']), 'ServerLink': items['ServerLink']}]
                 responseBody.append(responseItems)
             body = responseBody
     except KeyError:
