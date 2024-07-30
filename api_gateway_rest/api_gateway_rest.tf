@@ -63,9 +63,10 @@ resource "aws_apigatewayv2_stage" "stage" {
 resource "aws_apigatewayv2_integration" "integration_get_game_stacks" {
   api_id = aws_apigatewayv2_api.api.id
 
-  integration_uri    = var.lambda_get_game_stacks_uri
-  integration_type   = "AWS_PROXY"
-  integration_method = "POST"
+  integration_uri        = var.lambda_get_game_stacks_uri
+  payload_format_version = "2.0"
+  integration_type       = "AWS_PROXY"
+  integration_method     = "POST"
 }
 
 resource "aws_apigatewayv2_route" "route_get_game_stacks" {

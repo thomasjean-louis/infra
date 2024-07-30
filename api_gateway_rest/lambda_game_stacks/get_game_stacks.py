@@ -12,7 +12,7 @@ table = dynamodb.Table(os.environ["GAME_STACKS_TABLE_NAME"])
 
 def lambda_handler(event, context):
     logger.info(event)
-    logger.info(event['resourceId'])
+    logger.info("event :"+event['routeKey'])
     body = {}
     statusCode = 200
     headers = {
@@ -20,7 +20,7 @@ def lambda_handler(event, context):
     }
 
     try:
-        if event['resourceId'] == "GET /gamestacks":
+        if event['routeKey'] == "GET /gamestacks":
             body = table.scan()
             body = body["Items"]
             logger.info("ITEMS----")
@@ -33,7 +33,7 @@ def lambda_handler(event, context):
             body = responseBody
     except KeyError:
         statusCode = 400
-        body = 'Unsupported route: ' + event['resourceId']
+        body = 'Unsupported route: ' + event['routeKey']
     body = json.dumps(body)
     res = {
         "statusCode": statusCode,
