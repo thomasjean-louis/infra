@@ -23,7 +23,7 @@ variable "hosted_zone_id" {
   type = string
 }
 
-variable "homepage_https_url" {
+variable "subdomain_homepage" {
   type = string
 }
 
@@ -35,6 +35,7 @@ variable "lambda_get_game_stacks_name" {
   type = string
 }
 
+
 ## CloudWatch
 resource "aws_cloudwatch_log_group" "game_stacks_api_log_group" {
   name = "/aws/lambda/${var.lambda_get_game_stacks_name}"
@@ -44,6 +45,14 @@ resource "aws_cloudwatch_log_group" "game_stacks_api_log_group" {
 resource "aws_apigatewayv2_api" "api" {
   name          = "api-${var.app_name}"
   protocol_type = "HTTP"
+
+  cors_configuration {
+    allow_origins = ["*${var.subdomain_homepage}.${var.hosted_zone_name}"]
+    allow_methods = ["POST", "GET", "OPTIONS"]
+    allow_headers = ["content-type"]
+    max_age       = 300
+
+  }
 }
 
 resource "aws_apigatewayv2_stage" "stage" {

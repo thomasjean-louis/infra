@@ -153,7 +153,7 @@ module "api_gateway_rest" {
   subdomain_api               = var.subdomain_api
   hosted_zone_name            = var.hosted_zone_name
   hosted_zone_id              = local.hosted_zone_id
-  homepage_https_url          = module.alb_gameserver.load_balancer_https_url
+  subdomain_homepage          = var.subdomain_homepage
   lambda_get_game_stacks_uri  = module.lambda_game_stacks.lambda_get_game_stacks_uri
   lambda_get_game_stacks_name = module.lambda_game_stacks.lambda_get_game_stacks_name
 }
