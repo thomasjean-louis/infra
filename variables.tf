@@ -47,6 +47,11 @@ variable "hosted_zone_name" {
   sensitive = true
 }
 
+variable "subdomain_homepage" {
+  type      = string
+  sensitive = true
+}
+
 variable "subdomain_game_stacks" {
   type      = string
   sensitive = true
@@ -146,12 +151,6 @@ variable "homepage_repository" {
 variable "homepage_branch" {
   default = "default_branch"
 }
-
-variable "homepage_domain_name" {
-  type      = string
-  sensitive = true
-}
-
 
 variable "homepage_github_token" {
   type      = string

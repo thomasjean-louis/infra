@@ -4,6 +4,10 @@ variable "region" {
   type = string
 }
 
+variable "hosted_zone_name" {
+  type = string
+}
+
 variable "amplify_app_name" {
   type = string
 }
@@ -16,7 +20,7 @@ variable "homepage_branch" {
   type = string
 }
 
-variable "homepage_domain_name" {
+variable "subdomain_homepage" {
   type = string
 }
 
@@ -71,15 +75,6 @@ resource "aws_amplify_app" "homepage_app" {
   oauth_token = var.homepage_github_token
   repository  = var.homepage_repository
 
-  # enable_auto_branch_creation = true
-
-  # auto_branch_creation_patterns = ["main", "dev"]
-
-  # auto_branch_creation_config {
-  #   # Enable auto build for the created branch.
-  #   enable_auto_build = true
-  # }
-
   iam_service_role_arn = aws_iam_role.amplify_service_role.arn
   build_spec           = <<-EOT
     version: 0.1
@@ -128,9 +123,6 @@ resource "aws_amplify_webhook" "build_branch" {
   description = "trigger-amplify-build"
 }
 
-# output "amplify-webhook-url" {
-#   value = aws_amplify_webhook.build_branch.url
-# }
 
 # Build Amplify website
 resource "null_resource" "amplify-webhook-url" {
@@ -144,15 +136,24 @@ EOT
   }
 }
 
+resource "aws_amplify_domain_association" "domain_association" {
+  app_id                = aws_amplify_app.homepage_app.id
+  domain_name           = "${var.subdomain_homepage}.${var.hosted_zone_name}"
+  wait_for_verification = false
 
-# resource "aws_amplify_domain_association" "domain_association" {
-#   app_id                = aws_amplify_app.homepage_app.id
-#   domain_name           = var.homepage_domain_name
-#   wait_for_verification = false
+  sub_domain {
+    branch_name = aws_amplify_branch.homepage_branch.branch_name
+    prefix      = var.homepage_branch
+  }
+}
 
-#   sub_domain {
-#     branch_name = aws_amplify_branch.homepage_branch.branch_name
-#     prefix      = var.homepage_branch
+# resource "aws_route53_record" "api_domain_name_record" {
+#   name    = aws_apigatewayv2_domain_name.api_gateway_domain.domain_name
+#   type    = "A"
+#   zone_id = var.hosted_zone_id
+#   alias {
+#     evaluate_target_health = false
+#     name                   = aws_apigatewayv2_domain_name.api_gateway_domain.domain_name_configuration[0].target_domain_name
+#     zone_id                = aws_apigatewayv2_domain_name.api_gateway_domain.domain_name_configuration[0].hosted_zone_id
 #   }
-
 # }

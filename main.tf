@@ -136,7 +136,8 @@ module "homepage" {
   amplify_app_name        = var.amplify_app_name
   homepage_repository     = var.homepage_repository
   homepage_branch         = var.homepage_branch
-  homepage_domain_name    = var.homepage_domain_name
+  subdomain_homepage      = var.subdomain_homepage
+  hosted_zone_name        = var.hosted_zone_name
   homepage_github_token   = var.homepage_github_token
   load_balancer_https_url = module.alb_gameserver.load_balancer_https_url
   proxy_server_port       = var.proxy_server_port
