@@ -52,12 +52,6 @@ resource "aws_acm_certificate" "alb_certificate" {
   validation_method = "DNS"
 }
 
-
-data "aws_route53_zone" "project_route_zone" {
-  name         = var.hosted_zone_name
-  private_zone = false
-}
-
 resource "aws_route53_record" "dns_record" {
   for_each = {
     for dvo in aws_acm_certificate.alb_certificate.domain_validation_options : dvo.domain_name => {
@@ -149,8 +143,8 @@ resource "aws_lb" "alb_game_server" {
 
 ## Alias
 resource "aws_route53_record" "alb_alias" {
-  zone_id = data.aws_route53_zone.project_route_zone.zone_id
-  name    = "test.${var.hosted_zone_name}"
+  zone_id = var.hosted_zone_id
+  name    = "${var.subdomain_game_stacks}.${var.hosted_zone_name}"
   type    = "A"
 
   alias {
@@ -158,7 +152,6 @@ resource "aws_route53_record" "alb_alias" {
     zone_id                = aws_lb.alb_game_server.zone_id
     evaluate_target_health = true
   }
-
 }
 
 
