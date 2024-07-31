@@ -136,6 +136,8 @@ EOT
   }
 }
 
+# Amplify will create ACM certificate + Cname record for us
+
 resource "aws_amplify_domain_association" "domain_association" {
   app_id                = aws_amplify_app.homepage_app.id
   domain_name           = "${var.subdomain_homepage}.${var.hosted_zone_name}"
@@ -146,14 +148,3 @@ resource "aws_amplify_domain_association" "domain_association" {
     prefix      = var.homepage_branch
   }
 }
-
-# resource "aws_route53_record" "api_domain_name_record" {
-#   name    = aws_apigatewayv2_domain_name.api_gateway_domain.domain_name
-#   type    = "A"
-#   zone_id = var.hosted_zone_id
-#   alias {
-#     evaluate_target_health = false
-#     name                   = aws_apigatewayv2_domain_name.api_gateway_domain.domain_name_configuration[0].target_domain_name
-#     zone_id                = aws_apigatewayv2_domain_name.api_gateway_domain.domain_name_configuration[0].hosted_zone_id
-#   }
-# }
