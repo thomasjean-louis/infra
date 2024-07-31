@@ -27,6 +27,10 @@ variable "subdomain_homepage" {
   type = string
 }
 
+variable "homepage_branch" {
+  type = string
+}
+
 variable "lambda_get_game_stacks_uri" {
   type = string
 }
@@ -47,11 +51,10 @@ resource "aws_apigatewayv2_api" "api" {
   protocol_type = "HTTP"
 
   cors_configuration {
-    allow_origins = ["*${var.subdomain_homepage}.${var.hosted_zone_name}"]
+    allow_origins = ["${var.homepage_branch}.${var.subdomain_homepage}.${var.hosted_zone_name}"]
     allow_methods = ["POST", "GET", "OPTIONS"]
     allow_headers = ["content-type"]
     max_age       = 300
-
   }
 }
 

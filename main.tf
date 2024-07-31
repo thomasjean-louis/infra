@@ -154,6 +154,7 @@ module "api_gateway_rest" {
   hosted_zone_name            = var.hosted_zone_name
   hosted_zone_id              = local.hosted_zone_id
   subdomain_homepage          = var.subdomain_homepage
+  homepage_branch             = var.homepage_branch
   lambda_get_game_stacks_uri  = module.lambda_game_stacks.lambda_get_game_stacks_uri
   lambda_get_game_stacks_name = module.lambda_game_stacks.lambda_get_game_stacks_name
 }
