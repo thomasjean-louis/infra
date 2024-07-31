@@ -129,43 +129,7 @@ module "lambda_gameserver" {
   proxy_server_name_container         = var.proxy_server_name_container
 }
 
-# Homepage
-module "homepage" {
-  source                  = "./homepage"
-  region                  = var.region
-  amplify_app_name        = var.amplify_app_name
-  homepage_repository     = var.homepage_repository
-  homepage_branch         = var.homepage_branch
-  subdomain_homepage      = var.subdomain_homepage
-  hosted_zone_name        = var.hosted_zone_name
-  homepage_github_token   = var.homepage_github_token
-  load_balancer_https_url = module.alb_gameserver.load_balancer_https_url
-  proxy_server_port       = var.proxy_server_port
-}
-
-module "cloud_formation" {
-  depends_on     = [module.s3]
-  source         = "./cloud_formation"
-  s3-bucket-name = module.s3.s3-bucket-name
-}
-
-# module "cloud_formation" {
-#   depends_on                         = [module.alb_gameserver]
-#   source                             = "./cloud_formation"
-#   vpc_id                             = module.vpc.vpc_id
-#   hosted_zone_name                   = var.hosted_zone_name
-#   public_subnet_id_a                 = module.vpc.public_subnet_id_a
-#   public_subnet_id_b                 = module.vpc.public_subnet_id_b
-#   security_group_alb_id              = module.alb_gameserver.security_group_alb_id
-#   proxy_server_port                  = var.proxy_server_port
-#   private_subnet_id_a                = module.vpc.private_subnet_id_a
-#   private_subnet_id_b                = module.vpc.private_subnet_id_b
-#   task_definition_arn                = module.gameserver.task_definition_game_server_arn
-#   proxy_server_name_container        = var.proxy_server_name_container
-#   cluster_id                         = module.ecs.cluster_id
-#   security_group_game_server_task_id = module.gameserver.security_group_game_server_task
-# }
-
+# Serverless BackEnd
 module "dynamodb" {
   source                = "./dynamodb"
   gamestacks_table_name = var.gamestacks_table_name
@@ -193,4 +157,44 @@ module "api_gateway_rest" {
   lambda_get_game_stacks_uri  = module.lambda_game_stacks.lambda_get_game_stacks_uri
   lambda_get_game_stacks_name = module.lambda_game_stacks.lambda_get_game_stacks_name
 }
+
+# Serverless FrontEnd
+module "homepage" {
+  source                  = "./homepage"
+  region                  = var.region
+  amplify_app_name        = var.amplify_app_name
+  homepage_repository     = var.homepage_repository
+  homepage_branch         = var.homepage_branch
+  subdomain_homepage      = var.subdomain_homepage
+  hosted_zone_name        = var.hosted_zone_name
+  homepage_github_token   = var.homepage_github_token
+  load_balancer_https_url = module.alb_gameserver.load_balancer_https_url
+  proxy_server_port       = var.proxy_server_port
+  api_https_url           = module.api_gateway_rest.api_https_url
+}
+
+module "cloud_formation" {
+  depends_on     = [module.s3]
+  source         = "./cloud_formation"
+  s3-bucket-name = module.s3.s3-bucket-name
+}
+
+# module "cloud_formation" {
+#   depends_on                         = [module.alb_gameserver]
+#   source                             = "./cloud_formation"
+#   vpc_id                             = module.vpc.vpc_id
+#   hosted_zone_name                   = var.hosted_zone_name
+#   public_subnet_id_a                 = module.vpc.public_subnet_id_a
+#   public_subnet_id_b                 = module.vpc.public_subnet_id_b
+#   security_group_alb_id              = module.alb_gameserver.security_group_alb_id
+#   proxy_server_port                  = var.proxy_server_port
+#   private_subnet_id_a                = module.vpc.private_subnet_id_a
+#   private_subnet_id_b                = module.vpc.private_subnet_id_b
+#   task_definition_arn                = module.gameserver.task_definition_game_server_arn
+#   proxy_server_name_container        = var.proxy_server_name_container
+#   cluster_id                         = module.ecs.cluster_id
+#   security_group_game_server_task_id = module.gameserver.security_group_game_server_task
+# }
+
+
 

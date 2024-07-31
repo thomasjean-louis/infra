@@ -151,11 +151,14 @@ resource "aws_route53_record" "api_domain_name_record" {
   }
 }
 
-
 resource "aws_apigatewayv2_api_mapping" "mapping" {
   api_id      = aws_apigatewayv2_api.api.id
   domain_name = aws_apigatewayv2_domain_name.api_gateway_domain.id
   stage       = aws_apigatewayv2_stage.stage.id
+}
+
+output "api_https_url" {
+  value = aws_route53_record.api_domain_name_record.name
 }
 
 
