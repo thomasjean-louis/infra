@@ -244,7 +244,7 @@ resource "aws_alb_listener" "game_server_alb_listener_27961" {
 
 
 output "load_balancer_https_url" {
-  value = "test.${var.hosted_zone_name}"
+  value = aws_route53_record.alb_alias.name
 }
 
 
