@@ -76,7 +76,7 @@ resource "aws_iam_role_policy" "cloud_formation_service_policy" {
           "cloudformation:CreateStack"
         ]
         Effect   = "Allow"
-        Resource = "arn:aws:cloudformation:${var.region}:${var.account_id}:stack/${var.create_game_stack_cf_stack_name}*/*}"
+        Resource = "arn:aws:cloudformation:${var.region}:${var.account_id}:stack/${var.create_game_stack_cf_stack_name}*/*"
       },
     ]
   })
