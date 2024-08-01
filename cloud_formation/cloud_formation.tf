@@ -73,6 +73,9 @@ output "create_game_stack_cf_template_url" {
   value = "https://${aws_s3_object.cloud_formation_game_server_stack.bucket}.s3.${var.region}.amazonaws.com/${aws_s3_object.cloud_formation_game_server_stack.key}"
 }
 
+output "s3_bucket_cf_templates" {
+  value = aws_s3_object.cloud_formation_game_server_stack.bucket
+}
 
 # Add CloudFormation template in S3 bucket
 

@@ -22,6 +22,10 @@ variable "create_game_stack_cf_template_url" {
   type = string
 }
 
+variable "s3_bucket_cf_templates" {
+  type = string
+}
+
 ## Lambda scripts
 
 # IAM Lambda role
@@ -77,6 +81,24 @@ resource "aws_iam_role_policy" "cloud_formation_service_policy" {
         ]
         Effect   = "Allow"
         Resource = "arn:aws:cloudformation:${var.region}:${var.account_id}:stack/${var.create_game_stack_cf_stack_name}*/*"
+      },
+    ]
+  })
+}
+
+resource "aws_iam_role_policy" "s3_service_policy" {
+  name = "${var.app_name}_lambda_s3_service"
+  role = aws_iam_role.lambda_api_service_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "s3:GetObject"
+        ]
+        Effect   = "Allow"
+        Resource = "arn:aws:s3:::${var.s3_bucket_cf_templates}/*"
       },
     ]
   })

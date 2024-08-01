@@ -152,6 +152,7 @@ module "lambda_game_stacks" {
   gamestacks_table_name             = module.dynamodb.gamestacks_table_name
   create_game_stack_cf_stack_name   = var.create_game_stack_cf_stack_name
   create_game_stack_cf_template_url = module.cloud_formation.create_game_stack_cf_template_url
+  s3_bucket_cf_templates            = module.cloud_formation.s3_bucket_cf_templates
 }
 
 module "api_gateway_rest" {
