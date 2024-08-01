@@ -6,10 +6,6 @@ variable "region" {
   type = string
 }
 
-variable "author" {
-  type = string
-}
-
 resource "random_string" "random_string" {
   length  = 10
   special = false

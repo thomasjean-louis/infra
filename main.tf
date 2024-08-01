@@ -44,7 +44,6 @@ module "s3" {
   source   = "./s3"
   app_name = var.app_name
   region   = var.region
-  author   = var.author
 }
 
 module "alb_gameserver" {
