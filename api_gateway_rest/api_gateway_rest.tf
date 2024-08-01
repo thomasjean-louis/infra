@@ -133,7 +133,7 @@ resource "aws_apigatewayv2_route" "route_create_game_stack" {
   target    = "integrations/${aws_apigatewayv2_integration.integration_create_game_stack.id}"
 }
 
-resource "aws_lambda_permission" "permission_get_game_stacks" {
+resource "aws_lambda_permission" "permission_create_game_stack" {
   statement_id  = "AllowExecutionFromAPIGateway"
   action        = "lambda:InvokeFunction"
   function_name = var.lambda_create_game_stack_name
