@@ -47,6 +47,10 @@
 #   type = string
 # }
 
+variable "region" {
+  type = string
+}
+
 variable "s3-bucket-name" {
   type = string
 }
@@ -66,7 +70,7 @@ resource "aws_s3_object" "cloud_formation_game_server_stack" {
 }
 
 output "create_game_stack_cf_template_url" {
-  value = "s3://${aws_s3_object.cloud_formation_game_server_stack.bucket}/${aws_s3_object.cloud_formation_game_server_stack.key}"
+  value = "https://${aws_s3_object.cloud_formation_game_server_stack.bucket}.s3.${var.region}.amazonaws.com/${aws_s3_object.cloud_formation_game_server_stack.key}"
 }
 
 

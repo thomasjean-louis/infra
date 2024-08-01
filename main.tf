@@ -113,6 +113,7 @@ module "gameserver" {
 module "cloud_formation" {
   depends_on     = [module.s3]
   source         = "./cloud_formation"
+  region         = var.region
   s3-bucket-name = module.s3.s3-bucket-name
 }
 
