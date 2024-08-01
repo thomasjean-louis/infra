@@ -10,14 +10,20 @@ variable "author" {
   type = string
 }
 
+resource "random_string" "random_string" {
+  length  = 10
+  special = false
+  numeric = false
+}
+
 resource "aws_s3_bucket" "project-bucket" {
-  bucket = "s3-${var.region}-${var.app_name}-${var.author}"
+  bucket = "s3-${var.region}-${var.app_name}-${random_string.random_string.result}"
 
   tags = {
-    Name = "s3-${var.region}-${var.app_name}-${var.author}"
+    Name = "s3-${var.region}-${var.app_name}-${random_string.random_string.result}"
   }
 }
 
 output "s3-bucket-name" {
-  value = "s3-${var.region}-${var.app_name}-${var.author}"
+  value = aws_s3_bucket.project-bucket.bucket
 }
