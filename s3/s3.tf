@@ -7,7 +7,7 @@ variable "region" {
 }
 
 resource "random_string" "random_string" {
-  length  = 10
+  length  = 3
   special = false
   numeric = false
 }
