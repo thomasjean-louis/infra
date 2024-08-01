@@ -64,6 +64,24 @@ resource "aws_iam_role_policy" "dynamodb_service_policy" {
   })
 }
 
+resource "aws_iam_role_policy" "cloud_formation_service_policy" {
+  name = "${var.app_name}_lambda_cloud_formation_service"
+  role = aws_iam_role.lambda_api_service_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "cloudformation:CreateStack"
+        ]
+        Effect   = "Allow"
+        Resource = "arn:aws:cloudformation:${var.region}:${var.account_id}:stack/${var.create_game_stack_cf_stack_name}*/*}"
+      },
+    ]
+  })
+}
+
 # GET /gamestacks
 data "archive_file" "get_game_stacks_zip" {
   type        = "zip"

@@ -168,5 +168,5 @@ variable "gamestack_id" {
 
 ## Lambda
 variable "create_game_stack_cf_stack_name" {
-  default = ""
+  default = "game-server-stack"
 }
