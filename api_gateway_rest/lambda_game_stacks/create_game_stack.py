@@ -9,7 +9,7 @@ def get_random_string(length):
     return result_str
 
 def lambda_handler(event, context):
-  body = {}
+  body = "{\"message\":\"CF stack is being created\"}"
   statusCode = 200
   
   cf_client = boto3.client('cloudformation')
