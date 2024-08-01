@@ -165,3 +165,8 @@ variable "gamestacks_table_name" {
 variable "gamestack_id" {
   default = "ID"
 }
+
+## Lambda
+variable "create_game_stack_cf_stack_name" {
+  default = ""
+}

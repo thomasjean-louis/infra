@@ -11,7 +11,7 @@ dynamodb = boto3.resource("dynamodb")
 table = dynamodb.Table(os.environ["GAME_STACKS_TABLE_NAME"])
 
 def lambda_handler(event, context):
-    logger.info(event)
+    # logger.info(event)
     body = {}
     statusCode = 200
     headers = {
@@ -22,8 +22,7 @@ def lambda_handler(event, context):
         if event['routeKey'] == "GET /gamestacks":
             body = table.scan()
             body = body["Items"]
-            logger.info("ITEMS----")
-            logger.info(body)
+            # logger.info(body)
             responseBody = []
             for items in body:
                 responseItems = [

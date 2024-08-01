@@ -109,6 +109,13 @@ module "gameserver" {
 
 }
 
+# Cloud Formation templates
+module "cloud_formation" {
+  depends_on     = [module.s3]
+  source         = "./cloud_formation"
+  s3-bucket-name = module.s3.s3-bucket-name
+}
+
 
 # Lambda functions
 module "lambda_gameserver" {
@@ -137,26 +144,33 @@ module "dynamodb" {
 }
 
 module "lambda_game_stacks" {
-  source                = "./api_gateway_rest/lambda_game_stacks"
-  region                = var.region
-  account_id            = local.account_id
-  app_name              = var.app_name
-  gamestacks_table_name = module.dynamodb.gamestacks_table_name
+  source                            = "./api_gateway_rest/lambda_game_stacks"
+  region                            = var.region
+  account_id                        = local.account_id
+  app_name                          = var.app_name
+  gamestacks_table_name             = module.dynamodb.gamestacks_table_name
+  create_game_stack_cf_stack_name   = var.create_game_stack_cf_stack_name
+  create_game_stack_cf_template_url = module.cloud_formation.create_game_stack_cf_template_url
 }
 
 module "api_gateway_rest" {
-  depends_on                  = [module.dynamodb, module.lambda_game_stacks]
-  source                      = "./api_gateway_rest"
-  region                      = var.region
-  account_id                  = local.account_id
-  app_name                    = var.app_name
-  subdomain_api               = var.subdomain_api
-  hosted_zone_name            = var.hosted_zone_name
-  hosted_zone_id              = local.hosted_zone_id
-  subdomain_homepage          = var.subdomain_homepage
-  homepage_branch             = var.homepage_branch
+  depends_on         = [module.dynamodb, module.lambda_game_stacks]
+  source             = "./api_gateway_rest"
+  region             = var.region
+  account_id         = local.account_id
+  app_name           = var.app_name
+  subdomain_api      = var.subdomain_api
+  hosted_zone_name   = var.hosted_zone_name
+  hosted_zone_id     = local.hosted_zone_id
+  subdomain_homepage = var.subdomain_homepage
+  homepage_branch    = var.homepage_branch
+
   lambda_get_game_stacks_uri  = module.lambda_game_stacks.lambda_get_game_stacks_uri
   lambda_get_game_stacks_name = module.lambda_game_stacks.lambda_get_game_stacks_name
+
+  lambda_create_game_stack_uri  = module.lambda_game_stacks.lambda_create_game_stack_uri
+  lambda_create_game_stack_name = module.lambda_game_stacks.lambda_create_game_stack_name
+
 }
 
 # Serverless FrontEnd
@@ -174,11 +188,7 @@ module "homepage" {
   api_https_url           = module.api_gateway_rest.api_https_url
 }
 
-module "cloud_formation" {
-  depends_on     = [module.s3]
-  source         = "./cloud_formation"
-  s3-bucket-name = module.s3.s3-bucket-name
-}
+
 
 # module "cloud_formation" {
 #   depends_on                         = [module.alb_gameserver]

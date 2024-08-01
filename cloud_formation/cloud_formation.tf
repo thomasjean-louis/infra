@@ -51,13 +51,24 @@ variable "s3-bucket-name" {
   type = string
 }
 
+resource "random_string" "random_string" {
+  length  = 16
+  special = false
+  numeric = false
+}
 
-resource "aws_s3_object" "cf-template" {
+
+resource "aws_s3_object" "cloud_formation_game_server_stack" {
   bucket = var.s3-bucket-name
   key    = "cf-templates/cloud_formation_game_server_stack.yml"
   source = "${path.module}/cloud_formation_game_server_stack.yml"
 
 }
+
+output "create_game_stack_cf_template_url" {
+  value = "s3://${aws_s3_object.cloud_formation_game_server_stack.bucket}/${aws_s3_object.cloud_formation_game_server_stack.key}"
+}
+
 
 # Add CloudFormation template in S3 bucket
 

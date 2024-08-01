@@ -39,10 +39,18 @@ variable "lambda_get_game_stacks_name" {
   type = string
 }
 
+variable "lambda_create_game_stack_uri" {
+  type = string
+}
+
+variable "lambda_create_game_stack_name" {
+  type = string
+}
+
 
 ## CloudWatch
 resource "aws_cloudwatch_log_group" "game_stacks_api_log_group" {
-  name = "/aws/lambda/${var.lambda_get_game_stacks_name}"
+  name = "/aws/lambda/api"
 }
 
 ## API Gateway
@@ -83,6 +91,7 @@ resource "aws_apigatewayv2_stage" "stage" {
   }
 }
 
+# GET /gamestacks
 resource "aws_apigatewayv2_integration" "integration_get_game_stacks" {
   api_id = aws_apigatewayv2_api.api.id
 
@@ -103,6 +112,31 @@ resource "aws_lambda_permission" "permission_get_game_stacks" {
   statement_id  = "AllowExecutionFromAPIGateway"
   action        = "lambda:InvokeFunction"
   function_name = var.lambda_get_game_stacks_name
+  principal     = "apigateway.amazonaws.com"
+
+  source_arn = "${aws_apigatewayv2_api.api.execution_arn}/*/*"
+}
+
+# POST /gamestack
+resource "aws_apigatewayv2_integration" "integration_create_game_stack" {
+  api_id = aws_apigatewayv2_api.api.id
+
+  integration_uri        = var.lambda_create_game_stack_uri
+  payload_format_version = "2.0"
+  integration_type       = "AWS_PROXY"
+  integration_method     = "POST"
+}
+resource "aws_apigatewayv2_route" "route_create_game_stack" {
+  api_id = aws_apigatewayv2_api.api.id
+
+  route_key = "POST /gamestack"
+  target    = "integrations/${aws_apigatewayv2_integration.integration_create_game_stack.id}"
+}
+
+resource "aws_lambda_permission" "permission_get_game_stacks" {
+  statement_id  = "AllowExecutionFromAPIGateway"
+  action        = "lambda:InvokeFunction"
+  function_name = var.lambda_create_game_stack_name
   principal     = "apigateway.amazonaws.com"
 
   source_arn = "${aws_apigatewayv2_api.api.execution_arn}/*/*"
