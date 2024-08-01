@@ -7,9 +7,10 @@ variable "region" {
 }
 
 resource "random_string" "random_string" {
-  length  = 3
+  length  = 10
   special = false
   numeric = false
+  upper   = false
 }
 
 resource "aws_s3_bucket" "project-bucket" {
