@@ -107,7 +107,7 @@ resource "aws_lambda_function" "lambda_create_game_stack" {
   filename         = data.archive_file.create_game_stack_zip.output_path
   source_code_hash = data.archive_file.create_game_stack_zip.output_base64sha256
   role             = aws_iam_role.lambda_api_service_role.arn
-  handler          = "create_game_stack_zip.lambda_handler"
+  handler          = "create_game_stack.lambda_handler"
   runtime          = "python3.9"
   timeout          = 20
 

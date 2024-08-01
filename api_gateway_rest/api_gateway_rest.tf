@@ -59,7 +59,7 @@ resource "aws_apigatewayv2_api" "api" {
   protocol_type = "HTTP"
 
   cors_configuration {
-    allow_origins = ["https://${var.homepage_branch}.${var.subdomain_homepage}.${var.hosted_zone_name}"]
+    allow_origins = ["https://${var.homepage_branch}.${var.subdomain_homepage}.${var.hosted_zone_name}", "https://localhost:5173"]
     allow_methods = ["POST", "GET", "OPTIONS"]
     allow_headers = ["content-type"]
     max_age       = 300
@@ -148,8 +148,6 @@ resource "aws_acm_certificate" "api_domaine_name_certificate" {
   domain_name       = "${var.subdomain_api}.${var.hosted_zone_name}"
   validation_method = "DNS"
 }
-
-
 
 resource "aws_route53_record" "dns_record" {
   for_each = {
