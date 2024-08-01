@@ -14,9 +14,6 @@ def lambda_handler(event, context):
     # logger.info(event)
     body = {}
     statusCode = 200
-    headers = {
-        "Content-Type": "application/json"
-    }
 
     try:
         if event['routeKey'] == "GET /gamestacks":
