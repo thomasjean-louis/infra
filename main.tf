@@ -144,14 +144,26 @@ module "dynamodb" {
 }
 
 module "lambda_game_stacks" {
-  source                            = "./api_gateway_rest/lambda_game_stacks"
-  region                            = var.region
-  account_id                        = local.account_id
-  app_name                          = var.app_name
-  gamestacks_table_name             = module.dynamodb.gamestacks_table_name
-  create_game_stack_cf_stack_name   = var.create_game_stack_cf_stack_name
-  create_game_stack_cf_template_url = module.cloud_formation.create_game_stack_cf_template_url
-  s3_bucket_cf_templates            = module.cloud_formation.s3_bucket_cf_templates
+  source                             = "./api_gateway_rest/lambda_game_stacks"
+  region                             = var.region
+  account_id                         = local.account_id
+  app_name                           = var.app_name
+  gamestacks_table_name              = module.dynamodb.gamestacks_table_name
+  create_game_stack_cf_stack_name    = var.create_game_stack_cf_stack_name
+  create_game_stack_cf_template_url  = module.cloud_formation.create_game_stack_cf_template_url
+  s3_bucket_cf_templates             = module.cloud_formation.s3_bucket_cf_templates
+  hosted_zone_name                   = var.hosted_zone_name
+  hosted_zone_id                     = local.hosted_zone_id
+  public_subnet_id_a                 = module.vpc.public_subnet_id_a
+  public_subnet_id_b                 = module.vpc.public_subnet_id_b
+  security_group_alb_id              = module.alb_gameserver.security_group_alb_id
+  proxy_server_port                  = var.proxy_server_port
+  cluster_id                         = module.ecs.cluster_id
+  security_group_game_server_task_id = module.gameserver.security_group_game_server_task
+  private_subnet_id_a                = module.vpc.private_subnet_id_a
+  private_subnet_id_b                = module.vpc.private_subnet_id_b
+  task_definition_arn                = module.gameserver.task_definition_game_server_arn
+  proxy_server_name_container        = var.proxy_server_name_container
 }
 
 module "api_gateway_rest" {

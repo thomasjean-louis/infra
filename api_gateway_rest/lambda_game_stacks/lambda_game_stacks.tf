@@ -26,6 +26,56 @@ variable "s3_bucket_cf_templates" {
   type = string
 }
 
+variable "hosted_zone_name" {
+  type = string
+}
+
+variable "hosted_zone_id" {
+  type = string
+}
+
+variable "public_subnet_id_a" {
+  type = string
+}
+
+variable "public_subnet_id_b" {
+  type = string
+}
+
+variable "security_group_alb_id" {
+  type = string
+}
+
+variable "proxy_server_port" {
+  type = string
+}
+
+variable "cluster_id" {
+  type = string
+}
+
+variable "security_group_game_server_task_id" {
+  type = string
+}
+
+variable "private_subnet_id_a" {
+  type = string
+}
+
+variable "private_subnet_id_b" {
+  type = string
+}
+
+variable "task_definition_arn" {
+  type = string
+}
+
+variable "proxy_server_name_container" {
+  type = string
+}
+
+
+
 ## Lambda scripts
 
 # IAM Lambda role
@@ -153,8 +203,19 @@ resource "aws_lambda_function" "lambda_create_game_stack" {
 
   environment {
     variables = {
-      CREATE_GAME_SERVER_CF_STACK_NAME   = var.create_game_stack_cf_stack_name
-      CREATE_GAME_SERVER_CF_TEMPLATE_URL = var.create_game_stack_cf_template_url
+      HOSTED_ZONE_NAME                   = var.hosted_zone_name
+      HOSTED_ZONE_ID                     = var.hosted_zone_id
+      PUBLIC_SUBNET_IA_A                 = var.public_subnet_id_a
+      PUBLIC_SUBNET_IA_B                 = var.public_subnet_id_b
+      SECURITY_GROUP_ALB_ID              = var.security_group_alb_id
+      PROXY_SERVER_PORT                  = var.proxy_server_port
+      CLUSTER_ID                         = var.cluster_id
+      SECURITY_GROUP_GAME_SERVER_TASK_ID = var.security_group_game_server_task_id
+      PRIVATE_SUBNET_A                   = var.private_subnet_id_a
+      PRIVATE_SUBNET_B                   = var.private_subnet_id_b
+      TASK_DEFINITION_ARN                = var.task_definition_arn
+      PROXY_SERVER_NAME_CONTAINER        = var.proxy_server_name_container
+
     }
   }
 }
