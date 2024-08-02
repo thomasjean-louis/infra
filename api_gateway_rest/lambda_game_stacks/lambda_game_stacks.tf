@@ -211,7 +211,8 @@ resource "aws_iam_role_policy" "alb_service_policy" {
           "elasticloadbalancing:DescribeTargetGroups",
           "elasticloadbalancing:CreateLoadBalancer",
           "elasticloadbalancing:AddTags",
-          "elasticloadbalancing:DeleteTargetGroup"
+          "elasticloadbalancing:DeleteTargetGroup",
+          "elasticloadbalancing:DescribeListeners"
         ]
         Effect   = "Allow"
         Resource = "*"
