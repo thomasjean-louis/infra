@@ -78,6 +78,10 @@ variable "proxy_server_name_container" {
   type = string
 }
 
+variable "task_execution_role_name" {
+  type = string
+}
+
 
 
 ## Lambda scripts
@@ -268,6 +272,24 @@ resource "aws_iam_role_policy" "ecs_service_policy" {
         ]
         Effect   = "Allow"
         Resource = "arn:aws:ecs:${var.region}:${var.account_id}:service/*"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy" "iam_service_policy" {
+  name = "${var.app_name}_lambda_iam_service"
+  role = aws_iam_role.lambda_api_service_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "iam:PassRole"
+        ]
+        Effect   = "Allow"
+        Resource = "arn:aws:iam::${var.account_id}:role/${var.task_execution_role_name}"
       }
     ]
   })
