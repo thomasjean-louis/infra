@@ -22,6 +22,10 @@ def lambda_handler(event, context):
             'ParameterValue': os.environ["VPC_ID"]
         },
         {
+            'ParameterKey': 'RandomString',
+            'ParameterValue': get_random_string(10)
+        },
+        {
             'ParameterKey': 'HostedZoneName',
             'ParameterValue': os.environ["HOSTED_ZONE_NAME"]
         },
