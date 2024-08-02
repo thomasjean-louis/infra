@@ -196,6 +196,7 @@ resource "aws_iam_role_policy" "alb_service_policy" {
       {
         Action = [
           "elasticloadbalancing:DeleteLoadBalancer",
+          "elasticloadbalancing:CreateListener",
         ]
         Effect   = "Allow"
         Resource = "arn:aws:elasticloadbalancing:${var.region}:${var.account_id}:loadbalancer/*"
@@ -235,6 +236,13 @@ resource "aws_iam_role_policy" "route_53_service_policy" {
         ]
         Effect   = "Allow"
         Resource = "arn:aws:route53:::hostedzone/*"
+      },
+      {
+        Action = [
+          "route53:GetChange"
+        ]
+        Effect   = "Allow"
+        Resource = "arn:aws:route53:::change/*"
       },
     ]
   })
