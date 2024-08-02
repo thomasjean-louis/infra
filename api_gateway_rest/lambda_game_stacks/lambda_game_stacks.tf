@@ -163,7 +163,8 @@ resource "aws_iam_role_policy" "acm_service_policy" {
     Statement = [
       {
         Action = [
-          "acm:RequestCertificate"
+          "acm:RequestCertificate",
+          "acm:AddTagsToCertificate"
         ]
         Effect   = "Allow"
         Resource = "arn:aws:acm:${var.region}:${var.account_id}:certificate/*"
@@ -181,7 +182,9 @@ resource "aws_iam_role_policy" "alb_service_policy" {
     Statement = [
       {
         Action = [
-          "elasticloadbalancing:DescribeLoadBalancers"
+          "elasticloadbalancing:DescribeLoadBalancers",
+          "elasticloadbalancing:DescribeTargetGroups",
+          "elasticloadbalancing:CreateLoadBalancer"
         ]
         Effect   = "Allow"
         Resource = "*"
