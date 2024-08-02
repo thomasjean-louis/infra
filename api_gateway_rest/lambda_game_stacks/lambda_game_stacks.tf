@@ -248,6 +248,31 @@ resource "aws_iam_role_policy" "route_53_service_policy" {
   })
 }
 
+resource "aws_iam_role_policy" "ecs_service_policy" {
+  name = "${var.app_name}_lambda_ecs_service"
+  role = aws_iam_role.lambda_api_service_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "ecs:DescribeServices"
+        ]
+        Effect   = "Allow"
+        Resource = "arn:aws:route53:::hostedzone/*"
+      },
+      {
+        Action = [
+          "route53:GetChange"
+        ]
+        Effect   = "Allow"
+        Resource = "arn:aws:ecs:${var.region}:${var.account_id}:service/*"
+      },
+    ]
+  })
+}
+
 # GET /gamestacks
 data "archive_file" "get_game_stacks_zip" {
   type        = "zip"
