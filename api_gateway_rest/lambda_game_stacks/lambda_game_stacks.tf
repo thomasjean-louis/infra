@@ -210,10 +210,29 @@ resource "aws_iam_role_policy" "alb_service_policy" {
           "elasticloadbalancing:DescribeLoadBalancers",
           "elasticloadbalancing:DescribeTargetGroups",
           "elasticloadbalancing:CreateLoadBalancer",
-          "elasticloadbalancing:AddTags"
+          "elasticloadbalancing:AddTags",
+          "elasticloadbalancing:DeleteTargetGroup"
         ]
         Effect   = "Allow"
         Resource = "*"
+      },
+    ]
+  })
+}
+
+resource "aws_iam_role_policy" "route_53_service_policy" {
+  name = "${var.app_name}_lambda_route_53_service"
+  role = aws_iam_role.lambda_api_service_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "route53:ChangeResourceRecordSets"
+        ]
+        Effect   = "Allow"
+        Resource = "arn:aws:route53:::hostedzone/*"
       },
     ]
   })
