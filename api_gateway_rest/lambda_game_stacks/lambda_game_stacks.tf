@@ -263,7 +263,8 @@ resource "aws_iam_role_policy" "ecs_service_policy" {
     Statement = [
       {
         Action = [
-          "ecs:DescribeServices"
+          "ecs:DescribeServices",
+          "ecs:CreateService"
         ]
         Effect   = "Allow"
         Resource = "arn:aws:ecs:${var.region}:${var.account_id}:service/*"
