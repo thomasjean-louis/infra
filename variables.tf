@@ -158,9 +158,22 @@ variable "gamestacks_table_name" {
   default = "gamestacks"
 }
 
-variable "gamestack_id" {
+variable "game_stacks_id_column_name" {
   default = "ID"
 }
+
+variable "game_stacks_capacity_column_name" {
+  default = "Capacity"
+}
+
+variable "game_stacks_capacity_value" {
+  default = 4
+}
+
+variable "game_stacks_server_link_column_name" {
+  default = "ServerLink"
+}
+
 
 ## Lambda
 variable "create_game_stack_cf_stack_name" {

@@ -30,6 +30,8 @@ variable "s3_bucket_cf_templates" {
   type = string
 }
 
+# Var POST /gamestack
+
 variable "hosted_zone_name" {
   type = string
 }
@@ -82,12 +84,50 @@ variable "task_execution_role_name" {
   type = string
 }
 
+# Var Put /gamestack
+variable "game_stacks_id_column_name" {
+  type = string
+}
+
+variable "game_stacks_capacity_column_name" {
+  type = string
+}
+
+variable "game_stacks_capacity_value" {
+  type = number
+}
+
+variable "game_stacks_server_link_column_name" {
+  type = string
+}
 
 
 ## Lambda scripts
 
-# IAM Lambda role
+## IAM Lambda role
 
+# Lambda Invoker role
+resource "aws_iam_role" "lambda_invoker_role" {
+  name = "${var.app_name}_lambda_invoker_role"
+
+  # Terraform's "jsonencode" function converts a
+  # Terraform expression result to valid JSON syntax.
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Sid    = ""
+        Principal = {
+          Service = "lambda.amazonaws.com"
+        }
+      },
+    ]
+  })
+}
+
+# API IAM role
 resource "aws_iam_role" "lambda_api_service_role" {
   name = "${var.app_name}_lambda_gateway_api_service_role"
 
@@ -359,7 +399,33 @@ resource "aws_lambda_function" "lambda_create_game_stack" {
       PRIVATE_SUBNET_B                   = var.private_subnet_id_b
       TASK_DEFINITION_ARN                = var.task_definition_arn
       PROXY_SERVER_NAME_CONTAINER        = var.proxy_server_name_container
+      LAMBDA_INVOKER_ROLE_ARN            = aws_iam_role.lambda_invoker_role.arn
+    }
+  }
+}
 
+# PUT /gamestack
+data "archive_file" "add_game_stack_zip" {
+  type        = "zip"
+  source_file = "${path.module}/add_game_stack.py"
+  output_path = "${path.module}/add_game_stack.zip"
+}
+
+resource "aws_lambda_function" "lambda_create_game_stack" {
+  function_name    = "add_game_stack"
+  filename         = data.archive_file.create_game_stack_zip.output_path
+  source_code_hash = data.archive_file.create_game_stack_zip.output_base64sha256
+  role             = aws_iam_role.lambda_api_service_role.arn
+  handler          = "add_game_stack.lambda_handler"
+  runtime          = "python3.9"
+  timeout          = 20
+
+  environment {
+    variables = {
+      GAME_STACKS_ID_COLUMN_NAME          = var.game_stacks_id_column_name
+      GAME_STACKS_CAPACITY_COLUMN_NAME    = var.game_stacks_capacity_column_name
+      GAME_STACKS_CAPACITY_VALUE          = var.game_stacks_capacity_column_name
+      GAME_STACKS_SERVER_LINK_COLUMN_NAME = var.game_stacks_server_link_column_name
     }
   }
 }

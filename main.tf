@@ -137,9 +137,9 @@ module "cloud_formation" {
 
 # Serverless BackEnd
 module "dynamodb" {
-  source                = "./dynamodb"
-  gamestacks_table_name = var.gamestacks_table_name
-  gamestack_id          = var.gamestack_id
+  source                     = "./dynamodb"
+  gamestacks_table_name      = var.gamestacks_table_name
+  game_stacks_id_column_name = var.game_stacks_id_column_name
 }
 
 module "lambda_game_stacks" {
@@ -165,6 +165,12 @@ module "lambda_game_stacks" {
   task_definition_arn                = module.gameserver.task_definition_game_server_arn
   proxy_server_name_container        = var.proxy_server_name_container
   task_execution_role_name           = module.iam.task_execution_role_name
+
+  game_stacks_id_column_name       = var.game_stacks_id_column_name
+  game_stacks_capacity_column_name = var.game_stacks_capacity_column_name
+
+  game_stacks_capacity_value          = var.game_stacks_capacity_value
+  game_stacks_server_link_column_name = var.game_stacks_server_link_column_name
 }
 
 module "api_gateway_rest" {

@@ -132,6 +132,45 @@ Resources:
           ContainerPort: !Ref ProxyServerPort
           ContainerName: !Ref ProxyServerNameContainer
 
+  LambdaInvoker:
+    DependsOn:
+      - Service
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub Call_lambda_when_stack_created_${RandomString}
+      Code:
+        ZipFile: !Sub |
+          import boto3, json
+          import cfnresponse
+
+          def handler(event, context):
+              print('EVENT:')
+              print(event)
+
+              if event['RequestType'] == "Create":
+                lambda_client = boto3.client('lambda')
+                
+                cfn_event = {
+                   "game_server_link" : ${AlbCertificate.DomainName}
+                }
+
+                lambda_client.invoke(
+                    FunctionName=${LambdaFunctionName},
+                    InvocationType='Event',
+                    Payload=json.dumps(cfn_event)
+                )
+
+              responseValue = 120
+              responseData = {}
+              responseData['Data'] = responseValue
+              cfnresponse.send(event, context, cfnresponse.SUCCESS, 
+                responseData, 'scm-cfn-customresource-id')
+
+      Handler: index.handler
+      Role: !Ref LambdaInvokerRoleArn
+      Runtime: python3.7
+      Timeout: 5
+
 Parameters:
   VpcId:
     Type: String
@@ -202,3 +241,13 @@ Parameters:
     Type: String
     Default: default
     Description: Arn of the Ecs task definition
+
+  LambdaInvokerRoleArn:
+    Type: String
+    Default: default
+    Description: Arn role for lambda calling another lambda that will update the dynamododb table
+
+  LambdaFunctionName:
+    Type: String
+    Default: default
+    Description: Name of the function launched by the lambda Invoker

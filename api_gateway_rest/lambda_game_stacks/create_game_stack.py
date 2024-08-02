@@ -73,6 +73,10 @@ def lambda_handler(event, context):
             'ParameterKey': 'ProxyServerNameContainer',
             'ParameterValue': os.environ["PROXY_SERVER_NAME_CONTAINER"]
         },
+        {
+            'ParameterKey': 'LambdaInvokerRoleArn',
+            'ParameterValue': os.environ["LAMBDA_INVOKER_ROLE_ARN"]
+        },
     ]
 )  
   res = {

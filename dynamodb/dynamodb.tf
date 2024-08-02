@@ -3,16 +3,16 @@ variable "gamestacks_table_name" {
   type = string
 }
 
-variable "gamestack_id" {
+variable "game_stacks_id_column_name" {
   type = string
 }
 
 resource "aws_dynamodb_table" "gamestacks" {
   name         = var.gamestacks_table_name
-  hash_key     = var.gamestack_id
+  hash_key     = var.game_stacks_id_column_name
   billing_mode = "PAY_PER_REQUEST"
   attribute {
-    name = var.gamestack_id
+    name = var.game_stacks_id_column_name
     type = "S"
   }
 
