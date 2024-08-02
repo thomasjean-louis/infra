@@ -203,6 +203,8 @@ resource "aws_lambda_function" "lambda_create_game_stack" {
 
   environment {
     variables = {
+      CREATE_GAME_SERVER_CF_STACK_NAME   = var.create_game_stack_cf_stack_name
+      CREATE_GAME_SERVER_CF_TEMPLATE_URL = var.create_game_stack_cf_template_url
       HOSTED_ZONE_NAME                   = var.hosted_zone_name
       HOSTED_ZONE_ID                     = var.hosted_zone_id
       PUBLIC_SUBNET_IA_A                 = var.public_subnet_id_a
