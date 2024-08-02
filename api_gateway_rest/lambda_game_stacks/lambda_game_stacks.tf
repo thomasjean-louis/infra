@@ -169,7 +169,16 @@ resource "aws_iam_role_policy" "acm_service_policy" {
         Effect   = "Allow"
         Resource = "arn:aws:acm:${var.region}:${var.account_id}:certificate/*"
       },
+      {
+        Action = [
+          "acm:DescribeCertificate",
+          "acm:DeleteCertificate"
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
     ]
+
   })
 }
 
@@ -182,9 +191,16 @@ resource "aws_iam_role_policy" "alb_service_policy" {
     Statement = [
       {
         Action = [
+          "elasticloadbalancing:CreateTargetGroup",
+        ]
+        Effect   = "Allow"
+        Resource = "arn:aws:elasticloadbalancing:${var.region}:${var.account_id}:targetgroup/*"
+        }, {
+        Action = [
           "elasticloadbalancing:DescribeLoadBalancers",
           "elasticloadbalancing:DescribeTargetGroups",
-          "elasticloadbalancing:CreateLoadBalancer"
+          "elasticloadbalancing:CreateLoadBalancer",
+          "elasticloadbalancing:AddTags"
         ]
         Effect   = "Allow"
         Resource = "*"
