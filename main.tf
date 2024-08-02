@@ -148,6 +148,7 @@ module "lambda_game_stacks" {
   region                             = var.region
   account_id                         = local.account_id
   app_name                           = var.app_name
+  vpc_id                             = module.vpc.vpc_id
   gamestacks_table_name              = module.dynamodb.gamestacks_table_name
   create_game_stack_cf_stack_name    = var.create_game_stack_cf_stack_name
   create_game_stack_cf_template_url  = module.cloud_formation.create_game_stack_cf_template_url

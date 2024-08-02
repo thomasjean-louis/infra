@@ -18,6 +18,10 @@ def lambda_handler(event, context):
     TemplateURL=os.environ["CREATE_GAME_SERVER_CF_TEMPLATE_URL"],
      Parameters=[
         {
+            'ParameterKey': 'VpcId',
+            'ParameterValue': os.environ["VPC_ID"]
+        },
+        {
             'ParameterKey': 'HostedZoneName',
             'ParameterValue': os.environ["HOSTED_ZONE_NAME"]
         },

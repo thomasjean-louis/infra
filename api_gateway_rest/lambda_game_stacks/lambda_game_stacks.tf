@@ -10,6 +10,10 @@ variable "app_name" {
   type = string
 }
 
+variable "vpc_id" {
+  type = string
+}
+
 variable "gamestacks_table_name" {
   type = string
 }
@@ -191,6 +195,12 @@ resource "aws_iam_role_policy" "alb_service_policy" {
     Statement = [
       {
         Action = [
+          "elasticloadbalancing:DeleteLoadBalancer",
+        ]
+        Effect   = "Allow"
+        Resource = "arn:aws:elasticloadbalancing:${var.region}:${var.account_id}:loadbalancer/*"
+        }, {
+        Action = [
           "elasticloadbalancing:CreateTargetGroup",
         ]
         Effect   = "Allow"
@@ -260,6 +270,7 @@ resource "aws_lambda_function" "lambda_create_game_stack" {
     variables = {
       CREATE_GAME_SERVER_CF_STACK_NAME   = var.create_game_stack_cf_stack_name
       CREATE_GAME_SERVER_CF_TEMPLATE_URL = var.create_game_stack_cf_template_url
+      VPC_ID                             = var.vpc_id
       HOSTED_ZONE_NAME                   = var.hosted_zone_name
       HOSTED_ZONE_ID                     = var.hosted_zone_id
       PUBLIC_SUBNET_IA_A                 = var.public_subnet_id_a
