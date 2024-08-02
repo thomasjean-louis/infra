@@ -154,6 +154,42 @@ resource "aws_iam_role_policy" "s3_service_policy" {
   })
 }
 
+resource "aws_iam_role_policy" "acm_service_policy" {
+  name = "${var.app_name}_lambda_acm_service"
+  role = aws_iam_role.lambda_api_service_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "acm:RequestCertificate"
+        ]
+        Effect   = "Allow"
+        Resource = "arn:aws:acm:${var.region}:${var.account_id}:certificate/*"
+      },
+    ]
+  })
+}
+
+resource "aws_iam_role_policy" "alb_service_policy" {
+  name = "${var.app_name}_lambda_alb_service"
+  role = aws_iam_role.lambda_api_service_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "elasticloadbalancing:DescribeLoadBalancers"
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+    ]
+  })
+}
+
 # GET /gamestacks
 data "archive_file" "get_game_stacks_zip" {
   type        = "zip"
