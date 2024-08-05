@@ -156,15 +156,17 @@ Resources:
               "game_server_hosted_zone_name" : "${HostedZoneName}"
             }
 
-            response = lambda_client.invoke(            
-               StatusCode='200',
+            response = lambda_client.invoke( 
                FunctionName="${InvokedLambdaFunctionName}",
                InvocationType='Event',
                Payload=json.dumps(cfn_event)
             )
 
-            response = response['Payload'].read().decode('utf-8') 
-            return response
+            res = {
+              "statusCode": 200,
+              "body": response['Payload'].read().decode('utf-8') 
+            }
+            return res
 
       Handler: !Sub index.lambda_handler
       Role: !Ref LambdaInvokerRoleArn
