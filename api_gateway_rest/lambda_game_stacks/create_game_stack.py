@@ -77,6 +77,10 @@ def lambda_handler(event, context):
             'ParameterKey': 'LambdaInvokerRoleArn',
             'ParameterValue': os.environ["LAMBDA_INVOKER_ROLE_ARN"]
         },
+         {
+            'ParameterKey': 'InvokedLambdaFunctionName',
+            'ParameterValue': os.environ["INVOKED_LAMBDA_FUNCTION_NAME"]
+        },
     ]
 )  
   res = {

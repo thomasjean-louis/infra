@@ -171,6 +171,7 @@ module "lambda_game_stacks" {
 
   game_stacks_capacity_value          = var.game_stacks_capacity_value
   game_stacks_server_link_column_name = var.game_stacks_server_link_column_name
+  invoked_lambda_funciton_name        = var.invoked_lambda_funciton_name
 }
 
 module "api_gateway_rest" {

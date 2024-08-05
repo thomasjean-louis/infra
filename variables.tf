@@ -179,3 +179,7 @@ variable "game_stacks_server_link_column_name" {
 variable "create_game_stack_cf_stack_name" {
   default = "game-server-stack"
 }
+
+variable "invoked_lambda_funciton_name" {
+  default = "add_game_stack"
+}

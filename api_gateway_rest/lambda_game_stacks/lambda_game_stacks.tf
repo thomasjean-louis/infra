@@ -101,6 +101,10 @@ variable "game_stacks_server_link_column_name" {
   type = string
 }
 
+variable "invoked_lambda_funciton_name" {
+  type = string
+}
+
 
 ## Lambda scripts
 
@@ -400,6 +404,7 @@ resource "aws_lambda_function" "lambda_create_game_stack" {
       TASK_DEFINITION_ARN                = var.task_definition_arn
       PROXY_SERVER_NAME_CONTAINER        = var.proxy_server_name_container
       LAMBDA_INVOKER_ROLE_ARN            = aws_iam_role.lambda_invoker_role.arn
+
     }
   }
 }
@@ -411,8 +416,8 @@ data "archive_file" "add_game_stack_zip" {
   output_path = "${path.module}/add_game_stack.zip"
 }
 
-resource "aws_lambda_function" "lambda_create_game_stack" {
-  function_name    = "add_game_stack"
+resource "aws_lambda_function" "lambda_add_game_stack" {
+  function_name    = var.invoked_lambda_funciton_name
   filename         = data.archive_file.create_game_stack_zip.output_path
   source_code_hash = data.archive_file.create_game_stack_zip.output_base64sha256
   role             = aws_iam_role.lambda_api_service_role.arn
