@@ -152,7 +152,7 @@ Resources:
                 
                 cfn_event = {
                    "game_server_random_string" : "${RandomString}",
-                   "game_server_hosted_zone_name : "${HostedZoneName}"
+                   "game_server_hosted_zone_name" : "${HostedZoneName}"
                 }
 
                 lambda_client.invoke(
