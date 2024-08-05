@@ -18,7 +18,7 @@ def lambda_handler(event,context):
        Item={ 
             os.environ["GAME_STACKS_ID_COLUMN_NAME"]: str(uuid.uuid4()),
             os.environ["GAME_STACKS_CAPACITY_COLUMN_NAME"]: os.environ["GAME_STACKS_CAPACITY_VALUE"], 
-            os.environ["GAME_STACKS_SERVER_LINK_COLUMN_NAME"]: event['game_server_link'],             
+            os.environ["GAME_STACKS_SERVER_LINK_COLUMN_NAME"]: event['game_server_random_string']+"."+event['game_server_hosted_zone_name'],             
         } 
     ) 
     return response

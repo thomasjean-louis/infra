@@ -151,7 +151,8 @@ Resources:
                 lambda_client = boto3.client('lambda')
                 
                 cfn_event = {
-                   "game_server_link" : "${AlbCertificate.DomainName}"
+                   "game_server_random_string" : "${RandomString}",
+                   "game_server_hosted_zone_name : "${HostedZoneName}"
                 }
 
                 lambda_client.invoke(
