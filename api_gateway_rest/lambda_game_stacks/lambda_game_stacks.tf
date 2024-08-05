@@ -336,6 +336,13 @@ resource "aws_iam_role_policy" "iam_service_policy" {
         ]
         Effect   = "Allow"
         Resource = "arn:aws:iam::${var.account_id}:role/${var.task_execution_role_name}"
+      },
+      {
+        Action = [
+          "iam:PassRole"
+        ]
+        Effect   = "Allow"
+        Resource = "arn:aws:iam::${var.account_id}:role/${aws_iam_role.lambda_invoker_role.name}"
       }
     ]
   })
