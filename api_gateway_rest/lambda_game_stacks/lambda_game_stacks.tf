@@ -454,8 +454,8 @@ data "archive_file" "add_game_stack_zip" {
 
 resource "aws_lambda_function" "lambda_add_game_stack" {
   function_name    = var.invoked_lambda_function_name
-  filename         = data.archive_file.create_game_stack_zip.output_path
-  source_code_hash = data.archive_file.create_game_stack_zip.output_base64sha256
+  filename         = data.archive_file.add_game_stack_zip.output_path
+  source_code_hash = data.archive_file.add_game_stack_zip.output_base64sha256
   role             = aws_iam_role.lambda_api_service_role.arn
   handler          = "add_game_stack.lambda_handler"
   runtime          = "python3.9"
