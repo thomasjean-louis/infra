@@ -181,7 +181,8 @@ resource "aws_iam_role_policy" "dynamodb_service_policy" {
     Statement = [
       {
         Action = [
-          "dynamodb:Scan"
+          "dynamodb:Scan",
+          "dynamodb:PutItem"
         ]
         Effect   = "Allow"
         Resource = "arn:aws:dynamodb:${var.region}:${var.account_id}:table/${var.gamestacks_table_name}"
