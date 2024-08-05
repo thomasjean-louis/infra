@@ -366,7 +366,8 @@ resource "aws_iam_role_policy" "lambda_service_policy" {
         Action = [
           "lambda:GetFunction",
           "lambda:CreateFunction",
-          "lambda:DeleteFunction"
+          "lambda:DeleteFunction",
+          "lambda:InvokeFunction"
         ]
         Effect   = "Allow"
         Resource = "arn:aws:lambda:${var.region}:${var.account_id}:function:*"
