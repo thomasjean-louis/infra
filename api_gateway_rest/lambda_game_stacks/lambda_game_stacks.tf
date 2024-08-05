@@ -131,6 +131,25 @@ resource "aws_iam_role" "lambda_invoker_role" {
   })
 }
 
+resource "aws_iam_role_policy" "lambda_invoker_service_policy" {
+  name = "${var.app_name}_lambda_invoker_service"
+  role = aws_iam_role.lambda_invoker_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "lambda:InvokeFunction"
+        ]
+        Effect   = "Allow"
+        Resource = "arn:aws:lambda:${var.region}:${var.account_id}:function:*"
+      },
+    ]
+  })
+}
+
+
 
 # API IAM role
 resource "aws_iam_role" "lambda_api_service_role" {
