@@ -146,6 +146,13 @@ resource "aws_iam_role_policy" "invoker_lambda_policy" {
         Effect   = "Allow"
         Resource = "arn:aws:lambda:${var.region}:${var.account_id}:function/*"
       },
+      {
+        Action = [
+          "lambda:GetFunction"
+        ]
+        Effect   = "Allow"
+        Resource = "arn:aws:lambda:${var.region}:${var.account_id}:function:*"
+      },
     ]
   })
 }
