@@ -156,7 +156,7 @@ Resources:
                 }
 
                 lambda_client.invoke(
-                    FunctionName=${InvokedLambdaFunctionName},
+                    FunctionName="${InvokedLambdaFunctionName}",
                     InvocationType='Event',
                     Payload=json.dumps(cfn_event)
                 )
