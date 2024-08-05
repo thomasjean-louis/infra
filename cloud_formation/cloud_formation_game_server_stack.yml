@@ -173,11 +173,11 @@ Resources:
       Timeout: 5
 
   Primerinvoke:
-  Type: AWS::CloudFormation::CustomResource
-  DependsOn: LambdaInvoker
-  Version: "1.0"
-  Properties:
-    ServiceToken: !GetAtt LambdaInvoker.Arn
+    Type: AWS::CloudFormation::CustomResource
+    DependsOn: LambdaInvoker
+    Version: "1.0"
+    Properties:
+      ServiceToken: !GetAtt LambdaInvoker.Arn
 
 Parameters:
   VpcId:
