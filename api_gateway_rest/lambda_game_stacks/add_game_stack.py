@@ -14,9 +14,9 @@ def lambda_handler(event,context):
     #inserting values into table 
     response = table.put_item( 
        Item={ 
-            os.environ["GAME_STACKS_ID_COLUMN_NAME"]: str(uuid.uuid4()),
-            os.environ["GAME_STACKS_CAPACITY_COLUMN_NAME"]: os.environ["GAME_STACKS_CAPACITY_VALUE"], 
-            os.environ["GAME_STACKS_SERVER_LINK_COLUMN_NAME"]: event['game_server_random_string']+"."+event['game_server_hosted_zone_name'],             
+            event['game_stacks_id_column_name']: str(uuid.uuid4()),
+            event['game_stacks_capacity_column_name']: event['game_stacks_capacity_value'], 
+            event['game_stacks_server_link_column_name']: event['game_server_random_string']+"."+event['game_server_hosted_zone_name'],             
         } 
     ) 
     return response

@@ -77,9 +77,25 @@ def lambda_handler(event, context):
             'ParameterKey': 'LambdaInvokerRoleArn',
             'ParameterValue': os.environ["LAMBDA_INVOKER_ROLE_ARN"]
         },
-         {
+        {
             'ParameterKey': 'InvokedLambdaFunctionName',
             'ParameterValue': os.environ["INVOKED_LAMBDA_FUNCTION_NAME"]
+        },
+        {
+            'ParameterKey': 'GameStacksIdColumnName',
+            'ParameterValue': os.environ["GAME_STACKS_ID_COLUMN_NAME"]
+        },
+        {
+            'ParameterKey': 'GameStacksCapacityColumnName',
+            'ParameterValue': os.environ["GAME_STACKS_CAPACITY_COLUMN_NAME"]
+        },
+        {
+            'ParameterKey': 'GameStacksCapacityValue',
+            'ParameterValue': os.environ["GAME_STACKS_CAPACITY_VALUE"]
+        },
+        {
+            'ParameterKey': 'GameStacksServerLinkColumnName',
+            'ParameterValue': os.environ["GAME_STACKS_SERVER_LINK_COLUMN_NAME"]
         },
     ]
 )  

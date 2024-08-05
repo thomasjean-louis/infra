@@ -462,6 +462,12 @@ resource "aws_lambda_function" "lambda_create_game_stack" {
       PROXY_SERVER_NAME_CONTAINER        = var.proxy_server_name_container
       LAMBDA_INVOKER_ROLE_ARN            = aws_iam_role.lambda_invoker_role.arn
       INVOKED_LAMBDA_FUNCTION_NAME       = var.invoked_lambda_function_name
+
+      GAME_STACKS_ID_COLUMN_NAME          = var.game_stacks_id_column_name
+      GAME_STACKS_CAPACITY_COLUMN_NAME    = var.game_stacks_capacity_column_name
+      GAME_STACKS_CAPACITY_VALUE          = var.game_stacks_capacity_value
+      GAME_STACKS_SERVER_LINK_COLUMN_NAME = var.game_stacks_server_link_column_name
+
     }
   }
 }
@@ -482,14 +488,6 @@ resource "aws_lambda_function" "lambda_add_game_stack" {
   runtime          = "python3.9"
   timeout          = 20
 
-  environment {
-    variables = {
-      GAME_STACKS_ID_COLUMN_NAME          = var.game_stacks_id_column_name
-      GAME_STACKS_CAPACITY_COLUMN_NAME    = var.game_stacks_capacity_column_name
-      GAME_STACKS_CAPACITY_VALUE          = var.game_stacks_capacity_column_name
-      GAME_STACKS_SERVER_LINK_COLUMN_NAME = var.game_stacks_server_link_column_name
-    }
-  }
 }
 
 output "lambda_create_game_stack_uri" {
