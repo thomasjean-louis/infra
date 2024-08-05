@@ -178,6 +178,7 @@ Resources:
     Version: "1.0"
     Properties:
       ServiceToken: !GetAtt LambdaInvoker.Arn
+      FunctionName: !Sub Call_lambda_when_stack_created_${RandomString}
 
 Parameters:
   VpcId:
