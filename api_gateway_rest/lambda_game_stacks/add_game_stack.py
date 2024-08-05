@@ -6,8 +6,6 @@ import uuid
 #function definition 
 def lambda_handler(event,context): 
 
-    cf_parameters = json.loads(event.body)
-
     dynamodb = boto3.resource('dynamodb') 
     #table name 
     table = dynamodb.Table(os.environ["GAME_STACKS_TABLE_NAME"])

@@ -141,33 +141,26 @@ Resources:
       Code:
         ZipFile: !Sub |
           import boto3, json
-          import cfnresponse
 
-          def handler(event, context):
-              print('EVENT:')
-              print(event)
+          def lambda_handler(event, context):
 
-              if event['RequestType'] == "Create":
-                lambda_client = boto3.client('lambda')
+            lambda_client = boto3.client('lambda')
                 
-                cfn_event = {
-                   "game_server_random_string" : "${RandomString}",
-                   "game_server_hosted_zone_name" : "${HostedZoneName}"
-                }
+            cfn_event = {
+              "game_server_random_string" : "${RandomString}",
+              "game_server_hosted_zone_name" : "${HostedZoneName}"
+            }
 
-                lambda_client.invoke(
-                    FunctionName="${InvokedLambdaFunctionName}",
-                    InvocationType='Event',
-                    Payload=json.dumps(cfn_event)
-                )
+            response = lambda_client.invoke(
+               FunctionName="${InvokedLambdaFunctionName}",
+               InvocationType='Event',
+               Payload=json.dumps(cfn_event)
+            )
 
-              responseValue = 120
-              responseData = {}
-              responseData['Data'] = responseValue
-              cfnresponse.send(event, context, cfnresponse.SUCCESS, 
-                responseData, 'scm-cfn-customresource-id')
+            response = response['Payload'].read().decode('utf-8') 
+            return response
 
-      Handler: !Sub index.handler
+      Handler: !Sub index.lambda_handler
       Role: !Ref LambdaInvokerRoleArn
       Runtime: python3.9
       Timeout: 5
