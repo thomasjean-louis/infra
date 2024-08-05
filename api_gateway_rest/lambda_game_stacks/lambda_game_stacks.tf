@@ -463,6 +463,7 @@ resource "aws_lambda_function" "lambda_create_game_stack" {
       LAMBDA_INVOKER_ROLE_ARN            = aws_iam_role.lambda_invoker_role.arn
       INVOKED_LAMBDA_FUNCTION_NAME       = var.invoked_lambda_function_name
 
+      GAME_STACKS_TABLE_NAME              = var.gamestacks_table_name
       GAME_STACKS_ID_COLUMN_NAME          = var.game_stacks_id_column_name
       GAME_STACKS_CAPACITY_COLUMN_NAME    = var.game_stacks_capacity_column_name
       GAME_STACKS_CAPACITY_VALUE          = var.game_stacks_capacity_value

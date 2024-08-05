@@ -97,6 +97,10 @@ def lambda_handler(event, context):
             'ParameterKey': 'GameStacksServerLinkColumnName',
             'ParameterValue': os.environ["GAME_STACKS_SERVER_LINK_COLUMN_NAME"]
         },
+        {
+            'ParameterKey': 'GameStacksTableName',
+            'ParameterValue': os.environ["GAME_STACKS_TABLE_NAME"]
+        },
     ]
 )  
   res = {

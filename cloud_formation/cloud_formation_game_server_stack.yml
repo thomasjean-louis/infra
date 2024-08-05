@@ -147,10 +147,11 @@ Resources:
             lambda_client = boto3.client('lambda')
                 
             cfn_event = {
-              "game_stacks_id_column_name": "${GameStacksIdColumnName}""
-              "game_stacks_capacity_column_name":"${GameStacksCapacityColumnName}"
-              "game_stacks_capacity_value": "${GameStacksCapacityValue}"
-              "game_stacks_server_link_column_name": "${GameStacksServerLinkColumnName}"
+              "game_stacks_table_name": "${GameStacksTableName}",
+              "game_stacks_id_column_name": "${GameStacksIdColumnName}",
+              "game_stacks_capacity_column_name":"${GameStacksCapacityColumnName}",
+              "game_stacks_capacity_value": "${GameStacksCapacityValue}",
+              "game_stacks_server_link_column_name": "${GameStacksServerLinkColumnName}",
               "game_server_random_string" : "${RandomString}",
               "game_server_hosted_zone_name" : "${HostedZoneName}"
             }
@@ -276,3 +277,8 @@ Parameters:
     Type: String
     Default: default
     Description: DB Link column name
+
+  GameStacksTableName:
+    Type: String
+    Default: default
+    Description: DB table name

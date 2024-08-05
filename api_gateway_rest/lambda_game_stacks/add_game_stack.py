@@ -8,7 +8,7 @@ def lambda_handler(event,context):
 
     dynamodb = boto3.resource('dynamodb') 
     #table name 
-    table = dynamodb.Table(os.environ["GAME_STACKS_TABLE_NAME"])
+    table = dynamodb.Table(event['game_stacks_table_name'])
                             
 
     #inserting values into table 
