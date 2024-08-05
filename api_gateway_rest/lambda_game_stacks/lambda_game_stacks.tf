@@ -101,7 +101,7 @@ variable "game_stacks_server_link_column_name" {
   type = string
 }
 
-variable "invoked_lambda_funciton_name" {
+variable "invoked_lambda_function_name" {
   type = string
 }
 
@@ -417,7 +417,7 @@ data "archive_file" "add_game_stack_zip" {
 }
 
 resource "aws_lambda_function" "lambda_add_game_stack" {
-  function_name    = var.invoked_lambda_funciton_name
+  function_name    = var.invoked_lambda_function_name
   filename         = data.archive_file.create_game_stack_zip.output_path
   source_code_hash = data.archive_file.create_game_stack_zip.output_base64sha256
   role             = aws_iam_role.lambda_api_service_role.arn
@@ -431,6 +431,7 @@ resource "aws_lambda_function" "lambda_add_game_stack" {
       GAME_STACKS_CAPACITY_COLUMN_NAME    = var.game_stacks_capacity_column_name
       GAME_STACKS_CAPACITY_VALUE          = var.game_stacks_capacity_column_name
       GAME_STACKS_SERVER_LINK_COLUMN_NAME = var.game_stacks_server_link_column_name
+      INVOKED_LAMBDA_FUNCTION_NAME        = var.invoked_lambda_function_name
     }
   }
 }

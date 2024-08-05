@@ -180,6 +180,6 @@ variable "create_game_stack_cf_stack_name" {
   default = "game-server-stack"
 }
 
-variable "invoked_lambda_funciton_name" {
+variable "invoked_lambda_function_name" {
   default = "add_game_stack"
 }
