@@ -61,13 +61,15 @@ resource "random_string" "random_string" {
   numeric = false
 }
 
-
+# CF template stored in S3. Need to add etag parameter, otherwise CF template won't be updated
 resource "aws_s3_object" "cloud_formation_game_server_stack" {
   bucket = var.s3-bucket-name
   key    = "cf-templates/cloud_formation_game_server_stack.yml"
   source = "${path.module}/cloud_formation_game_server_stack.yml"
-
+  etag   = filemd5("${path.module}/cloud_formation_game_server_stack.yml")
 }
+
+
 
 output "create_game_stack_cf_template_url" {
   value = "https://${aws_s3_object.cloud_formation_game_server_stack.bucket}.s3.${var.region}.amazonaws.com/${aws_s3_object.cloud_formation_game_server_stack.key}"
