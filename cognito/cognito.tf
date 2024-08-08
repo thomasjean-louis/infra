@@ -84,7 +84,7 @@ resource "aws_acm_certificate_validation" "auth_domaine_name_certificate_validat
 
 
 resource "aws_cognito_user_pool_domain" "cognito_domain" {
-  depends_on      = [aws_acm_certificate_validation.auth_domaine_name_certificate_validation]
+  depends_on      = [aws_route53_record.dns_record, aws_acm_certificate_validation.auth_domaine_name_certificate_validation]
   domain          = aws_acm_certificate.auth_domaine_name_certificate.domain_name
   certificate_arn = aws_acm_certificate.auth_domaine_name_certificate.arn
   user_pool_id    = aws_cognito_user_pool.user_pool.id
