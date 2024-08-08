@@ -58,6 +58,17 @@ variable "subdomain_api" {
   sensitive = true
 }
 
+###### Cognito
+variable "default_cognito_username" {
+  type      = string
+  sensitive = true
+}
+
+variable "default_cognito_password" {
+  type      = string
+  sensitive = true
+}
+
 
 ###### ECS
 

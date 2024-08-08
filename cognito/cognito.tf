@@ -2,6 +2,14 @@ variable "app_name" {
   type = string
 }
 
+variable "default_cognito_username" {
+  type = string
+}
+
+variable "default_cognito_password" {
+  type = string
+}
+
 resource "aws_cognito_user_pool" "user_pool" {
   name = "${var.app_name}-user-pool"
 
@@ -41,7 +49,10 @@ resource "aws_cognito_identity_pool" "identity_pool" {
 
 resource "aws_cognito_user" "default_cognito_user" {
   user_pool_id = aws_cognito_user_pool.user_pool.id
-  username     = "${var.app_name}-default-user"
+  username     = var.default_cognito_username
+  password     = var.default_cognito_password
+
+  enabled = true
 
   attributes = {
     terraform      = true

@@ -212,7 +212,9 @@ module "homepage" {
 
 # Cognito
 module "cognito" {
-  source   = "./cognito"
-  app_name = var.app_name
+  source                   = "./cognito"
+  app_name                 = var.app_name
+  default_cognito_username = var.default_cognito_username
+  default_cognito_password = var.default_cognito_username
 }
 
