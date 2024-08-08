@@ -27,6 +27,7 @@ jobs:
       TF_VAR_subdomain_homepage: ${{secrets.SUBDOMAIN_HOMEPAGE}}
       TF_VAR_subdomain_game_stacks: ${{secrets.SUBDOMAIN_GAME_STACKS}}
       TF_VAR_subdomain_api: ${{secrets.SUBDOMAIN_API}}
+      TF_VAR_subdomain_auth: ${{secrets.SUBDOMAIN_AUTH}}
 
     steps:
       - run: 'echo "ENV: ${{ github.ref_name }}"'

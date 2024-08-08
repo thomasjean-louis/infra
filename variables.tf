@@ -43,6 +43,11 @@ variable "hosted_zone_name" {
   sensitive = true
 }
 
+variable "subdomain_auth" {
+  type      = string
+  sensitive = true
+}
+
 variable "subdomain_homepage" {
   type      = string
   sensitive = true
