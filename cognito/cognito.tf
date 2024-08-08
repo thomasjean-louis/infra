@@ -47,8 +47,8 @@ resource "aws_cognito_user" "default_cognito_user" {
 
   enabled = true
 
-  attributes = {
-    email          = "default@mail.com"
-    email_verified = true
-  }
+  #   attributes = {
+  #     email          = "default@mail.com"
+  #     email_verified = true
+  #   }
 }
