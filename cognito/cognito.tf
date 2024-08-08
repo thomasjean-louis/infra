@@ -22,13 +22,6 @@ resource "aws_cognito_user_pool" "user_pool" {
     temporary_password_validity_days = 7
   }
 
-  schema {
-    name                     = "terraform"
-    attribute_data_type      = "Boolean"
-    mutable                  = false
-    required                 = false
-    developer_only_attribute = false
-  }
 }
 
 resource "aws_cognito_user_pool_client" "user_pool_client" {
@@ -55,7 +48,6 @@ resource "aws_cognito_user" "default_cognito_user" {
   enabled = true
 
   attributes = {
-    terraform      = true
     email          = "default@mail.com"
     email_verified = true
   }
