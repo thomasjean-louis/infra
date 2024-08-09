@@ -74,6 +74,11 @@ variable "default_cognito_password" {
   sensitive = true
 }
 
+variable "default_cognito_mail" {
+  type      = string
+  sensitive = true
+}
+
 
 ###### ECS
 

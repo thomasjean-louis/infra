@@ -6,6 +6,10 @@ variable "default_cognito_username" {
   type = string
 }
 
+variable "default_cognito_mail" {
+  type = string
+}
+
 variable "default_cognito_password" {
   type = string
 }
@@ -83,12 +87,7 @@ resource "aws_acm_certificate_validation" "auth_domaine_name_certificate_validat
 }
 
 
-resource "aws_cognito_user_pool_domain" "cognito_domain" {
-  depends_on      = [aws_route53_record.dns_record, aws_acm_certificate_validation.auth_domaine_name_certificate_validation]
-  domain          = aws_acm_certificate.auth_domaine_name_certificate.domain_name
-  certificate_arn = aws_acm_certificate.auth_domaine_name_certificate.arn
-  user_pool_id    = aws_cognito_user_pool.user_pool.id
-}
+
 
 # Alias
 resource "aws_route53_record" "auth_domain_name_record" {
@@ -111,6 +110,13 @@ resource "aws_route53_record" "dummy_record" {
   records = ["127.0.0.1"]
 }
 
+resource "aws_cognito_user_pool_domain" "cognito_domain" {
+  depends_on      = [aws_route53_record.dummy_record, aws_acm_certificate_validation.auth_domaine_name_certificate_validation]
+  domain          = aws_acm_certificate.auth_domaine_name_certificate.domain_name
+  certificate_arn = aws_acm_certificate.auth_domaine_name_certificate.arn
+  user_pool_id    = aws_cognito_user_pool.user_pool.id
+}
+
 
 # User
 resource "aws_cognito_user" "default_cognito_user" {
@@ -120,8 +126,8 @@ resource "aws_cognito_user" "default_cognito_user" {
 
   enabled = true
 
-  #   attributes = {
-  #     email          = "default@mail.com"
-  #     email_verified = true
-  #   }
+  attributes = {
+    email          = var.default_cognito_mail
+    email_verified = true
+  }
 }

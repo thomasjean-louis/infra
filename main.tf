@@ -219,5 +219,6 @@ module "cognito" {
   hosted_zone_id           = local.hosted_zone_id
   subdomain_auth           = var.subdomain_auth
   hosted_zone_name         = var.hosted_zone_name
+  default_cognito_mail     = var.default_cognito_mail
 }
 
