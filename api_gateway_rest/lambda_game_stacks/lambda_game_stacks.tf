@@ -493,7 +493,23 @@ resource "aws_lambda_function" "lambda_add_game_stack" {
   handler          = "add_game_stack.lambda_handler"
   runtime          = "python3.9"
   timeout          = 20
+}
 
+# DELETE /gamestack
+data "archive_file" "delete_game_stack_zip" {
+  type        = "zip"
+  source_file = "${path.module}/delete_game_stack.py"
+  output_path = "${path.module}/delete_game_stack.zip"
+}
+
+resource "aws_lambda_function" "lambda_delete_game_stack" {
+  function_name    = "delete_game_stack"
+  filename         = data.archive_file.delete_game_stack_zip.output_path
+  source_code_hash = data.archive_file.delete_game_stack_zip.output_base64sha256
+  role             = aws_iam_role.lambda_api_service_role.arn
+  handler          = "delete_game_stack.lambda_handler"
+  runtime          = "python3.9"
+  timeout          = 20
 }
 
 output "lambda_create_game_stack_uri" {
