@@ -281,7 +281,7 @@ Parameters:
     Default: default
     Description: DB Link column name
 
-  GameStaclsCloudFormationStackNameColumn:
+  GameStacksCloudFormationStackNameColumn:
     Type: String
     Default: default
     Description: DB CF stack name column name
