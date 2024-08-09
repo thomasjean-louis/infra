@@ -58,64 +58,64 @@ resource "aws_cognito_identity_pool" "identity_pool" {
   }
 }
 
-# Cognito Domain 
-resource "aws_acm_certificate" "auth_domaine_name_certificate" {
-  domain_name       = "${var.subdomain_auth}.${var.hosted_zone_name}"
-  validation_method = "DNS"
-}
+# # Cognito Domain 
+# resource "aws_acm_certificate" "auth_domaine_name_certificate" {
+#   domain_name       = "${var.subdomain_auth}.${var.hosted_zone_name}"
+#   validation_method = "DNS"
+# }
 
-resource "aws_route53_record" "dns_record" {
-  for_each = {
-    for dvo in aws_acm_certificate.auth_domaine_name_certificate.domain_validation_options : dvo.domain_name => {
-      name   = dvo.resource_record_name
-      record = dvo.resource_record_value
-      type   = dvo.resource_record_type
-    }
-  }
+# resource "aws_route53_record" "dns_record" {
+#   for_each = {
+#     for dvo in aws_acm_certificate.auth_domaine_name_certificate.domain_validation_options : dvo.domain_name => {
+#       name   = dvo.resource_record_name
+#       record = dvo.resource_record_value
+#       type   = dvo.resource_record_type
+#     }
+#   }
 
-  allow_overwrite = true
-  name            = each.value.name
-  records         = [each.value.record]
-  ttl             = 60
-  type            = each.value.type
-  zone_id         = var.hosted_zone_id
-}
+#   allow_overwrite = true
+#   name            = each.value.name
+#   records         = [each.value.record]
+#   ttl             = 60
+#   type            = each.value.type
+#   zone_id         = var.hosted_zone_id
+# }
 
-resource "aws_acm_certificate_validation" "auth_domaine_name_certificate_validation" {
-  certificate_arn         = aws_acm_certificate.auth_domaine_name_certificate.arn
-  validation_record_fqdns = [for record in aws_route53_record.dns_record : record.fqdn]
-}
-
-
+# resource "aws_acm_certificate_validation" "auth_domaine_name_certificate_validation" {
+#   certificate_arn         = aws_acm_certificate.auth_domaine_name_certificate.arn
+#   validation_record_fqdns = [for record in aws_route53_record.dns_record : record.fqdn]
+# }
 
 
-# Alias
-resource "aws_route53_record" "auth_domain_name_record" {
-  name    = aws_cognito_user_pool_domain.cognito_domain.domain
-  type    = "A"
-  zone_id = var.hosted_zone_id
-  alias {
-    evaluate_target_health = false
-    name                   = aws_cognito_user_pool_domain.cognito_domain.cloudfront_distribution
-    zone_id                = aws_cognito_user_pool_domain.cognito_domain.cloudfront_distribution_zone_id
-  }
-}
 
-# Record required to associate a domain name to cognito
-resource "aws_route53_record" "dummy_record" {
-  zone_id = var.hosted_zone_id
-  name    = var.hosted_zone_name
-  type    = "A"
-  ttl     = 300
-  records = ["127.0.0.1"]
-}
 
-resource "aws_cognito_user_pool_domain" "cognito_domain" {
-  depends_on      = [aws_route53_record.dummy_record, aws_acm_certificate_validation.auth_domaine_name_certificate_validation]
-  domain          = aws_acm_certificate.auth_domaine_name_certificate.domain_name
-  certificate_arn = aws_acm_certificate.auth_domaine_name_certificate.arn
-  user_pool_id    = aws_cognito_user_pool.user_pool.id
-}
+# # Alias
+# resource "aws_route53_record" "auth_domain_name_record" {
+#   name    = aws_cognito_user_pool_domain.cognito_domain.domain
+#   type    = "A"
+#   zone_id = var.hosted_zone_id
+#   alias {
+#     evaluate_target_health = false
+#     name                   = aws_cognito_user_pool_domain.cognito_domain.cloudfront_distribution
+#     zone_id                = aws_cognito_user_pool_domain.cognito_domain.cloudfront_distribution_zone_id
+#   }
+# }
+
+# # Record required to associate a domain name to cognito
+# resource "aws_route53_record" "dummy_record" {
+#   zone_id = var.hosted_zone_id
+#   name    = var.hosted_zone_name
+#   type    = "A"
+#   ttl     = 300
+#   records = ["127.0.0.1"]
+# }
+
+# resource "aws_cognito_user_pool_domain" "cognito_domain" {
+#   depends_on      = [aws_route53_record.dummy_record, aws_acm_certificate_validation.auth_domaine_name_certificate_validation]
+#   domain          = aws_acm_certificate.auth_domaine_name_certificate.domain_name
+#   certificate_arn = aws_acm_certificate.auth_domaine_name_certificate.arn
+#   user_pool_id    = aws_cognito_user_pool.user_pool.id
+# }
 
 
 # User
