@@ -194,22 +194,6 @@ module "api_gateway_rest" {
 
 }
 
-# Serverless FrontEnd
-module "homepage" {
-  source                  = "./homepage"
-  region                  = var.region
-  amplify_app_name        = var.amplify_app_name
-  homepage_repository     = var.homepage_repository
-  homepage_branch         = var.homepage_branch
-  subdomain_homepage      = var.subdomain_homepage
-  hosted_zone_name        = var.hosted_zone_name
-  homepage_github_token   = var.homepage_github_token
-  load_balancer_https_url = module.alb_gameserver.load_balancer_https_url
-  proxy_server_port       = var.proxy_server_port
-  api_https_url           = module.api_gateway_rest.api_https_url
-}
-
-
 # Cognito
 module "cognito" {
   source                   = "./cognito"
@@ -221,4 +205,26 @@ module "cognito" {
   hosted_zone_name         = var.hosted_zone_name
   default_cognito_mail     = var.default_cognito_mail
 }
+
+# Serverless FrontEnd
+module "homepage" {
+  depends_on              = [module.cognito]
+  source                  = "./homepage"
+  region                  = var.region
+  amplify_app_name        = var.amplify_app_name
+  homepage_repository     = var.homepage_repository
+  homepage_branch         = var.homepage_branch
+  subdomain_homepage      = var.subdomain_homepage
+  hosted_zone_name        = var.hosted_zone_name
+  homepage_github_token   = var.homepage_github_token
+  load_balancer_https_url = module.alb_gameserver.load_balancer_https_url
+  proxy_server_port       = var.proxy_server_port
+  api_https_url           = module.api_gateway_rest.api_https_url
+  user_pool_id            = module.cognito.user_pool_id
+  user_pool_client_id     = module.cognito.user_pool_client_id
+  identity_pool_id        = module.cognito.identity_pool_id
+}
+
+
+
 

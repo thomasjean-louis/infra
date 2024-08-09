@@ -40,6 +40,18 @@ variable "api_https_url" {
   type = string
 }
 
+variable "user_pool_id" {
+  type = string
+}
+
+variable "user_pool_client_id" {
+  type = string
+}
+
+variable "identity_pool_id" {
+  type = string
+}
+
 # iam Amplify role
 resource "aws_iam_role" "amplify_service_role" {
   name = "amplify_service_role"
@@ -89,7 +101,9 @@ resource "aws_amplify_app" "homepage_app" {
         build:
           commands:
             - echo "VITE_API_HTTPS_URL=${var.api_https_url}" >> .env
-            - echo "VITE_LOAD_BALANCER_HTTPS_URL=${var.load_balancer_https_url}:${var.proxy_server_port}" >> .env
+            - echo "VITE_USER_POOL_ID=${var.user_pool_id}" >> .env
+            - echo "VITE_USER_POOL_CLIENT_ID=${var.user_pool_client_id}" >> .env
+            - echo "VITE_IDENTITY_POOL_ID=${var.identity_pool_id}" >> .env
             - cat .env # This is optional, just to verify the contents of .env
             - yarn run build
       artifacts:
