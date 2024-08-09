@@ -153,7 +153,7 @@ Resources:
               "game_stacks_capacity_column_name":"${GameStacksCapacityColumnName}",
               "game_stacks_capacity_value": "${GameStacksCapacityValue}",
               "game_stacks_server_link_column_name": "${GameStacksServerLinkColumnName}",
-              "game_stacks_cloud_formation_stack_name_column": "${GameStaclsCloudFormationStackNameColumn}",
+              "game_stacks_cloud_formation_stack_name_column": "${GameStacksCloudFormationStackNameColumn}",
               "game_stacks_cloud_formation_stack_name_value": "${AWS::StackName}",
               "game_server_random_string" : "${RandomString}",
               "game_server_hosted_zone_name" : "${HostedZoneName}"
