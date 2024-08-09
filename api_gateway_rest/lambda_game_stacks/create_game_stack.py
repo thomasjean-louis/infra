@@ -101,6 +101,11 @@ def lambda_handler(event, context):
             'ParameterKey': 'GameStacksTableName',
             'ParameterValue': os.environ["GAME_STACKS_TABLE_NAME"]
         },
+        {
+            'ParameterKey': 'GameStacksCloudFormationStackNameColumn',
+            'ParameterValue': os.environ["GAME_STACKS_CLOUD_FORMATION_STACK_NAME_COLUMN"]
+        }
+        
     ]
 )  
   res = {

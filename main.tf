@@ -169,10 +169,12 @@ module "lambda_game_stacks" {
   game_stacks_id_column_name       = var.game_stacks_id_column_name
   game_stacks_capacity_column_name = var.game_stacks_capacity_column_name
 
-  game_stacks_capacity_value          = var.game_stacks_capacity_value
-  game_stacks_server_link_column_name = var.game_stacks_server_link_column_name
-  invoked_lambda_function_name        = var.invoked_lambda_function_name
+  game_stacks_capacity_value                    = var.game_stacks_capacity_value
+  game_stacks_server_link_column_name           = var.game_stacks_server_link_column_name
+  game_stacks_cloud_formation_stack_name_column = var.game_stacks_cloud_formation_stack_name_column
+  invoked_lambda_function_name                  = var.invoked_lambda_function_name
 }
+
 
 module "api_gateway_rest" {
   depends_on         = [module.dynamodb, module.lambda_game_stacks]

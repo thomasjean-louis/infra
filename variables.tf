@@ -195,6 +195,10 @@ variable "game_stacks_server_link_column_name" {
   default = "ServerLink"
 }
 
+variable "game_stacks_cloud_formation_stack_name_column" {
+  default = "CloudFormationStackName"
+}
+
 
 ## Lambda
 variable "create_game_stack_cf_stack_name" {
