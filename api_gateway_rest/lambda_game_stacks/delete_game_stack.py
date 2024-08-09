@@ -17,19 +17,26 @@ def lambda_handler(event, context):
 
     logger.info("stack name : "+item[os.environ["GAME_STACKS_CLOUD_FORMATION_STACK_NAME_COLUMN"]])
 
-    # cloud_formation_client = boto3.client('cloudformation')    
-    # cloud_formation_client.delete_stack(
-    #   StackName=os.environ["GAME_STACKS_TABLE_NAME"]',
-    #   RetainResources=[
-    #     'string',
-    #   ],
-    #   RoleARN='string',
-    #   ClientRequestToken='string',
-    #   DeletionMode='FORCE_DELETE_STACK'    
-    # )
+    cloud_formation_client = boto3.client('cloudformation')    
+
+    cloud_formation_client.delete_stack(StackName=os.environ["GAME_STACKS_TABLE_NAME"],
+      RetainResources=[
+        'string',
+      ],
+      RoleARN='string',
+      ClientRequestToken='string',
+      DeletionMode='FORCE_DELETE_STACK' 
+    )     
+
 
     # Update record in dynamodb to hide it
-   
+    table.update_item(
+        Key={"ID": os.environ["GAME_STACK_ID"]},
+        UpdateExpression="SET "+os.environ["GAME_STACK_IS_ACTIVE_COLUMN"]+" = :val1",
+        ExpressionAttributeValues={
+        ':val1': False
+        }
+    )
 
 
     # logger.info(event)

@@ -187,7 +187,8 @@ resource "aws_iam_role_policy" "dynamodb_service_policy" {
         Action = [
           "dynamodb:Scan",
           "dynamodb:PutItem",
-          "dynamodb:GetItem"
+          "dynamodb:GetItem",
+          "dynamodb:UpdateItem"
         ]
         Effect   = "Allow"
         Resource = "arn:aws:dynamodb:${var.region}:${var.account_id}:table/${var.gamestacks_table_name}"
@@ -511,6 +512,18 @@ resource "aws_lambda_function" "lambda_delete_game_stack" {
   handler          = "delete_game_stack.lambda_handler"
   runtime          = "python3.9"
   timeout          = 20
+
+  environment {
+    variables = {
+      GAME_STACKS_TABLE_NAME                        = var.gamestacks_table_name
+      GAME_STACKS_ID_COLUMN_NAME                    = var.game_stacks_id_column_name
+      GAME_STACKS_CAPACITY_COLUMN_NAME              = var.game_stacks_capacity_column_name
+      GAME_STACKS_CAPACITY_VALUE                    = var.game_stacks_capacity_value
+      GAME_STACKS_SERVER_LINK_COLUMN_NAME           = var.game_stacks_server_link_column_name
+      GAME_STACKS_CLOUD_FORMATION_STACK_NAME_COLUMN = var.game_stacks_cloud_formation_stack_name_column
+
+    }
+  }
 }
 
 output "lambda_create_game_stack_uri" {
