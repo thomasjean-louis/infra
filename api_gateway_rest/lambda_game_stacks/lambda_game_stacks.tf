@@ -424,7 +424,11 @@ resource "aws_lambda_function" "lambda_get_game_stacks" {
 
   environment {
     variables = {
-      GAME_STACKS_TABLE_NAME = var.gamestacks_table_name
+      GAME_STACKS_TABLE_NAME              = var.gamestacks_table_name
+      GAME_STACKS_ID_COLUMN_NAME          = var.game_stacks_id_column_name
+      GAME_STACKS_CAPACITY_COLUMN_NAME    = var.game_stacks_capacity_column_name
+      GAME_STACKS_SERVER_LINK_COLUMN_NAME = var.game_stacks_server_link_column_name
+      GAME_STACKS_IS_ACTIVE_COLUMN_NAME   = var.game_stacks_is_active_columnn_name
     }
   }
 }
