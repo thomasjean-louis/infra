@@ -155,6 +155,7 @@ resource "aws_lambda_permission" "permission_create_game_stack" {
 resource "aws_apigatewayv2_integration" "integration_delete_game_stack" {
   api_id                 = aws_apigatewayv2_api.api.id
   integration_type       = "AWS_PROXY"
+  connection_type        = "INTERNET"
   integration_method     = "POST"
   integration_uri        = var.lambda_delete_game_stack_uri
   payload_format_version = "2.0"
