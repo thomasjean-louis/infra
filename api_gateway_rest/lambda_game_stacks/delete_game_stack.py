@@ -26,7 +26,9 @@ def lambda_handler(event, context):
             
           # Retreive CF_stack_name from dynamodb item id
           dynamodb_client = boto3.client('dynamodb')
-          table = dynamodb_client.Table(os.environ["GAME_STACKS_TABLE_NAME"])
+          dynamodb = boto3.resource("dynamodb")
+
+          table = dynamodb.Table(os.environ["GAME_STACKS_TABLE_NAME"])
       
           item = table.get_item(Key={"id": path_params['id']})
       
