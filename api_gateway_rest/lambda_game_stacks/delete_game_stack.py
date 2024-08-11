@@ -16,11 +16,13 @@ def lambda_handler(event, context):
     body = {}
     statusCode = 200
 
+    logger.info("delete_game_stack")
+
     try:
         route_key = event['routeKey']
         path_params = event['pathParameters']
         
-        if route_key == 'DELETE /items/{id}':
+        if route_key == 'DELETE /gamestack/{id}':
             
           # Retreive CF_stack_name from dynamodb item id
           dynamodb_client = boto3.client('dynamodb')
@@ -54,7 +56,7 @@ def lambda_handler(event, context):
           body = f"Deleted item {path_params['id']}"
 
         else:
-            raise ValueError(f"Unsupported route: '{route_key}'")
+            raise ValueError(f"Unsupported routee: '{route_key}'")
     except Exception as err:
       statusCode = 400
       body = str(err)
