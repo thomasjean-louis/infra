@@ -20,30 +20,27 @@ def lambda_handler(event, context):
 
     try:
         route_key = event['routeKey']
+        
         path_params = event['pathParameters']
         
         if route_key == 'DELETE /gamestack/{id}':
             
           # Retreive CF_stack_name from dynamodb item id
-          dynamodb_client = boto3.client('dynamodb')
           dynamodb = boto3.resource("dynamodb")
 
           table = dynamodb.Table(os.environ["GAME_STACKS_TABLE_NAME"])
       
-          item = table.get_item(Key={"ID": path_params['id']})
+          response = table.get_item(Key={"ID": path_params['id']})
           
-          cf_stack_name = item["Item"][os.environ["GAME_STACKS_CLOUD_FORMATION_STACK_NAME_COLUMN"]]
+          stack_id = response["Item"][os.environ["GAME_STACKS_CLOUD_FORMATION_STACK_NAME_COLUMN"]]
 
-          logger.info("stack name : "+ cf_stack_name)
+          logger.info("stack name : "+ stack_id)
       
           cloud_formation_client = boto3.client('cloudformation')    
       
           # Delete CF Stack
-          cloud_formation_client.delete_stack(StackName=cf_stack_name,
-            RetainResources=[
-              'string',
-            ],
-            RoleARN='string',
+          cloud_formation_client.delete_stack(StackName=stack_id,
+            RoleARN=os.environ["ARN_ROLE_DELETE_CLOUD_FORMATION"],
             ClientRequestToken='string',
             DeletionMode='FORCE_DELETE_STACK' 
           )  

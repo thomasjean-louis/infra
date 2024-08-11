@@ -527,6 +527,7 @@ resource "aws_lambda_function" "lambda_delete_game_stack" {
       GAME_STACKS_ID_COLUMN_NAME                    = var.game_stacks_id_column_name
       GAME_STACKS_CLOUD_FORMATION_STACK_NAME_COLUMN = var.game_stacks_cloud_formation_stack_name_column
       GAME_STACK_IS_ACTIVE_COLUMN                   = var.game_stacks_is_active_columnn_name
+      ARN_ROLE_DELETE_CLOUD_FORMATION               = aws_iam_role.lambda_api_service_role.arn
     }
   }
 }
