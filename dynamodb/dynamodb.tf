@@ -72,6 +72,9 @@ resource "aws_dynamodb_table_item" "gamestack_03" {
     "ServerLink" : {
       "S" : "server_c.com"
     },
+    "IsActive" : {
+      "BOOL" : false
+    },
   })
 }
 
