@@ -22,8 +22,11 @@ def lambda_handler(event, context):
             # logger.info(body)
             responseBody = []
             for items in body:
+                if not items[os.environ['GAME_STACKS_IS_ACTIVE_COLUMN_NAME']]:                  
+                  continue
                 responseItems = [
                     {os.environ["GAME_STACKS_ID_COLUMN_NAME"]: items[os.environ["GAME_STACKS_ID_COLUMN_NAME"]], os.environ["GAME_STACKS_CAPACITY_COLUMN_NAME"]: float(items[os.environ["GAME_STACKS_CAPACITY_COLUMN_NAME"]]), os.environ['GAME_STACKS_SERVER_LINK_COLUMN_NAME']: items[os.environ['GAME_STACKS_SERVER_LINK_COLUMN_NAME']],os.environ['GAME_STACKS_IS_ACTIVE_COLUMN_NAME']: items[os.environ['GAME_STACKS_IS_ACTIVE_COLUMN_NAME']],}]
+                
                 responseBody.append(responseItems)
             body = responseBody
     except KeyError:
