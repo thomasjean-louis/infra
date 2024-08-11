@@ -199,6 +199,10 @@ variable "game_stacks_cloud_formation_stack_name_column" {
   default = "CloudFormationStackName"
 }
 
+variable "game_stacks_is_active_columnn_name" {
+  default = "IsActive"
+}
+
 
 ## Lambda
 variable "create_game_stack_cf_stack_name" {

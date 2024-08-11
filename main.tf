@@ -173,6 +173,7 @@ module "lambda_game_stacks" {
   game_stacks_server_link_column_name           = var.game_stacks_server_link_column_name
   game_stacks_cloud_formation_stack_name_column = var.game_stacks_cloud_formation_stack_name_column
   invoked_lambda_function_name                  = var.invoked_lambda_function_name
+  game_stacks_is_active_columnn_name            = var.game_stacks_is_active_columnn_name
 }
 
 
@@ -193,6 +194,9 @@ module "api_gateway_rest" {
 
   lambda_create_game_stack_uri  = module.lambda_game_stacks.lambda_create_game_stack_uri
   lambda_create_game_stack_name = module.lambda_game_stacks.lambda_create_game_stack_name
+
+  lambda_delete_game_stack_uri  = module.lambda_game_stacks.lambda_delete_game_stack_uri
+  lambda_delete_game_stack_name = module.lambda_game_stacks.lambda_delete_game_stack_name
 
 }
 

@@ -109,6 +109,10 @@ variable "game_stacks_cloud_formation_stack_name_column" {
   type = string
 }
 
+variable "game_stacks_is_active_columnn_name" {
+  type = string
+}
+
 
 ## Lambda scripts
 
@@ -475,7 +479,7 @@ resource "aws_lambda_function" "lambda_create_game_stack" {
       GAME_STACKS_CAPACITY_VALUE                    = var.game_stacks_capacity_value
       GAME_STACKS_SERVER_LINK_COLUMN_NAME           = var.game_stacks_server_link_column_name
       GAME_STACKS_CLOUD_FORMATION_STACK_NAME_COLUMN = var.game_stacks_cloud_formation_stack_name_column
-
+      GAME_STACKS_IS_ACTIVE_COLUMN_NAME             = var.game_stacks_is_active_columnn_name
     }
   }
 }
@@ -517,11 +521,8 @@ resource "aws_lambda_function" "lambda_delete_game_stack" {
     variables = {
       GAME_STACKS_TABLE_NAME                        = var.gamestacks_table_name
       GAME_STACKS_ID_COLUMN_NAME                    = var.game_stacks_id_column_name
-      GAME_STACKS_CAPACITY_COLUMN_NAME              = var.game_stacks_capacity_column_name
-      GAME_STACKS_CAPACITY_VALUE                    = var.game_stacks_capacity_value
-      GAME_STACKS_SERVER_LINK_COLUMN_NAME           = var.game_stacks_server_link_column_name
       GAME_STACKS_CLOUD_FORMATION_STACK_NAME_COLUMN = var.game_stacks_cloud_formation_stack_name_column
-
+      GAME_STACK_IS_ACTIVE_COLUMN                   = var.game_stacks_is_active_columnn_name
     }
   }
 }
@@ -533,5 +534,15 @@ output "lambda_create_game_stack_uri" {
 output "lambda_create_game_stack_name" {
   value = aws_lambda_function.lambda_create_game_stack.function_name
 }
+
+output "lambda_delete_game_stack_uri" {
+  value = aws_lambda_function.lambda_delete_game_stack.invoke_arn
+}
+
+output "lambda_delete_game_stack_name" {
+  value = aws_lambda_function.lambda_delete_game_stack.function_name
+}
+
+
 
 

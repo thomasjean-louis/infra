@@ -47,6 +47,14 @@ variable "lambda_create_game_stack_name" {
   type = string
 }
 
+variable "lambda_delete_game_stack_uri" {
+  type = string
+}
+
+variable "lambda_delete_game_stack_name" {
+  type = string
+}
+
 
 ## CloudWatch
 resource "aws_cloudwatch_log_group" "game_stacks_api_log_group" {
@@ -141,6 +149,34 @@ resource "aws_lambda_permission" "permission_create_game_stack" {
 
   source_arn = "${aws_apigatewayv2_api.api.execution_arn}/*/*"
 }
+
+
+# Delete /gamestack/{id}
+resource "aws_apigatewayv2_integration" "integration_delete_game_stack" {
+  api_id                 = aws_apigatewayv2_api.api.id
+  integration_type       = "AWS_PROXY"
+  integration_method     = "POST"
+  integration_uri        = var.lambda_delete_game_stack_uri
+  payload_format_version = "2.0"
+}
+
+resource "aws_apigatewayv2_route" "route_delete_game_stack" {
+  api_id    = aws_apigatewayv2_api.api.id
+  route_key = "DELETE /gamestack/{id}"
+  target    = "integrations/${aws_apigatewayv2_integration.integration_delete_game_stack.id}"
+
+}
+
+resource "aws_lambda_permission" "permission_delete_game_stack" {
+  statement_id  = "AllowExecutionFromAPIGateway"
+  action        = "lambda:InvokeFunction"
+  function_name = var.lambda_delete_game_stack_name
+  principal     = "apigateway.amazonaws.com"
+
+  source_arn = "${aws_apigatewayv2_api.api.execution_arn}/*/*"
+}
+
+
 
 
 # API Gateway domain name
