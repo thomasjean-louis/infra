@@ -39,11 +39,7 @@ def lambda_handler(event, context):
           cloud_formation_client = boto3.client('cloudformation')    
       
           # Delete CF Stack
-          cloud_formation_client.delete_stack(StackName=stack_id,
-            RoleARN=os.environ["ARN_ROLE_DELETE_CLOUD_FORMATION"],
-            ClientRequestToken='string',
-            DeletionMode='FORCE_DELETE_STACK' 
-          )  
+          cloud_formation_client.delete_stack(StackName=stack_id)  
 
           # Update record in dynamodb to hide it
           table.update_item(
