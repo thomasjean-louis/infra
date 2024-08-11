@@ -30,7 +30,7 @@ def lambda_handler(event, context):
 
           table = dynamodb.Table(os.environ["GAME_STACKS_TABLE_NAME"])
       
-          item = table.get_item(Key={"id": path_params['id']})
+          item = table.get_item(Key={"ID": path_params['id']})
       
           logger.info("stack name : "+item[os.environ["GAME_STACKS_CLOUD_FORMATION_STACK_NAME_COLUMN"]])
       
