@@ -32,6 +32,9 @@ resource "aws_dynamodb_table_item" "gamestack_01" {
     "ServerLink" : {
       "S" : "server_a.com"
     },
+    "IsActive" : {
+      "BOOL" : true
+    },
   })
 }
 
@@ -48,6 +51,9 @@ resource "aws_dynamodb_table_item" "gamestack_02" {
     },
     "ServerLink" : {
       "S" : "server_b.com"
+    },
+    "IsActive" : {
+      "BOOL" : true
     },
   })
 }
