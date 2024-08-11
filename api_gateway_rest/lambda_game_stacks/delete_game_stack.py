@@ -22,6 +22,8 @@ def lambda_handler(event, context):
         route_key = event['routeKey']
         
         path_params = event['pathParameters']
+
+        responseBody = []
         
         if route_key == 'DELETE /gamestack/{id}':
             
@@ -49,8 +51,8 @@ def lambda_handler(event, context):
               ':val1': False
               }
           )
-
-          body = f"Deleted item {path_params['id']}"
+          responseBody.append("Deleted item {path_params['id']}")
+          body = responseBody
 
         else:
             raise ValueError(f"Unsupported routee: '{route_key}'")
