@@ -31,13 +31,15 @@ def lambda_handler(event, context):
           table = dynamodb.Table(os.environ["GAME_STACKS_TABLE_NAME"])
       
           item = table.get_item(Key={"ID": path_params['id']})
-      
-          logger.info("stack name : "+item[os.environ["GAME_STACKS_CLOUD_FORMATION_STACK_NAME_COLUMN"]])
+          
+          cf_stack_name = item["Item"][os.environ["GAME_STACKS_CLOUD_FORMATION_STACK_NAME_COLUMN"]]
+
+          logger.info("stack name : "+ cf_stack_name)
       
           cloud_formation_client = boto3.client('cloudformation')    
       
           # Delete CF Stack
-          cloud_formation_client.delete_stack(StackName=os.environ["GAME_STACKS_TABLE_NAME"],
+          cloud_formation_client.delete_stack(StackName=cf_stack_name,
             RetainResources=[
               'string',
             ],
