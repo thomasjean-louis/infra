@@ -16,7 +16,6 @@ jobs:
       TF_VAR_web_server_image: "thomasjeanlouis1/webserver:${{ vars.WEB_SERVER_DOCKER_IMAGE }}"
       TF_VAR_homepage_repository: ${{secrets.HOMEPAGE_REPOSITORY}}
       TF_VAR_homepage_branch: ${{vars.HOMEPAGE_BRANCH}}
-      TF_VAR_homepage_domain_name: ${{secrets.HOMEPAGE_DOMAIN_NAME}}
       TF_VAR_homepage_github_token: ${{secrets.HOMEPAGE_GITHUB_TOKEN}}
       TF_VAR_content_server_address: ${{secrets.CONTENT_SERVER_ADDRESS}}
       TF_VAR_game_server_name_container: ${{secrets.GAME_SERVER_NAME_CONTAINER}}
