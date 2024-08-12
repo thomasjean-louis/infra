@@ -149,6 +149,11 @@ resource "aws_amplify_webhook" "build_branch" {
 # Build Amplify website
 resource "null_resource" "amplify-webhook-url" {
   depends_on = [aws_amplify_webhook.build_branch]
+  triggers = {
+
+    always_run = timestamp()
+
+  }
   provisioner "local-exec" {
     command = <<EOT
         curl -X POST \
