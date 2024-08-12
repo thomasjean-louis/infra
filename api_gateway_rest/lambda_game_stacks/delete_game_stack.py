@@ -45,13 +45,14 @@ def lambda_handler(event, context):
 
           # Update record in dynamodb to hide it
           table.update_item(
+              ConditionExpression="attribute_exists(ID)",
               Key={"ID": path_params['id']},
               UpdateExpression="SET "+os.environ["GAME_STACK_IS_ACTIVE_COLUMN"]+" = :val1",
               ExpressionAttributeValues={
               ':val1': False
               }
           )
-          responseBody.append("Deleted item {path_params['id']}")
+          responseBody.append("Deleted item")
           body = responseBody
 
         else:
