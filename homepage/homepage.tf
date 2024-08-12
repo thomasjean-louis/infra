@@ -90,7 +90,7 @@ resource "aws_iam_role_policy_attachment" "AdministratorAccess-Amplify-attach" {
 
 
 resource "aws_amplify_app" "homepage_app" {
-  name        = "${var.amplify_app_name}_${var.deployment_branch}"
+  name        = var.amplify_app_name
   oauth_token = var.homepage_github_token
   repository  = var.homepage_repository
 
@@ -130,7 +130,7 @@ resource "aws_amplify_app" "homepage_app" {
 
 resource "aws_amplify_branch" "homepage_branch" {
   app_id            = aws_amplify_app.homepage_app.id
-  branch_name       = var.deployment_branch
+  branch_name       = var.homepage_branch
   enable_auto_build = true
 
   stage = "PRODUCTION"
@@ -141,7 +141,7 @@ resource "aws_amplify_webhook" "build_branch" {
   depends_on = [aws_amplify_branch.homepage_branch]
 
   app_id      = aws_amplify_app.homepage_app.id
-  branch_name = var.deployment_branch
+  branch_name = var.homepage_branch
   description = "trigger-amplify-build"
 }
 
@@ -167,6 +167,6 @@ resource "aws_amplify_domain_association" "domain_association" {
 
   sub_domain {
     branch_name = aws_amplify_branch.homepage_branch.branch_name
-    prefix      = var.homepage_branch
+    prefix      = var.deployment_branch
   }
 }
