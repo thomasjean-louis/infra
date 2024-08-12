@@ -31,7 +31,7 @@ variable "deployment_branch" {
 }
 
 resource "aws_cognito_user_pool" "user_pool" {
-  name = "${var.app_name}-user-pool-${deployment_branch}"
+  name = "${var.app_name}-user-pool-${var.deployment_branch}"
 
   password_policy {
     minimum_length                   = 6
@@ -47,7 +47,7 @@ resource "aws_cognito_user_pool" "user_pool" {
 # User Pool
 
 resource "aws_cognito_user_pool_client" "user_pool_client" {
-  name                         = "${var.app_name}-user-pool_client-${deployment_branch}"
+  name                         = "${var.app_name}-user-pool_client-${var.deployment_branch}"
   user_pool_id                 = aws_cognito_user_pool.user_pool.id
   supported_identity_providers = ["COGNITO"]
 }
