@@ -12,7 +12,7 @@ variable "deployment_branch" {
 }
 
 resource "aws_dynamodb_table" "gamestacks" {
-  name         = var.gamestacks_table_name + "_" + var.deployment_branch
+  name         = var.gamestacks_table_name + "-" + var.deployment_branch
   hash_key     = var.game_stacks_id_column_name
   billing_mode = "PAY_PER_REQUEST"
   attribute {
