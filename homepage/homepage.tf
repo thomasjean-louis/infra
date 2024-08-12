@@ -141,7 +141,7 @@ resource "aws_amplify_webhook" "build_branch" {
   depends_on = [aws_amplify_branch.homepage_branch]
 
   app_id      = aws_amplify_app.homepage_app.id
-  branch_name = var.homepage_branch
+  branch_name = var.deployment_branch
   description = "trigger-amplify-build"
 }
 
