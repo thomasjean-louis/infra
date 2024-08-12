@@ -31,26 +31,103 @@ variable "private_subnet_b_cidr_block" {
   default = "10.0.4.0/24"
 }
 
+###### Project
+variable "app_name" {
+  type      = string
+  sensitive = true
+}
+
+variable "deployment_branch" {
+  type      = string
+  sensitive = true
+}
+
+###### R53
+variable "hosted_zone_name" {
+  type      = string
+  sensitive = true
+}
+
+variable "subdomain_auth" {
+  type      = string
+  sensitive = true
+}
+
+variable "subdomain_homepage" {
+  type      = string
+  sensitive = true
+}
+
+variable "subdomain_game_stacks" {
+  type      = string
+  sensitive = true
+}
+
+variable "subdomain_api" {
+  type      = string
+  sensitive = true
+}
+
+###### Cognito
+variable "default_cognito_username" {
+  type      = string
+  sensitive = true
+}
+
+variable "default_cognito_password" {
+  type      = string
+  sensitive = true
+}
+
+variable "default_cognito_mail" {
+  type      = string
+  sensitive = true
+}
 
 
 ###### ECS
 
 ## Global
 variable "content_server_address" {
-  default = "d18ztv6taz5um2.cloudfront.net"
+  type      = string
+  sensitive = true
+}
+
+## Proxy
+variable "proxy_server_name_container" {
+  type      = string
+  sensitive = true
+}
+
+
+variable "proxy_server_port" {
+  default = 27961
+}
+
+variable "proxy_server_cpu" {
+  default = 1024
+}
+
+variable "proxy_server_ram" {
+  default = 2048
+}
+
+variable "proxy_server_image" {
+  default = ""
 }
 
 ## GameServer
 variable "game_server_name_container" {
-  default= "gameserver"
+  type      = string
+  sensitive = true
 }
 
 variable "game_server_cpu" {
-  default = 1024
+  default = 2048
 }
 
 variable "game_server_ram" {
-  default = 2048
+  default = 4096
 }
 
 variable "game_server_port" {
@@ -61,25 +138,82 @@ variable "game_server_image" {
   default = ""
 }
 
-## WebServer 
-variable "web_server_name_container" {
-  default= "webserver"
+# ## WebServer 
+# variable "web_server_name_container" {
+#   default = "webserver"
+# }
+
+# variable "web_server_cpu" {
+#   default = 1024
+# }
+
+# variable "web_server_ram" {
+#   default = 2048
+# }
+
+# variable "web_server_port" {
+#   default = 443
+# }
+
+# variable "web_server_image" {
+#   default = ""
+
+# }
+
+## Homepage
+variable "amplify_app_name" {
+  default = "homepage"
 }
 
-variable "web_server_cpu" {
-  default = 1024
+variable "homepage_repository" {
+  type      = string
+  sensitive = true
 }
 
-variable "web_server_ram" {
-  default = 2048
+variable "homepage_branch" {
+  default = "default_branch"
 }
 
-variable "web_server_port" {
-  default = 80
+variable "homepage_github_token" {
+  type      = string
+  sensitive = true
 }
 
-variable "web_server_image" {
-  default = ""
-
+## DynamoDB
+variable "gamestacks_table_name" {
+  default = "gamestacks"
 }
 
+variable "game_stacks_id_column_name" {
+  default = "ID"
+}
+
+variable "game_stacks_capacity_column_name" {
+  default = "Capacity"
+}
+
+variable "game_stacks_capacity_value" {
+  default = 4
+}
+
+variable "game_stacks_server_link_column_name" {
+  default = "ServerLink"
+}
+
+variable "game_stacks_cloud_formation_stack_name_column" {
+  default = "CloudFormationStackName"
+}
+
+variable "game_stacks_is_active_columnn_name" {
+  default = "IsActive"
+}
+
+
+## Lambda
+variable "create_game_stack_cf_stack_name" {
+  default = "game-server-stack"
+}
+
+variable "invoked_lambda_function_name" {
+  default = "add_game_stack"
+}

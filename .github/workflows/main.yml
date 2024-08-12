@@ -1,23 +1,39 @@
 name: "infraWorkflow"
-on: 
+on:
   push:
   workflow_dispatch: {}
-  
-jobs:   
+
+jobs:
   deploy:
     environment: ${{ github.ref_name }}
-    runs-on: ubuntu-latest    
+    runs-on: ubuntu-latest
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY_INFRA }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY_INFRA }}
+      TF_VAR_deployment_branch: ${{secrets.DEPLOYMENT_BRANCH}}
       TF_VAR_game_server_image: "thomasjeanlouis1/gameserver:${{ vars.GAME_SERVER_DOCKER_IMAGE }}"
+      TF_VAR_proxy_server_image: "thomasjeanlouis1/proxy:${{ vars.PROXY_SERVER_DOCKER_IMAGE }}"
       TF_VAR_web_server_image: "thomasjeanlouis1/webserver:${{ vars.WEB_SERVER_DOCKER_IMAGE }}"
-    #if: ${{ !github.event.client_payload.passed == github.ref_name }} 
+      TF_VAR_homepage_repository: ${{secrets.HOMEPAGE_REPOSITORY}}
+      TF_VAR_homepage_branch: ${{vars.HOMEPAGE_BRANCH}}
+      TF_VAR_homepage_domain_name: ${{secrets.HOMEPAGE_DOMAIN_NAME}}
+      TF_VAR_homepage_github_token: ${{secrets.HOMEPAGE_GITHUB_TOKEN}}
+      TF_VAR_content_server_address: ${{secrets.CONTENT_SERVER_ADDRESS}}
+      TF_VAR_game_server_name_container: ${{secrets.GAME_SERVER_NAME_CONTAINER}}
+      TF_VAR_proxy_server_name_container: ${{secrets.PROXY_SERVER_NAME_CONTAINER}}
+      TF_VAR_app_name: ${{secrets.APP_NAME}}
+      TF_VAR_hosted_zone_name: ${{secrets.HOSTED_ZONE_NAME}}
+      TF_VAR_default_cognito_username: ${{secrets.DEFAULT_COGNITO_USERNAME}}
+      TF_VAR_default_cognito_password: ${{secrets.DEFAULT_COGNITO_PASSWORD}}
+      TF_VAR_default_cognito_mail: ${{secrets.DEFAULT_COGNITO_MAIL}}
+      TF_VAR_subdomain_homepage: ${{secrets.SUBDOMAIN_HOMEPAGE}}
+      TF_VAR_subdomain_game_stacks: ${{secrets.SUBDOMAIN_GAME_STACKS}}
+      TF_VAR_subdomain_api: ${{secrets.SUBDOMAIN_API}}
+      TF_VAR_subdomain_auth: ${{secrets.SUBDOMAIN_AUTH}}
+
     steps:
       - run: 'echo "ENV: ${{ github.ref_name }}"'
-      - run: 'echo "branche dev"'
       - name: Checkout code
         uses: actions/checkout@v4
-      # - run: terraform init -backend-config="access_key=${{ secrets.ACCESS_KEY_STATE }}" -backend-config="secret_key=${{ secrets.SECRET_ACCESS_KEY_STATE }}"           
-      # - run: terraform apply -auto-approve
-          
+      - run: terraform init -backend-config="access_key=${{ secrets.ACCESS_KEY_STATE }}" -backend-config="secret_key=${{ secrets.SECRET_ACCESS_KEY_STATE }}"
+      - run: terraform apply -auto-approve

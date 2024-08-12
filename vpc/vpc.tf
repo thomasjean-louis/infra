@@ -1,3 +1,7 @@
+variable "deployment_branch" {
+  type = string
+}
+
 variable "az1" {
   type = string
 }
@@ -29,11 +33,15 @@ variable "private_subnet_b_cidr_block" {
 
 resource "aws_vpc" "vpc" {
   cidr_block = var.vpc_cidr_block
+  tags = {
+    Name = "vpc_${var.deployment_branch}"
+  }
 }
 
 output "vpc_id" {
   value = aws_vpc.vpc.id
 }
+
 
 resource "aws_subnet" "public_subnet_a" {
   depends_on        = [aws_vpc.vpc]
@@ -42,7 +50,7 @@ resource "aws_subnet" "public_subnet_a" {
   availability_zone = var.az1
 
   tags = {
-    Name = "public_subnet_a"
+    Name = "public_subnet_a_${var.deployment_branch}"
   }
 
 }
@@ -54,7 +62,7 @@ resource "aws_subnet" "private_subnet_a" {
   availability_zone = var.az1
 
   tags = {
-    Name = "private_subnet_a"
+    Name = "private_subnet_a_${var.deployment_branch}"
   }
 
 }
@@ -66,7 +74,7 @@ resource "aws_subnet" "public_subnet_b" {
   availability_zone = var.az2
 
   tags = {
-    Name = "public_subnet_b"
+    Name = "public_subnet_b_${var.deployment_branch}"
   }
 
 }
@@ -94,7 +102,7 @@ resource "aws_subnet" "private_subnet_b" {
   availability_zone = var.az2
 
   tags = {
-    Name = "private_subnet_b"
+    Name = "private_subnet_b_${var.deployment_branch}"
   }
 
 }
@@ -139,7 +147,7 @@ resource "aws_route_table" "private_route_table" {
   depends_on = [aws_vpc.vpc]
   vpc_id     = aws_vpc.vpc.id
   route {
-    cidr_block = "0.0.0.0/0"
+    cidr_block     = "0.0.0.0/0"
     nat_gateway_id = aws_nat_gateway.nat_gateway.id
   }
 }
