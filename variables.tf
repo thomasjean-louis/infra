@@ -37,6 +37,11 @@ variable "app_name" {
   sensitive = true
 }
 
+variable "deployment_branch" {
+  type      = string
+  sensitive = true
+}
+
 ###### R53
 variable "hosted_zone_name" {
   type      = string
@@ -133,27 +138,27 @@ variable "game_server_image" {
   default = ""
 }
 
-## WebServer 
-variable "web_server_name_container" {
-  default = "webserver"
-}
+# ## WebServer 
+# variable "web_server_name_container" {
+#   default = "webserver"
+# }
 
-variable "web_server_cpu" {
-  default = 1024
-}
+# variable "web_server_cpu" {
+#   default = 1024
+# }
 
-variable "web_server_ram" {
-  default = 2048
-}
+# variable "web_server_ram" {
+#   default = 2048
+# }
 
-variable "web_server_port" {
-  default = 443
-}
+# variable "web_server_port" {
+#   default = 443
+# }
 
-variable "web_server_image" {
-  default = ""
+# variable "web_server_image" {
+#   default = ""
 
-}
+# }
 
 ## Homepage
 variable "amplify_app_name" {

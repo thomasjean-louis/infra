@@ -26,8 +26,12 @@ variable "hosted_zone_name" {
   type = string
 }
 
+variable "deployment_branch" {
+  type = string
+}
+
 resource "aws_cognito_user_pool" "user_pool" {
-  name = "${var.app_name}-user-pool"
+  name = "${var.app_name}-user-pool-${deployment_branch}"
 
   password_policy {
     minimum_length                   = 6
@@ -43,7 +47,7 @@ resource "aws_cognito_user_pool" "user_pool" {
 # User Pool
 
 resource "aws_cognito_user_pool_client" "user_pool_client" {
-  name                         = "${var.app_name}-user-pool_client"
+  name                         = "${var.app_name}-user-pool_client-${deployment_branch}"
   user_pool_id                 = aws_cognito_user_pool.user_pool.id
   supported_identity_providers = ["COGNITO"]
 }

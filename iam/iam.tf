@@ -2,6 +2,10 @@ variable "app_name" {
   type = string
 }
 
+variable "deployment_branch" {
+  type = string
+}
+
 resource "aws_iam_role" "task_execution_role" {
   name = "${var.app_name}_task_execution_role"
 
@@ -24,7 +28,7 @@ resource "aws_iam_role" "task_execution_role" {
 }
 
 resource "aws_iam_role_policy" "logs_policy" {
-  name = "${var.app_name}_logs_policy"
+  name = "${var.app_name}_logs_policy_${var.deployment_branch}"
   role = aws_iam_role.task_execution_role.id
 
   policy = jsonencode({
@@ -44,7 +48,7 @@ resource "aws_iam_role_policy" "logs_policy" {
 }
 
 resource "aws_iam_role" "task_role" {
-  name = "${var.app_name}_task_role"
+  name = "${var.app_name}_task_role_${var.deployment_branch}"
 
   # Terraform's "jsonencode" function converts a
   # Terraform expression result to valid JSON syntax.

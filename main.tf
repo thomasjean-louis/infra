@@ -33,17 +33,20 @@ module "vpc" {
   private_subnet_a_cidr_block = var.private_subnet_a_cidr_block
   public_subnet_b_cidr_block  = var.public_subnet_b_cidr_block
   private_subnet_b_cidr_block = var.private_subnet_b_cidr_block
+  deployment_branch           = var.deployment_branch
 }
 
 module "iam" {
-  source   = "./iam"
-  app_name = var.app_name
+  source            = "./iam"
+  app_name          = var.app_name
+  deployment_branch = var.deployment_branch
 }
 
 module "s3" {
-  source   = "./s3"
-  app_name = var.app_name
-  region   = var.region
+  source            = "./s3"
+  app_name          = var.app_name
+  region            = var.region
+  deployment_branch = var.deployment_branch
 }
 
 module "alb_gameserver" {
@@ -59,12 +62,14 @@ module "alb_gameserver" {
   hosted_zone_name           = var.hosted_zone_name
   hosted_zone_id             = local.hosted_zone_id
   proxy_server_port          = var.proxy_server_port
+  deployment_branch          = var.deployment_branch
 
 }
 
 module "ecs" {
-  source   = "./ecs"
-  app_name = var.app_name
+  source            = "./ecs"
+  app_name          = var.app_name
+  deployment_branch = var.deployment_branch
 }
 
 
@@ -106,6 +111,7 @@ module "gameserver" {
   game_server_image          = var.game_server_image
   game_server_name_container = var.game_server_name_container
 
+  deployment_branch = var.deployment_branch
 }
 
 # Cloud Formation templates
@@ -140,6 +146,7 @@ module "dynamodb" {
   source                     = "./dynamodb"
   gamestacks_table_name      = var.gamestacks_table_name
   game_stacks_id_column_name = var.game_stacks_id_column_name
+  deployment_branch          = var.deployment_branch
 }
 
 module "lambda_game_stacks" {
@@ -174,6 +181,8 @@ module "lambda_game_stacks" {
   game_stacks_cloud_formation_stack_name_column = var.game_stacks_cloud_formation_stack_name_column
   invoked_lambda_function_name                  = var.invoked_lambda_function_name
   game_stacks_is_active_columnn_name            = var.game_stacks_is_active_columnn_name
+
+  deployment_branch = var.deployment_branch
 }
 
 
@@ -198,6 +207,7 @@ module "api_gateway_rest" {
   lambda_delete_game_stack_uri  = module.lambda_game_stacks.lambda_delete_game_stack_uri
   lambda_delete_game_stack_name = module.lambda_game_stacks.lambda_delete_game_stack_name
 
+  deployment_branch = var.deployment_branch
 }
 
 # Cognito
@@ -210,6 +220,7 @@ module "cognito" {
   subdomain_auth           = var.subdomain_auth
   hosted_zone_name         = var.hosted_zone_name
   default_cognito_mail     = var.default_cognito_mail
+  deployment_branch        = var.deployment_branch
 }
 
 # Serverless FrontEnd
@@ -229,6 +240,7 @@ module "homepage" {
   user_pool_id            = module.cognito.user_pool_id
   user_pool_client_id     = module.cognito.user_pool_client_id
   identity_pool_id        = module.cognito.identity_pool_id
+  deployment_branch       = var.deployment_branch
 }
 
 

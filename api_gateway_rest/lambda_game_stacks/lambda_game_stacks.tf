@@ -113,6 +113,10 @@ variable "game_stacks_is_active_columnn_name" {
   type = string
 }
 
+variable "deployment_branch" {
+  type = string
+}
+
 
 ## Lambda scripts
 
@@ -120,7 +124,7 @@ variable "game_stacks_is_active_columnn_name" {
 
 # Lambda Invoker role
 resource "aws_iam_role" "lambda_invoker_role" {
-  name = "${var.app_name}_lambda_invoker_role"
+  name = "${var.app_name}_lambda_invoker_role_${var.deployment_branch}"
 
   # Terraform's "jsonencode" function converts a
   # Terraform expression result to valid JSON syntax.
@@ -140,7 +144,7 @@ resource "aws_iam_role" "lambda_invoker_role" {
 }
 
 resource "aws_iam_role_policy" "lambda_invoker_service_policy" {
-  name = "${var.app_name}_lambda_invoker_service"
+  name = "${var.app_name}_lambda_invoker_service_${var.deployment_branch}"
   role = aws_iam_role.lambda_invoker_role.id
 
   policy = jsonencode({
@@ -161,7 +165,7 @@ resource "aws_iam_role_policy" "lambda_invoker_service_policy" {
 
 # API IAM role
 resource "aws_iam_role" "lambda_api_service_role" {
-  name = "${var.app_name}_lambda_gateway_api_service_role"
+  name = "${var.app_name}_lambda_gateway_api_service_role_${var.deployment_branch}"
 
   # Terraform's "jsonencode" function converts a
   # Terraform expression result to valid JSON syntax.
@@ -181,7 +185,7 @@ resource "aws_iam_role" "lambda_api_service_role" {
 }
 
 resource "aws_iam_role_policy" "dynamodb_service_policy" {
-  name = "${var.app_name}_lambda_dynamodb_service"
+  name = "${var.app_name}_lambda_dynamodb_service_${var.deployment_branch}"
   role = aws_iam_role.lambda_api_service_role.id
 
   policy = jsonencode({
@@ -202,7 +206,7 @@ resource "aws_iam_role_policy" "dynamodb_service_policy" {
 }
 
 resource "aws_iam_role_policy" "cloud_formation_service_policy" {
-  name = "${var.app_name}_lambda_cloud_formation_service"
+  name = "${var.app_name}_lambda_cloud_formation_service_${var.deployment_branch}"
   role = aws_iam_role.lambda_api_service_role.id
 
   policy = jsonencode({
@@ -221,7 +225,7 @@ resource "aws_iam_role_policy" "cloud_formation_service_policy" {
 }
 
 resource "aws_iam_role_policy" "s3_service_policy" {
-  name = "${var.app_name}_lambda_s3_service"
+  name = "${var.app_name}_lambda_s3_service_${var.deployment_branch}"
   role = aws_iam_role.lambda_api_service_role.id
 
   policy = jsonencode({
@@ -239,7 +243,7 @@ resource "aws_iam_role_policy" "s3_service_policy" {
 }
 
 resource "aws_iam_role_policy" "acm_service_policy" {
-  name = "${var.app_name}_lambda_acm_service"
+  name = "${var.app_name}_lambda_acm_service_${var.deployment_branch}"
   role = aws_iam_role.lambda_api_service_role.id
 
   policy = jsonencode({
@@ -267,7 +271,7 @@ resource "aws_iam_role_policy" "acm_service_policy" {
 }
 
 resource "aws_iam_role_policy" "alb_service_policy" {
-  name = "${var.app_name}_lambda_alb_service"
+  name = "${var.app_name}_lambda_alb_service_${var.deployment_branch}"
   role = aws_iam_role.lambda_api_service_role.id
 
   policy = jsonencode({
@@ -309,7 +313,7 @@ resource "aws_iam_role_policy" "alb_service_policy" {
 }
 
 resource "aws_iam_role_policy" "route_53_service_policy" {
-  name = "${var.app_name}_lambda_route_53_service"
+  name = "${var.app_name}_lambda_route_53_service_${var.deployment_branch}"
   role = aws_iam_role.lambda_api_service_role.id
 
   policy = jsonencode({
@@ -335,7 +339,7 @@ resource "aws_iam_role_policy" "route_53_service_policy" {
 }
 
 resource "aws_iam_role_policy" "ecs_service_policy" {
-  name = "${var.app_name}_lambda_ecs_service"
+  name = "${var.app_name}_lambda_ecs_service_${var.deployment_branch}"
   role = aws_iam_role.lambda_api_service_role.id
 
   policy = jsonencode({
@@ -355,7 +359,7 @@ resource "aws_iam_role_policy" "ecs_service_policy" {
 }
 
 resource "aws_iam_role_policy" "iam_service_policy" {
-  name = "${var.app_name}_lambda_iam_service"
+  name = "${var.app_name}_lambda_iam_service_${var.deployment_branch}"
   role = aws_iam_role.lambda_api_service_role.id
 
   policy = jsonencode({
@@ -380,7 +384,7 @@ resource "aws_iam_role_policy" "iam_service_policy" {
 }
 
 resource "aws_iam_role_policy" "lambda_service_policy" {
-  name = "${var.app_name}_lambda_service"
+  name = "${var.app_name}_lambda_service_${var.deployment_branch}"
   role = aws_iam_role.lambda_api_service_role.id
 
   policy = jsonencode({

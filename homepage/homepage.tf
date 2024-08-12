@@ -52,9 +52,13 @@ variable "identity_pool_id" {
   type = string
 }
 
+variable "deployment_branch" {
+  type = string
+}
+
 # iam Amplify role
 resource "aws_iam_role" "amplify_service_role" {
-  name = "amplify_service_role"
+  name = "amplify_service_role_${var.deployment_branch}"
 
   # Terraform's "jsonencode" function converts a
   # Terraform expression result to valid JSON syntax.
@@ -86,7 +90,7 @@ resource "aws_iam_role_policy_attachment" "AdministratorAccess-Amplify-attach" {
 
 
 resource "aws_amplify_app" "homepage_app" {
-  name        = var.amplify_app_name
+  name        = var.amplify_app_name + "_" + var.deployment_branch
   oauth_token = var.homepage_github_token
   repository  = var.homepage_repository
 

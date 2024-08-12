@@ -55,6 +55,9 @@ variable "lambda_delete_game_stack_name" {
   type = string
 }
 
+variable "deployment_branch" {
+  type = string
+}
 
 ## CloudWatch
 resource "aws_cloudwatch_log_group" "game_stacks_api_log_group" {
@@ -63,7 +66,7 @@ resource "aws_cloudwatch_log_group" "game_stacks_api_log_group" {
 
 ## API Gateway
 resource "aws_apigatewayv2_api" "api" {
-  name          = "api-${var.app_name}"
+  name          = "api-${var.app_name}-${var.deployment_branch}"
   protocol_type = "HTTP"
 
   cors_configuration {
@@ -77,7 +80,7 @@ resource "aws_apigatewayv2_api" "api" {
 resource "aws_apigatewayv2_stage" "stage" {
   api_id = aws_apigatewayv2_api.api.id
 
-  name        = "stage-${var.app_name}"
+  name        = "stage-${var.app_name}-${var.deployment_branch}"
   auto_deploy = true
 
   access_log_settings {

@@ -1,3 +1,7 @@
+variable "deployment_branch" {
+  type = string
+}
+
 variable "app_name" {
   type = string
 }
@@ -79,7 +83,7 @@ resource "aws_acm_certificate_validation" "alb_certificate_validation" {
 ## ALB
 
 resource "aws_security_group" "sg_alb" {
-  name        = "sg_alb_${var.game_server_name_container}"
+  name        = "sg_alb_${var.game_server_name_container}_${var.deployment_branch}"
   description = "ALB security group"
   vpc_id      = var.vpc_id
 
@@ -133,7 +137,7 @@ output "security_group_alb_id" {
 
 
 resource "aws_lb" "alb_game_server" {
-  name               = "${var.app_name}-alb-${var.game_server_name_container}"
+  name               = "${var.app_name}-alb-${var.game_server_name_container}-${var.deployment_branch}"
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.sg_alb.id]
@@ -158,7 +162,7 @@ resource "aws_route53_record" "alb_alias" {
 ## Target groups
 
 resource "aws_alb_target_group" "gameserver_target_group_ws" {
-  name        = "target-group-${var.game_server_name_container}-ws"
+  name        = "target-group-${var.game_server_name_container}-ws-${var.deployment_branch}"
   port        = var.proxy_server_port
   protocol    = "HTTPS"
   vpc_id      = var.vpc_id
@@ -178,7 +182,7 @@ resource "aws_alb_target_group" "gameserver_target_group_ws" {
 }
 
 resource "aws_alb_target_group" "gameserver_target_group_https" {
-  name        = "target-group-${var.game_server_name_container}-https"
+  name        = "target-group-${var.game_server_name_container}-https-${var.deployment_branch}"
   port        = 443
   protocol    = "HTTPS"
   vpc_id      = var.vpc_id
