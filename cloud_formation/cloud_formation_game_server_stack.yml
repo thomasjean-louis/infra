@@ -145,29 +145,31 @@ Resources:
 
           def lambda_handler(event, context):
 
-            lambda_client = boto3.client('lambda')
-                
-            cfn_event = {
-              "game_stacks_table_name": "${GameStacksTableName}",
-              "game_stacks_id_column_name": "${GameStacksIdColumnName}",
-              "game_stacks_capacity_column_name":"${GameStacksCapacityColumnName}",
-              "game_stacks_capacity_value": "${GameStacksCapacityValue}",
-              "game_stacks_server_link_column_name": "${GameStacksServerLinkColumnName}",
-              "game_stacks_cloud_formation_stack_name_column": "${GameStacksCloudFormationStackNameColumn}",
-              "game_stacks_cloud_formation_stack_name_value": "${AWS::StackName}",
-              "game_server_random_string" : "${RandomString}",
-              "game_server_hosted_zone_name" : "${HostedZoneName}",
-              "game_stacks_is_active_columnn_name" : "${GameStacksIsActiveColumnName}"
-            }
+            if event['RequestType'] == "Create":
 
-            lambda_client.invoke( 
-               FunctionName="${InvokedLambdaFunctionName}",
-               InvocationType='Event',
-               Payload=json.dumps(cfn_event)
-            )
+              lambda_client = boto3.client('lambda')
+                  
+              cfn_event = {
+                "game_stacks_table_name": "${GameStacksTableName}",
+                "game_stacks_id_column_name": "${GameStacksIdColumnName}",
+                "game_stacks_capacity_column_name":"${GameStacksCapacityColumnName}",
+                "game_stacks_capacity_value": "${GameStacksCapacityValue}",
+                "game_stacks_server_link_column_name": "${GameStacksServerLinkColumnName}",
+                "game_stacks_cloud_formation_stack_name_column": "${GameStacksCloudFormationStackNameColumn}",
+                "game_stacks_cloud_formation_stack_name_value": "${AWS::StackName}",
+                "game_server_random_string" : "${RandomString}",
+                "game_server_hosted_zone_name" : "${HostedZoneName}",
+                "game_stacks_is_active_columnn_name" : "${GameStacksIsActiveColumnName}"
+              }
 
-            responseData = {}
-            cfnresponse.send(event, context, cfnresponse.SUCCESS, responseData, "Primerinvoke")
+              lambda_client.invoke( 
+                 FunctionName="${InvokedLambdaFunctionName}",
+                 InvocationType='Event',
+                 Payload=json.dumps(cfn_event)
+              )
+
+              responseData = {}
+              cfnresponse.send(event, context, cfnresponse.SUCCESS, responseData, "Primerinvoke")
 
       Handler: !Sub index.lambda_handler
       Role: !Ref LambdaInvokerRoleArn
