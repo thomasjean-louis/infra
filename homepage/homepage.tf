@@ -90,7 +90,7 @@ resource "aws_iam_role_policy_attachment" "AdministratorAccess-Amplify-attach" {
 
 
 resource "aws_amplify_app" "homepage_app" {
-  name        = var.amplify_app_name + "_${var.deployment_branch}"
+  name        = "${var.amplify_app_name}_${var.deployment_branch}"
   oauth_token = var.homepage_github_token
   repository  = var.homepage_repository
 

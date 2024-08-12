@@ -162,7 +162,7 @@ resource "aws_route53_record" "alb_alias" {
 ## Target groups
 
 resource "aws_alb_target_group" "gameserver_target_group_ws" {
-  name        = "target-group-${var.game_server_name_container}-ws-${var.deployment_branch}"
+  name        = "target-${var.game_server_name_container}-ws-${var.deployment_branch}"
   port        = var.proxy_server_port
   protocol    = "HTTPS"
   vpc_id      = var.vpc_id
@@ -182,7 +182,7 @@ resource "aws_alb_target_group" "gameserver_target_group_ws" {
 }
 
 resource "aws_alb_target_group" "gameserver_target_group_https" {
-  name        = "target-group-${var.game_server_name_container}-https-${var.deployment_branch}"
+  name        = "target-${var.game_server_name_container}-https-${var.deployment_branch}"
   port        = 443
   protocol    = "HTTPS"
   vpc_id      = var.vpc_id
