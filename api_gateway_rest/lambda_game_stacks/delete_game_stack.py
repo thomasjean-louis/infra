@@ -39,9 +39,12 @@ def lambda_handler(event, context):
           logger.info("stack name : "+ stack_id)
       
           cloud_formation_client = boto3.client('cloudformation')    
-      
+                
           # Delete CF Stack
           cloud_formation_client.delete_stack(StackName=stack_id)  
+
+          # Delete CName record that was created to validate DNS entry
+          
 
           # Update record in dynamodb to hide it
           table.update_item(
