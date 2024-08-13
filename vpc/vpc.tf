@@ -133,35 +133,35 @@ resource "aws_route_table_association" "public_table_association_b" {
 
 }
 
-resource "aws_eip" "eip_nat_gateway" {
+# resource "aws_eip" "eip_nat_gateway" {
 
-}
+# }
 
-resource "aws_nat_gateway" "nat_gateway" {
-  allocation_id = aws_eip.eip_nat_gateway.id
-  subnet_id     = aws_subnet.public_subnet_a.id
+# resource "aws_nat_gateway" "nat_gateway" {
+#   allocation_id = aws_eip.eip_nat_gateway.id
+#   subnet_id     = aws_subnet.public_subnet_a.id
 
-}
+# }
 
-resource "aws_route_table" "private_route_table" {
-  depends_on = [aws_vpc.vpc]
-  vpc_id     = aws_vpc.vpc.id
-  route {
-    cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = aws_nat_gateway.nat_gateway.id
-  }
-}
+# resource "aws_route_table" "private_route_table" {
+#   depends_on = [aws_vpc.vpc]
+#   vpc_id     = aws_vpc.vpc.id
+#   route {
+#     cidr_block     = "0.0.0.0/0"
+#     nat_gateway_id = aws_nat_gateway.nat_gateway.id
+#   }
+# }
 
-resource "aws_route_table_association" "private_table_association_a" {
-  depends_on     = [aws_route_table.private_route_table, aws_subnet.private_subnet_a]
-  subnet_id      = aws_subnet.private_subnet_a.id
-  route_table_id = aws_route_table.private_route_table.id
-}
+# resource "aws_route_table_association" "private_table_association_a" {
+#   depends_on     = [aws_route_table.private_route_table, aws_subnet.private_subnet_a]
+#   subnet_id      = aws_subnet.private_subnet_a.id
+#   route_table_id = aws_route_table.private_route_table.id
+# }
 
-resource "aws_route_table_association" "private_table_association_b" {
-  depends_on     = [aws_route_table.private_route_table, aws_subnet.private_subnet_b]
-  subnet_id      = aws_subnet.private_subnet_b.id
-  route_table_id = aws_route_table.private_route_table.id
-}
+# resource "aws_route_table_association" "private_table_association_b" {
+#   depends_on     = [aws_route_table.private_route_table, aws_subnet.private_subnet_b]
+#   subnet_id      = aws_subnet.private_subnet_b.id
+#   route_table_id = aws_route_table.private_route_table.id
+# }
 
 
