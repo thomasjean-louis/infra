@@ -59,7 +59,7 @@ def lambda_handler(event, context):
           dns_records.extend(response53['ResourceRecordSets'])
 
           for record in dns_records:
-            if (record['Type'] == 'CNAME') and (physicalResourceId in record['Name']) :
+            if (record['Type'] == 'CNAME') and (physicalResourceId in record['Name']) and ("acm-validations.aws" in record['ResourceRecords'][0]['Value']) :
                 
               # delete this record
               client53.change_resource_record_sets(
@@ -82,6 +82,8 @@ def lambda_handler(event, context):
                  },
                 HostedZoneId = os.environ["HOSTED_ZONE_ID"],
               )
+
+              break
 
 
           # Delete CF Stack
