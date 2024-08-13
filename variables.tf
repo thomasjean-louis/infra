@@ -137,7 +137,7 @@ variable "game_server_port" {
 
 variable "game_server_image" {
   type    = string
-  default = "339712818409.dkr.ecr.us-east-1.amazonaws.com/gameserver:dev_47"
+  default = "339712818409.dkr.ecr.us-east-1.amazonaws.com/gameserver:dev_48"
 }
 
 # ## WebServer 
