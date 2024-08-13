@@ -59,8 +59,6 @@ module "alb_gameserver" {
   public_subnet_id_b         = module.vpc.public_subnet_id_b
   game_server_port           = var.game_server_port
   game_server_name_container = var.game_server_name_container
-  hosted_zone_name           = var.hosted_zone_name
-  hosted_zone_id             = local.hosted_zone_id
   proxy_server_port          = var.proxy_server_port
   deployment_branch          = var.deployment_branch
 

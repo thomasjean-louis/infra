@@ -168,8 +168,8 @@ Resources:
                  Payload=json.dumps(cfn_event)
               )
 
-              responseData = {}
-              cfnresponse.send(event, context, cfnresponse.SUCCESS, responseData, "Primerinvoke")
+            responseData = {}
+            cfnresponse.send(event, context, cfnresponse.SUCCESS, responseData, "Primerinvoke")
 
       Handler: !Sub index.lambda_handler
       Role: !Ref LambdaInvokerRoleArn
