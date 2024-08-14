@@ -24,7 +24,16 @@ resource "aws_iam_role" "task_execution_role" {
       },
     ]
   })
+}
 
+# Get AWS Managed Policy for ecr 
+data "aws_iam_policy" "ecr_policy" {
+  arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess"
+}
+
+resource "aws_iam_role_policy_attachment" "ecr_policy_attachment" {
+  role       = aws_iam_role.task_execution_role.name
+  policy_arn = data.aws_iam_policy.ecr_policy.arn
 }
 
 resource "aws_iam_role_policy" "logs_policy" {
@@ -50,8 +59,6 @@ resource "aws_iam_role_policy" "logs_policy" {
 resource "aws_iam_role" "task_role" {
   name = "${var.app_name}_task_role_${var.deployment_branch}"
 
-  # Terraform's "jsonencode" function converts a
-  # Terraform expression result to valid JSON syntax.
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [

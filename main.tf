@@ -26,6 +26,7 @@ locals {
 
 module "vpc" {
   source                      = "./vpc"
+  region                      = var.region
   az1                         = var.az1
   az2                         = var.az2
   vpc_cidr_block              = var.vpc_cidr_block
@@ -119,25 +120,6 @@ module "cloud_formation" {
   region         = var.region
   s3-bucket-name = module.s3.s3-bucket-name
 }
-
-# Lambda functions
-# module "lambda_gameserver" {
-#   depends_on                          = [module.gameserver]
-#   source                              = "./lambda_gameserver"
-#   app_name                            = var.app_name
-#   account_id                          = local.account_id
-#   region                              = var.region
-#   cluster_id                          = module.ecs.cluster_id
-#   cluster_name                        = module.ecs.cluster_name
-#   private_subnet_id_a                 = module.vpc.private_subnet_id_a
-#   private_subnet_id_b                 = module.vpc.private_subnet_id_b
-#   security_group_game_server_task     = module.gameserver.security_group_game_server_task
-#   target_group_game_server_task_ws    = module.alb_gameserver.target_group_game_server_ws_arn
-#   target_group_game_server_task_https = module.alb_gameserver.target_group_game_server_https_arn
-#   task_definition_game_server         = module.gameserver.task_definition_game_server
-#   role_task_execution_name            = module.iam.task_execution_role_name
-#   proxy_server_name_container         = var.proxy_server_name_container
-# }
 
 # Serverless BackEnd
 module "dynamodb" {
