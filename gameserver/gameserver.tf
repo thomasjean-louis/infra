@@ -143,7 +143,7 @@ module "gameserver" {
   environment = [
     {
       "name" : "CONTENT_SERVER",
-      "value" : localhost
+      "value" : "localhost"
     },
     {
       "name" : "GAME_SERVER",
