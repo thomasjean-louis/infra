@@ -110,14 +110,6 @@ module "proxy" {
 
   environment = [
     {
-      "name" : "HTTP_PORT",
-      "value" : "80"
-    },
-    {
-      "name" : "CONTENT_SERVER",
-      "value" : var.content_server_address
-    },
-    {
       "name" : "GAME_SERVER",
       "value" : "localhost"
     }
@@ -150,12 +142,8 @@ module "gameserver" {
 
   environment = [
     {
-      "name" : "HTTP_PORT",
-      "value" : "80"
-    },
-    {
       "name" : "CONTENT_SERVER",
-      "value" : var.content_server_address
+      "value" : localhost
     },
     {
       "name" : "GAME_SERVER",
