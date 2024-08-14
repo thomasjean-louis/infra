@@ -187,10 +187,13 @@ data "aws_iam_policy_document" "s3_ecr_access" {
 
     principals {
       type        = "*"
-      identifiers = ["ecs-tasks.amazonaws.com"]
+      identifiers = ["*"]
     }
+    resources = ["*"]
+
   }
 }
+
 
 resource "aws_vpc_endpoint" "s3_endpoint" {
   vpc_id            = aws_vpc.vpc.id
