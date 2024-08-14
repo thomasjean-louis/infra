@@ -112,7 +112,7 @@ module "proxy" {
     {
       "name" : "GAME_SERVER",
       "value" : "localhost"
-    }
+    },
   ]
 
   portMappings = [
