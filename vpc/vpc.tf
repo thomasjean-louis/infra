@@ -166,6 +166,20 @@ resource "aws_security_group" "sg_endpoints" {
   }
 }
 
+data "aws_iam_policy_document" "s3_ecr_access" {
+  version = "2012-10-17"
+  statement {
+    sid     = "s3access"
+    effect  = "Allow"
+    actions = ["*"]
+
+    principals {
+      type        = "*"
+      identifiers = ["ecs-tasks.amazonaws.com"]
+    }
+  }
+}
+
 resource "aws_vpc_endpoint" "s3_endpoint" {
   vpc_id            = aws_vpc.vpc.id
   service_name      = "com.amazonaws.${var.region}.s3"
