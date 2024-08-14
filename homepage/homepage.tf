@@ -28,9 +28,6 @@ variable "homepage_github_token" {
   type = string
 }
 
-variable "load_balancer_https_url" {
-  type = string
-}
 
 variable "proxy_server_port" {
   type = string

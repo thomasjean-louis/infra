@@ -59,8 +59,6 @@ module "alb_gameserver" {
   public_subnet_id_b         = module.vpc.public_subnet_id_b
   game_server_port           = var.game_server_port
   game_server_name_container = var.game_server_name_container
-  hosted_zone_name           = var.hosted_zone_name
-  hosted_zone_id             = local.hosted_zone_id
   proxy_server_port          = var.proxy_server_port
   deployment_branch          = var.deployment_branch
 
@@ -225,23 +223,23 @@ module "cognito" {
 
 # Serverless FrontEnd
 module "homepage" {
-  depends_on              = [module.cognito]
-  source                  = "./homepage"
-  region                  = var.region
-  amplify_app_name        = var.amplify_app_name
-  homepage_repository     = var.homepage_repository
-  homepage_branch         = var.homepage_branch
-  subdomain_homepage      = var.subdomain_homepage
-  hosted_zone_name        = var.hosted_zone_name
-  homepage_github_token   = var.homepage_github_token
-  load_balancer_https_url = module.alb_gameserver.load_balancer_https_url
-  proxy_server_port       = var.proxy_server_port
-  api_https_url           = module.api_gateway_rest.api_https_url
-  user_pool_id            = module.cognito.user_pool_id
-  user_pool_client_id     = module.cognito.user_pool_client_id
-  identity_pool_id        = module.cognito.identity_pool_id
-  deployment_branch       = var.deployment_branch
+  depends_on            = [module.cognito]
+  source                = "./homepage"
+  region                = var.region
+  amplify_app_name      = var.amplify_app_name
+  homepage_repository   = var.homepage_repository
+  homepage_branch       = var.homepage_branch
+  subdomain_homepage    = var.subdomain_homepage
+  hosted_zone_name      = var.hosted_zone_name
+  homepage_github_token = var.homepage_github_token
+  proxy_server_port     = var.proxy_server_port
+  api_https_url         = module.api_gateway_rest.api_https_url
+  user_pool_id          = module.cognito.user_pool_id
+  user_pool_client_id   = module.cognito.user_pool_client_id
+  identity_pool_id      = module.cognito.identity_pool_id
+  deployment_branch     = var.deployment_branch
 }
+
 
 
 

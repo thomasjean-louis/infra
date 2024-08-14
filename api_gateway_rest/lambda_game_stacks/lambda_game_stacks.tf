@@ -215,7 +215,8 @@ resource "aws_iam_role_policy" "cloud_formation_service_policy" {
       {
         Action = [
           "cloudformation:CreateStack",
-          "cloudformation:DeleteStack"
+          "cloudformation:DeleteStack",
+          "cloudformation:DescribeStackResources"
         ]
         Effect   = "Allow"
         Resource = "arn:aws:cloudformation:${var.region}:${var.account_id}:stack/${var.create_game_stack_cf_stack_name}*/*"
@@ -322,7 +323,8 @@ resource "aws_iam_role_policy" "route_53_service_policy" {
       {
         Action = [
           "route53:ChangeResourceRecordSets",
-          "route53:GetHostedZone"
+          "route53:GetHostedZone",
+          "route53:ListResourceRecordSets"
         ]
         Effect   = "Allow"
         Resource = "arn:aws:route53:::hostedzone/*"
@@ -532,6 +534,8 @@ resource "aws_lambda_function" "lambda_delete_game_stack" {
       GAME_STACKS_ID_COLUMN_NAME                    = var.game_stacks_id_column_name
       GAME_STACKS_CLOUD_FORMATION_STACK_NAME_COLUMN = var.game_stacks_cloud_formation_stack_name_column
       GAME_STACK_IS_ACTIVE_COLUMN                   = var.game_stacks_is_active_columnn_name
+      HOSTED_ZONE_ID                                = var.hosted_zone_id
+
     }
   }
 }
