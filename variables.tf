@@ -114,7 +114,7 @@ variable "proxy_server_ram" {
 
 variable "proxy_server_image" {
   type    = string
-  default = "339712818409.dkr.ecr.us-east-1.amazonaws.com/proxy:main_9"
+  default = "590184081927.dkr.ecr.us-east-1.amazonaws.com/proxy:main_9"
 }
 
 ## GameServer
@@ -137,7 +137,7 @@ variable "game_server_port" {
 
 variable "game_server_image" {
   type    = string
-  default = "339712818409.dkr.ecr.us-east-1.amazonaws.com/gameserver:base_49"
+  default = "590184081927.dkr.ecr.us-east-1.amazonaws.com/gameserver:base_49"
 }
 
 # ## WebServer 
