@@ -41,8 +41,8 @@ module "iam" {
   deployment_branch = var.deployment_branch
 }
 
-module "s3" {
-  source            = "./s3"
+module "bucket" {
+  source            = "./bucket"
   app_name          = var.app_name
   region            = var.region
   deployment_branch = var.deployment_branch
@@ -113,10 +113,10 @@ module "gameserver" {
 
 # Cloud Formation templates
 module "cloud_formation" {
-  depends_on     = [module.s3]
+  depends_on     = [module.bucket]
   source         = "./cloud_formation"
   region         = var.region
-  s3-bucket-name = module.s3.s3-bucket-name
+  s3-bucket-name = module.bucket.s3-bucket-name
 }
 
 # Serverless BackEnd
