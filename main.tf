@@ -3,13 +3,10 @@ provider "aws" {
 }
 
 terraform {
-  backend "s3" {
-    bucket = "terraform-tjl"
-    key    = "terraform.tfstate"
-    region = "eu-west-3"
-  }
+  backend "s3" {}
 }
 
+## Global variables
 data "aws_caller_identity" "account_data" {}
 
 data "aws_route53_zone" "project_route_zone" {
@@ -23,7 +20,7 @@ locals {
   hosted_zone_id = data.aws_route53_zone.project_route_zone.zone_id
 }
 
-
+## Modules
 module "vpc" {
   source                      = "./vpc"
   region                      = var.region
