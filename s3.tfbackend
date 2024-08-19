@@ -1,0 +1,3 @@
+bucket = "default-bucket"
+key    = "default-key"
+region = "default-region"
