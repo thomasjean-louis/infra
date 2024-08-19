@@ -1,14 +1,14 @@
 ##### VPC
 variable "region" {
-  default = "us-east-1"
+  default = "eu-west-3"
 }
 
 variable "az1" {
-  default = "us-east-1a"
+  default = "eu-west-3a"
 }
 
 variable "az2" {
-  default = "us-east-1b"
+  default = "eu-west-3b"
 }
 
 variable "vpc_cidr_block" {
