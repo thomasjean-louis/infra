@@ -1,3 +1,4 @@
+## Project config 
 provider "aws" {
   region = var.region
 }
