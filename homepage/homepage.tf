@@ -87,8 +87,9 @@ resource "aws_iam_role_policy_attachment" "AdministratorAccess-Amplify-attach" {
 
 
 resource "aws_amplify_app" "homepage_app" {
-  name        = var.amplify_app_name
-  oauth_token = var.homepage_github_token
+  name = var.amplify_app_name
+  # oauth_token = var.homepage_github_token
+  oauth_token = "test"
   repository  = var.homepage_repository
 
   iam_service_role_arn = aws_iam_role.amplify_service_role.arn
