@@ -197,6 +197,7 @@ resource "aws_iam_role_policy" "ec2_service_policy" {
           "ec2:DescribeAccountAttributes",
           "ec2:DescribeInternetGateways",
           "ec2:DescribeSubnets",
+          "ec2:DescribeSecurityGroups"
         ]
         Effect   = "Allow"
         Resource = "*"
