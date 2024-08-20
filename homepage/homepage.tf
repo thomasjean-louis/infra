@@ -87,9 +87,8 @@ resource "aws_iam_role_policy_attachment" "AdministratorAccess-Amplify-attach" {
 
 
 resource "aws_amplify_app" "homepage_app" {
-  name = var.amplify_app_name
-  # oauth_token = var.homepage_github_token
-  oauth_token = "test"
+  name        = var.amplify_app_name
+  oauth_token = var.homepage_github_token
   repository  = var.homepage_repository
 
   iam_service_role_arn = aws_iam_role.amplify_service_role.arn
@@ -102,11 +101,6 @@ resource "aws_amplify_app" "homepage_app" {
             - yarn install
         build:
           commands:
-            - echo "VITE_API_HTTPS_URL=${var.api_https_url}" >> .env
-            - echo "VITE_USER_POOL_ID=${var.user_pool_id}" >> .env
-            - echo "VITE_USER_POOL_CLIENT_ID=${var.user_pool_client_id}" >> .env
-            - echo "VITE_IDENTITY_POOL_ID=${var.identity_pool_id}" >> .env
-            - cat .env # This is optional, just to verify the contents of .env
             - yarn run build
       artifacts:
         baseDirectory: build
