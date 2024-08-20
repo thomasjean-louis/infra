@@ -104,7 +104,7 @@ module "proxy" {
   memory = 1024
   cpu    = 512
 
-  image     = "${var.uri_proxy_repo}/${var.proxy_server_tag}"
+  image     = "${var.uri_proxy_repo}:${var.proxy_server_tag}"
   essential = true
 
   logConfiguration = {
@@ -142,7 +142,7 @@ module "gameserver" {
   family = "${var.app_name}-${var.game_server_name_container}"
   name   = var.game_server_name_container
 
-  image     = "${var.uri_game_server_repo}/${var.game_server_tag}"
+  image     = "${var.uri_game_server_repo}:${var.game_server_tag}"
   essential = true
 
   memory = 2048
