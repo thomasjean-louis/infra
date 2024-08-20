@@ -10,6 +10,9 @@ on:
 
 jobs:
   deploy:
+    environment: ${{ github.ref_name }}
+    runs-on: ubuntu-latest
+
     steps:
       - run: 'echo "ENV: ${{ github.ref_name }}"'
       - name: Checkout code
