@@ -57,7 +57,11 @@ variable "proxy_server_port" {
   type = number
 }
 
-variable "proxy_server_image" {
+variable "proxy_server_tag" {
+  type = string
+}
+
+variable "uri_proxy_repo" {
   type = string
 }
 
@@ -77,7 +81,11 @@ variable "game_server_port" {
   type = number
 }
 
-variable "game_server_image" {
+variable "game_server_tag" {
+  type = string
+}
+
+variable "uri_game_server_repo" {
   type = string
 }
 
@@ -96,7 +104,7 @@ module "proxy" {
   memory = 1024
   cpu    = 512
 
-  image     = var.proxy_server_image
+  image     = "${var.uri_proxy_repo}/${var.proxy_server_tag}"
   essential = true
 
   logConfiguration = {
@@ -134,7 +142,7 @@ module "gameserver" {
   family = "${var.app_name}-${var.game_server_name_container}"
   name   = var.game_server_name_container
 
-  image     = var.game_server_image
+  image     = "${var.uri_game_server_repo}/${var.game_server_tag}"
   essential = true
 
   memory = 2048

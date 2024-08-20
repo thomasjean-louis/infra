@@ -11,8 +11,10 @@ jobs:
       AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY_INFRA }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY_INFRA }}
       TF_VAR_deployment_branch: ${{secrets.DEPLOYMENT_BRANCH}}
-      TF_VAR_game_server_image: ${{ vars.GAME_SERVER_DOCKER_IMAGE }}
-      TF_VAR_proxy_server_image: ${{ vars.PROXY_SERVER_DOCKER_IMAGE }}
+      TF_VAR_proxy_server_tag: ${{ vars.PROXY_SERVER_TAG }}
+      TF_VAR_uri_proxy_repo: ${{ vars.URI_PROXY_REPO }}
+      TF_VAR_game_server_tag: ${{ vars.GAME_SERVER_TAG }}
+      TF_VAR_uri_game_server_repo: ${{ vars.URI_GAME_SERVER_REPO }}
       TF_VAR_homepage_repository: ${{secrets.HOMEPAGE_REPOSITORY}}
       TF_VAR_homepage_branch: ${{vars.HOMEPAGE_BRANCH}}
       TF_VAR_homepage_github_token: ${{secrets.HOMEPAGE_GITHUB_TOKEN}}

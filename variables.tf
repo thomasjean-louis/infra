@@ -112,8 +112,13 @@ variable "proxy_server_ram" {
   default = 2048
 }
 
-variable "proxy_server_image" {
+variable "proxy_server_tag" {
   type = string
+}
+
+variable "uri_proxy_repo" {
+  type      = string
+  sensitive = true
 }
 
 ## GameServer
@@ -134,31 +139,15 @@ variable "game_server_port" {
   default = 27960
 }
 
-variable "game_server_image" {
+variable "game_server_tag" {
   type = string
 }
 
-# ## WebServer 
-# variable "web_server_name_container" {
-#   default = "webserver"
-# }
+variable "uri_game_server_repo" {
+  type      = string
+  sensitive = true
+}
 
-# variable "web_server_cpu" {
-#   default = 1024
-# }
-
-# variable "web_server_ram" {
-#   default = 2048
-# }
-
-# variable "web_server_port" {
-#   default = 443
-# }
-
-# variable "web_server_image" {
-#   default = ""
-
-# }
 
 ## Homepage
 variable "amplify_app_name" {

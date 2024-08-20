@@ -99,14 +99,16 @@ module "gameserver" {
   proxy_server_cpu            = var.proxy_server_cpu
   proxy_server_ram            = var.proxy_server_ram
   proxy_server_port           = var.proxy_server_port
-  proxy_server_image          = var.proxy_server_image
+  proxy_server_tag            = var.proxy_server_tag
+  uri_proxy_repo              = var.uri_proxy_repo
   proxy_server_name_container = var.proxy_server_name_container
 
   game_server_cpu            = var.game_server_cpu
   game_server_ram            = var.game_server_ram
   game_server_port           = var.game_server_port
-  game_server_image          = var.game_server_image
+  game_server_tag            = var.game_server_tag
   game_server_name_container = var.game_server_name_container
+  uri_game_server_repo       = var.uri_game_server_repo
 
   deployment_branch = var.deployment_branch
 }
