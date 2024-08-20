@@ -1,5 +1,13 @@
 name: "deleteResourcesWorkflow"
 
+on:
+  workflow_dispatch:
+    inputs:
+      testType:
+        description: "Type of tests to run"
+        required: true
+        default: "integration"
+
 jobs:
   deploy:
     steps:
