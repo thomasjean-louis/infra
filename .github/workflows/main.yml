@@ -3,7 +3,7 @@ on:
   # push:
   workflow_dispatch: {}
   schedule:
-    - cron: "15 17 * * *"
+    - cron: "15 13 * * *"
 
 jobs:
   deploy:
