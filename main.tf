@@ -1,15 +1,13 @@
+## Project config 
 provider "aws" {
   region = var.region
 }
 
 terraform {
-  backend "s3" {
-    bucket = "terraform-tjl"
-    key    = "terraform.tfstate"
-    region = "eu-west-3"
-  }
+  backend "s3" {}
 }
 
+## Global variables
 data "aws_caller_identity" "account_data" {}
 
 data "aws_route53_zone" "project_route_zone" {
@@ -23,9 +21,10 @@ locals {
   hosted_zone_id = data.aws_route53_zone.project_route_zone.zone_id
 }
 
-
+## Modules
 module "vpc" {
   source                      = "./vpc"
+  region                      = var.region
   az1                         = var.az1
   az2                         = var.az2
   vpc_cidr_block              = var.vpc_cidr_block
@@ -42,8 +41,8 @@ module "iam" {
   deployment_branch = var.deployment_branch
 }
 
-module "s3" {
-  source            = "./s3"
+module "bucket" {
+  source            = "./bucket"
   app_name          = var.app_name
   region            = var.region
   deployment_branch = var.deployment_branch
@@ -100,44 +99,27 @@ module "gameserver" {
   proxy_server_cpu            = var.proxy_server_cpu
   proxy_server_ram            = var.proxy_server_ram
   proxy_server_port           = var.proxy_server_port
-  proxy_server_image          = var.proxy_server_image
+  proxy_server_tag            = var.proxy_server_tag
+  uri_proxy_repo              = var.uri_proxy_repo
   proxy_server_name_container = var.proxy_server_name_container
 
   game_server_cpu            = var.game_server_cpu
   game_server_ram            = var.game_server_ram
   game_server_port           = var.game_server_port
-  game_server_image          = var.game_server_image
+  game_server_tag            = var.game_server_tag
   game_server_name_container = var.game_server_name_container
+  uri_game_server_repo       = var.uri_game_server_repo
 
   deployment_branch = var.deployment_branch
 }
 
 # Cloud Formation templates
 module "cloud_formation" {
-  depends_on     = [module.s3]
+  depends_on     = [module.bucket]
   source         = "./cloud_formation"
   region         = var.region
-  s3-bucket-name = module.s3.s3-bucket-name
+  s3-bucket-name = module.bucket.s3-bucket-name
 }
-
-# Lambda functions
-# module "lambda_gameserver" {
-#   depends_on                          = [module.gameserver]
-#   source                              = "./lambda_gameserver"
-#   app_name                            = var.app_name
-#   account_id                          = local.account_id
-#   region                              = var.region
-#   cluster_id                          = module.ecs.cluster_id
-#   cluster_name                        = module.ecs.cluster_name
-#   private_subnet_id_a                 = module.vpc.private_subnet_id_a
-#   private_subnet_id_b                 = module.vpc.private_subnet_id_b
-#   security_group_game_server_task     = module.gameserver.security_group_game_server_task
-#   target_group_game_server_task_ws    = module.alb_gameserver.target_group_game_server_ws_arn
-#   target_group_game_server_task_https = module.alb_gameserver.target_group_game_server_https_arn
-#   task_definition_game_server         = module.gameserver.task_definition_game_server
-#   role_task_execution_name            = module.iam.task_execution_role_name
-#   proxy_server_name_container         = var.proxy_server_name_container
-# }
 
 # Serverless BackEnd
 module "dynamodb" {

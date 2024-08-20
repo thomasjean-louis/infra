@@ -4,7 +4,7 @@ import json
 from datetime import datetime
 
 def lambda_handler(event, context):
-    client = boto3.client('ecs', region_name='us-east-1')
+    client = boto3.client('ecs', region_name='eu-west-3')
     response = client.create_service(
     cluster=os.environ["GAME_SERVER_SERVICE_CLUSTER_ID"],
     desiredCount=1,

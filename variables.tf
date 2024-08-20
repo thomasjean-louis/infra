@@ -1,14 +1,14 @@
 ##### VPC
 variable "region" {
-  default = "us-east-1"
+  default = "eu-west-3"
 }
 
 variable "az1" {
-  default = "us-east-1a"
+  default = "eu-west-3a"
 }
 
 variable "az2" {
-  default = "us-east-1b"
+  default = "eu-west-3b"
 }
 
 variable "vpc_cidr_block" {
@@ -112,8 +112,13 @@ variable "proxy_server_ram" {
   default = 2048
 }
 
-variable "proxy_server_image" {
-  default = ""
+variable "proxy_server_tag" {
+  type = string
+}
+
+variable "uri_proxy_repo" {
+  type      = string
+  sensitive = true
 }
 
 ## GameServer
@@ -134,31 +139,15 @@ variable "game_server_port" {
   default = 27960
 }
 
-variable "game_server_image" {
-  default = ""
+variable "game_server_tag" {
+  type = string
 }
 
-# ## WebServer 
-# variable "web_server_name_container" {
-#   default = "webserver"
-# }
+variable "uri_game_server_repo" {
+  type      = string
+  sensitive = true
+}
 
-# variable "web_server_cpu" {
-#   default = 1024
-# }
-
-# variable "web_server_ram" {
-#   default = 2048
-# }
-
-# variable "web_server_port" {
-#   default = 443
-# }
-
-# variable "web_server_image" {
-#   default = ""
-
-# }
 
 ## Homepage
 variable "amplify_app_name" {
