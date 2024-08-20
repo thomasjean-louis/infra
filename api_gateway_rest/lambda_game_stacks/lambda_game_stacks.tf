@@ -194,7 +194,9 @@ resource "aws_iam_role_policy" "ec2_service_policy" {
       {
         Action = [
           "ec2:DescribeVpcs",
-          "ec2:DescribeAccountAttributes"
+          "ec2:DescribeAccountAttributes",
+          "ec2:DescribeInternetGateways",
+          "ec2:DescribeSubnets",
         ]
         Effect   = "Allow"
         Resource = "*"
