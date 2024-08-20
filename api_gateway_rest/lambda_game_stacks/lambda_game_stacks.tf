@@ -402,6 +402,13 @@ resource "aws_iam_role_policy" "iam_service_policy" {
         ]
         Effect   = "Allow"
         Resource = "arn:aws:iam::${var.account_id}:role/${aws_iam_role.lambda_invoker_role.name}"
+      },
+      {
+        Action = [
+          "iam:CreateServiceLinkedRole"
+        ]
+        Effect   = "Allow"
+        Resource = "arn:aws:iam::${var.account_id}:role/aws-service-role/elasticloadbalancing.amazonaws.com/*"
       }
     ]
   })
