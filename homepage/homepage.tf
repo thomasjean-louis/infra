@@ -101,6 +101,11 @@ resource "aws_amplify_app" "homepage_app" {
             - yarn install
         build:
           commands:
+            - echo "VITE_API_HTTPS_URL=${var.api_https_url}" >> .env
+            - echo "VITE_USER_POOL_ID=${var.user_pool_id}" >> .env
+            - echo "VITE_USER_POOL_CLIENT_ID=${var.user_pool_client_id}" >> .env
+            - echo "VITE_IDENTITY_POOL_ID=${var.identity_pool_id}" >> .env
+            - cat .env # This is optional, just to verify the contents of .env
             - yarn run build
       artifacts:
         baseDirectory: build
