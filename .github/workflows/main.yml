@@ -1,7 +1,9 @@
 name: "infraWorkflow"
 on:
-  push:
+  # push:
   workflow_dispatch: {}
+  schedule:
+    - cron: "15 16 * * *"
 
 jobs:
   deploy:
