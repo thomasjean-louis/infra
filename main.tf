@@ -161,6 +161,7 @@ module "lambda_game_stacks" {
   game_stacks_cloud_formation_stack_name_column = var.game_stacks_cloud_formation_stack_name_column
   invoked_lambda_function_name                  = var.invoked_lambda_function_name
   game_stacks_is_active_columnn_name            = var.game_stacks_is_active_columnn_name
+  service_name_column = var.service_name_column
 
   deployment_branch = var.deployment_branch
 }

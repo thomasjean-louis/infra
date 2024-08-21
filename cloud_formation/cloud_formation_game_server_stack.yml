@@ -120,7 +120,7 @@ Resources:
           Subnets:
             - !Ref PrivateSubnetA
             - !Ref PrivateSubnetB
-      DesiredCount: 1
+      DesiredCount: 0
       LaunchType: FARGATE
       TaskDefinition: !Ref TaskDefinitionArn
       HealthCheckGracePeriodSeconds: 300
@@ -157,6 +157,8 @@ Resources:
                 "game_stacks_server_link_column_name": "${GameStacksServerLinkColumnName}",
                 "game_stacks_cloud_formation_stack_name_column": "${GameStacksCloudFormationStackNameColumn}",
                 "game_stacks_cloud_formation_stack_name_value": "${AWS::StackName}",
+                "service_name_column": "${ServiceNameColumn}",
+                "service_name_value": "${Service}",
                 "game_server_random_string" : "${RandomString}",
                 "game_server_hosted_zone_name" : "${HostedZoneName}",
                 "game_stacks_is_active_columnn_name" : "${GameStacksIsActiveColumnName}"
@@ -288,6 +290,11 @@ Parameters:
     Type: String
     Default: default
     Description: DB CF stack name column name
+
+  ServiceNameColumn:
+    Type: String
+    Default: default
+    Description: DB Service column name
 
   GameStacksIsActiveColumnName:
     Type: String

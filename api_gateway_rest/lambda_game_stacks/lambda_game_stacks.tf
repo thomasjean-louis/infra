@@ -117,6 +117,10 @@ variable "deployment_branch" {
   type = string
 }
 
+variable "service_name_column" {
+  type = string
+}
+
 
 ## Lambda scripts
 
@@ -520,6 +524,7 @@ resource "aws_lambda_function" "lambda_create_game_stack" {
       GAME_STACKS_SERVER_LINK_COLUMN_NAME           = var.game_stacks_server_link_column_name
       GAME_STACKS_CLOUD_FORMATION_STACK_NAME_COLUMN = var.game_stacks_cloud_formation_stack_name_column
       GAME_STACKS_IS_ACTIVE_COLUMN_NAME             = var.game_stacks_is_active_columnn_name
+      SERVICE_NAME_COLUMN             = var.service_name_column
     }
   }
 }

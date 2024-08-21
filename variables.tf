@@ -197,6 +197,10 @@ variable "game_stacks_is_active_columnn_name" {
   default = "IsActive"
 }
 
+variable "service_name_column" {
+  default = "ServiceName"  
+}
+
 
 ## Lambda
 variable "create_game_stack_cf_stack_name" {

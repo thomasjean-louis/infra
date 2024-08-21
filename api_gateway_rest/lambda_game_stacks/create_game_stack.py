@@ -108,7 +108,11 @@ def lambda_handler(event, context):
         {
             'ParameterKey': 'GameStacksIsActiveColumnName',
             'ParameterValue': os.environ["GAME_STACKS_IS_ACTIVE_COLUMN_NAME"]
-        }
+        },
+        {
+            'ParameterKey': 'ServiceNameColumn',
+            'ParameterValue': os.environ["SERVICE_NAME_COLUMN"]
+        },
         
     ]
 )  
