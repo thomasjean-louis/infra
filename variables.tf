@@ -105,11 +105,11 @@ variable "proxy_server_port" {
 }
 
 variable "proxy_server_cpu" {
-  default = 1024
+  default = 512
 }
 
 variable "proxy_server_ram" {
-  default = 2048
+  default = 1024
 }
 
 variable "proxy_server_tag" {
@@ -128,11 +128,11 @@ variable "game_server_name_container" {
 }
 
 variable "game_server_cpu" {
-  default = 2048
+  default = 512
 }
 
 variable "game_server_ram" {
-  default = 4096
+  default = 1024
 }
 
 variable "game_server_port" {
