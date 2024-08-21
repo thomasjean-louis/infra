@@ -478,6 +478,7 @@ resource "aws_lambda_function" "lambda_get_game_stacks" {
       GAME_STACKS_CAPACITY_COLUMN_NAME    = var.game_stacks_capacity_column_name
       GAME_STACKS_SERVER_LINK_COLUMN_NAME = var.game_stacks_server_link_column_name
       GAME_STACKS_IS_ACTIVE_COLUMN_NAME   = var.game_stacks_is_active_columnn_name
+      IS_UP_COLUMN_NAME = var.is_up_column_name
     }
   }
 }
