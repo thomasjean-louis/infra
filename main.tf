@@ -194,6 +194,10 @@ module "api_gateway_rest" {
 
  lambda_start_game_server_uri = module.lambda_game_stacks.lambda_start_game_server_uri
  lambda_start_game_server_name = module.lambda_game_stacks.lambda_start_game_server_name
+ 
+ lambda_stop_game_server_uri = module.lambda_game_stacks.lambda_stop_game_server_uri
+ lambda_stop_game_server_name = module.lambda_game_stacks.lambda_stop_game_server_name
+
 
   deployment_branch = var.deployment_branch
 }
