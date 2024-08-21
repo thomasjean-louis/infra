@@ -161,6 +161,7 @@ Resources:
                 "service_name_value": "GameServer-service-${RandomString}",
                 "game_server_random_string" : "${RandomString}",
                 "game_server_hosted_zone_name" : "${HostedZoneName}",
+                "is_up_column_name" : "${IsUpColumnName}",
                 "game_stacks_is_active_columnn_name" : "${GameStacksIsActiveColumnName}"
               }
 
@@ -295,6 +296,11 @@ Parameters:
     Type: String
     Default: default
     Description: DB Service column name
+
+  IsUpColumnName:
+    Type: String
+    Default: default
+    Description: DB Is Up column name
 
   GameStacksIsActiveColumnName:
     Type: String
