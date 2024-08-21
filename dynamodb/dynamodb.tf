@@ -39,6 +39,10 @@ resource "aws_dynamodb_table_item" "gamestack_01" {
     "IsActive" : {
       "BOOL" : true
     },
+    "IsUp" : {
+      "BOOL" : true
+    },
+    
   })
 }
 
@@ -59,6 +63,10 @@ resource "aws_dynamodb_table_item" "gamestack_02" {
     "IsActive" : {
       "BOOL" : true
     },
+    "IsUp" : {
+      "BOOL" : false
+    },
+
   })
 }
 
@@ -77,6 +85,9 @@ resource "aws_dynamodb_table_item" "gamestack_03" {
       "S" : "server_c.com"
     },
     "IsActive" : {
+      "BOOL" : false
+    },
+    "IsUp" : {
       "BOOL" : false
     },
   })
