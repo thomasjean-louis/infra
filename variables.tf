@@ -201,6 +201,10 @@ variable "service_name_column" {
   default = "ServiceName"  
 }
 
+variable "is_up_column_name" {
+  default = "IsUp"
+}
+
 
 ## Lambda
 variable "create_game_stack_cf_stack_name" {

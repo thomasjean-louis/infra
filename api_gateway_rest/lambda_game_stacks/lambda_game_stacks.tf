@@ -121,6 +121,14 @@ variable "service_name_column" {
   type = string
 }
 
+variable "is_up_column_name" {
+  type = string
+}
+
+variable "cluster_name" {
+  type = string
+}
+
 
 ## Lambda scripts
 
@@ -574,6 +582,33 @@ resource "aws_lambda_function" "lambda_delete_game_stack" {
   }
 }
 
+# POST /startgameserver/{id}
+data "archive_file" "start_game_server_zip" {
+  type        = "zip"
+  source_file = "${path.module}/start_game_server.py"
+  output_path = "${path.module}/start_game_server.zip"
+}
+
+resource "aws_lambda_function" "lambda_start_game_server" {
+  function_name    = "start_game_server"
+  filename         = data.archive_file.start_game_server_zip.output_path
+  source_code_hash = data.archive_file.start_game_server_zip.output_base64sha256
+  role             = aws_iam_role.lambda_api_service_role.arn
+  handler          = "start_game_server.lambda_handler"
+  runtime          = "python3.9"
+  timeout          = 20
+
+  environment {
+    variables = {
+      GAME_STACKS_TABLE_NAME                        = var.gamestacks_table_name
+      CLUSTER_NAME = var.cluster_name
+      SERVICE_NAME_COLUMN = var.service_name_column
+      IS_UP_COLUMN_NAME = var.is_up_column_name
+    }
+  }
+}
+
+
 output "lambda_create_game_stack_uri" {
   value = aws_lambda_function.lambda_create_game_stack.invoke_arn
 }
@@ -588,6 +623,14 @@ output "lambda_delete_game_stack_uri" {
 
 output "lambda_delete_game_stack_name" {
   value = aws_lambda_function.lambda_delete_game_stack.function_name
+}
+
+output "lambda_start_game_server_uri" {
+  value = aws_lambda_function.lambda_start_game_server.invoke_arn
+}
+
+output "lambda_start_game_server_name" {
+  value = aws_lambda_function.lambda_start_game_server.function_name
 }
 
 

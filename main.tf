@@ -152,6 +152,9 @@ module "lambda_game_stacks" {
   task_definition_arn                = module.gameserver.task_definition_game_server_arn
   proxy_server_name_container        = var.proxy_server_name_container
   task_execution_role_name           = module.iam.task_execution_role_name
+  cluster_name = module.ecs.cluster_name
+
+
 
   game_stacks_id_column_name       = var.game_stacks_id_column_name
   game_stacks_capacity_column_name = var.game_stacks_capacity_column_name
@@ -162,6 +165,7 @@ module "lambda_game_stacks" {
   invoked_lambda_function_name                  = var.invoked_lambda_function_name
   game_stacks_is_active_columnn_name            = var.game_stacks_is_active_columnn_name
   service_name_column = var.service_name_column
+  is_up_column_name = var.is_up_column_name
 
   deployment_branch = var.deployment_branch
 }
@@ -187,6 +191,9 @@ module "api_gateway_rest" {
 
   lambda_delete_game_stack_uri  = module.lambda_game_stacks.lambda_delete_game_stack_uri
   lambda_delete_game_stack_name = module.lambda_game_stacks.lambda_delete_game_stack_name
+
+ lambda_start_game_server_uri = module.lambda_game_stacks.lambda_start_game_server_uri
+ lambda_start_game_server_name = module.lambda_game_stacks.lambda_start_game_server_name
 
   deployment_branch = var.deployment_branch
 }

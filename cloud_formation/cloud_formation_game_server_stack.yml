@@ -158,7 +158,7 @@ Resources:
                 "game_stacks_cloud_formation_stack_name_column": "${GameStacksCloudFormationStackNameColumn}",
                 "game_stacks_cloud_formation_stack_name_value": "${AWS::StackName}",
                 "service_name_column": "${ServiceNameColumn}",
-                "service_name_value": "${Service.ServiceName}",
+                "service_name_value": GameServer-service-${RandomString},
                 "game_server_random_string" : "${RandomString}",
                 "game_server_hosted_zone_name" : "${HostedZoneName}",
                 "game_stacks_is_active_columnn_name" : "${GameStacksIsActiveColumnName}"
