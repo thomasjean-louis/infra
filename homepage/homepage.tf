@@ -169,6 +169,6 @@ resource "aws_amplify_domain_association" "domain_association" {
 
   sub_domain {
     branch_name = aws_amplify_branch.homepage_branch.branch_name
-    prefix      = var.deployment_branch
+    prefix      = ""
   }
 }
