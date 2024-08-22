@@ -194,7 +194,6 @@ resource "aws_apigatewayv2_integration" "integration_start_game_server" {
   integration_method     = "POST"
   integration_uri        = var.lambda_start_game_server_uri
   payload_format_version = "2.0"
-  timeout_milliseconds = 300000
 }
 
 resource "aws_apigatewayv2_route" "route_start_game_server" {
