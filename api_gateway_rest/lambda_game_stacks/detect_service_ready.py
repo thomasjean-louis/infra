@@ -2,10 +2,26 @@ import os
 import logging
 import boto3 
 import json
+import time
+import threading
 
 logger = logging.getLogger()
 logger.setLevel("INFO")
 
+def waiter_caller(cluster_name, service_name):
+      try:
+          waiter.wait(
+              cluster=cluster_name,
+              services=[
+                  service_name,
+              ],
+              WaiterConfig={
+                  'Delay': 15,
+                  'MaxAttempts': 60
+              }
+          )
+      except Exception as e:
+          print('Deploy failed', e)
 
 def lambda_handler(event, context):
     
@@ -25,7 +41,7 @@ def lambda_handler(event, context):
 
         responseBody = []
         
-        if route_key == 'POST /startgameserver/{id}':
+        if route_key == 'POST /detectserviceready/{id}':
             
           # Retreive Service name from dynamodb item id
           dynamodb = boto3.resource("dynamodb")
@@ -41,30 +57,18 @@ def lambda_handler(event, context):
           logger.info("stack name : "+ cluster_name)
           logger.info("service name : "+ service_name)
 
-          # Set Desired count to 1
-          try:
-            ecsClient = boto3.client('ecs')
-            response = ecsClient.update_service(
-              cluster=cluster_name,
-              service=service_name,
-              desiredCount=1,
-            )
-            print(response)
-          except Exception as e:
-            print(e)
-            raise e
+          ecs_client = boto3.client('ecs')
+          waiter = ecs_client.get_waiter('services_stable')
+
+          # Wait the ecs service deployment
+          t = threading.Thread(target=waiter_caller, args=(os.environ["CLUSTER_NAME"], service_name))
+          t.start()
+          while t.is_alive():
+              print("Waiting for service deployment...")
+              time.sleep(15)
                 
 
-          # Update record in dynamodb 
-          table.update_item(
-              ConditionExpression="attribute_exists(ID)",
-              Key={"ID": path_params['id']},
-              UpdateExpression="SET "+os.environ["IS_UP_COLUMN_NAME"]+" = :val1",
-              ExpressionAttributeValues={
-              ':val1': True
-              }
-          )
-          responseBody.append("Game server started ")
+          responseBody.append("Game server ready ")
           body = responseBody
 
         else:
