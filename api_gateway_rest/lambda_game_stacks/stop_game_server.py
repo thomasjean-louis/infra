@@ -61,7 +61,7 @@ def lambda_handler(event, context):
               Key={"ID": path_params['id']},
               UpdateExpression="SET "+os.environ["STATUS_COLUMN_NAME"]+" = :val1",
               ExpressionAttributeValues={
-              ':val1': False
+              ':val1': os.environ["STOPPED_VALUE"]
               }
           )
           responseBody.append("Game server stopped ")

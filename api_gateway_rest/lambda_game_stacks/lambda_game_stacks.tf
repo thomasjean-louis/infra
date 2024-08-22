@@ -675,6 +675,7 @@ resource "aws_lambda_function" "lambda_stop_game_server" {
       CLUSTER_NAME = var.cluster_name
       SERVICE_NAME_COLUMN = var.service_name_column
       STATUS_COLUMN_NAME = var.status_column_name
+      STOPPED_VALUE = var.stopped_value
     }
   }
 }
