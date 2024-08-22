@@ -40,7 +40,7 @@ resource "aws_dynamodb_table_item" "gamestack_01" {
       "BOOL" : true
     },
     "ServerStatus" : {
-      "S" : "Running"
+      "S" : "running"
     },
     
   })
@@ -64,7 +64,7 @@ resource "aws_dynamodb_table_item" "gamestack_02" {
       "BOOL" : true
     },
     "ServerStatus" : {
-      "S" : "Stopped"
+      "S" : "stopped"
     },
 
   })
@@ -88,7 +88,7 @@ resource "aws_dynamodb_table_item" "gamestack_03" {
       "BOOL" : false
     },
     "ServerStatus" : {
-      "S" : "Running"
+      "S" : "running"
     },
   })
 }
