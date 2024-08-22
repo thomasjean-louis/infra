@@ -606,7 +606,7 @@ resource "aws_lambda_function" "lambda_start_game_server" {
   role             = aws_iam_role.lambda_api_service_role.arn
   handler          = "start_game_server.lambda_handler"
   runtime          = "python3.9"
-  timeout          = 20
+  timeout          = 150
 
   environment {
     variables = {
@@ -642,39 +642,6 @@ resource "aws_lambda_function" "lambda_stop_game_server" {
       IS_UP_COLUMN_NAME = var.is_up_column_name
     }
   }
-}
-
-# POST /detectserviceready/{id}
-data "archive_file" "detect_service_ready_zip" {
-  type        = "zip"
-  source_file = "${path.module}/detect_service_ready.py"
-  output_path = "${path.module}/detect_service_ready.zip"
-}
-
-resource "aws_lambda_function" "lambda_detect_service_ready" {
-  function_name    = "detectserviceready"
-  filename         = data.archive_file.detect_service_ready_zip.output_path
-  source_code_hash = data.archive_file.detect_service_ready_zip.output_base64sha256
-  role             = aws_iam_role.lambda_api_service_role.arn
-  handler          = "detect_service_ready.lambda_handler"
-  runtime          = "python3.9"
-  timeout          = 20
-
-  environment {
-    variables = {
-      GAME_STACKS_TABLE_NAME                        = var.gamestacks_table_name
-      CLUSTER_NAME = var.cluster_name
-      SERVICE_NAME_COLUMN = var.service_name_column
-    }
-  }
-}
-
-output "lambda_detect_service_ready_uri" {
-  value = aws_lambda_function.lambda_detect_service_ready.invoke_arn
-}
-
-output "lambda_detect_service_ready_name" {
-  value = aws_lambda_function.lambda_detect_service_ready.function_name
 }
 
 output "lambda_create_game_stack_uri" {

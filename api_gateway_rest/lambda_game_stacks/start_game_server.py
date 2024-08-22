@@ -2,7 +2,7 @@ import os
 import logging
 import boto3 
 import json
-
+import time
 logger = logging.getLogger()
 logger.setLevel("INFO")
 
@@ -41,9 +41,11 @@ def lambda_handler(event, context):
           logger.info("stack name : "+ cluster_name)
           logger.info("service name : "+ service_name)
 
+          ecsClient = boto3.client('ecs')
+
           # Set Desired count to 1
           try:
-            ecsClient = boto3.client('ecs')
+            
             response = ecsClient.update_service(
               cluster=cluster_name,
               service=service_name,
@@ -53,7 +55,25 @@ def lambda_handler(event, context):
           except Exception as e:
             print(e)
             raise e
-                
+
+          # Check when ecs service is ready
+          runningCount=0
+
+          try:
+            while runningCount==0:
+              response = ecsClient.describe_services(
+                cluster="quakejs-cluster-dev", 
+                services=["GameServer-service-rulzulytav",]
+              )
+              runningCount = response["services"][0]["runningCount"]
+              print("runningCount ")
+              print(response["services"][0]["runningCount"])
+              time.sleep(3)
+
+            print(response)
+          except Exception as e:
+            print(e)
+            raise e       
 
           # Update record in dynamodb 
           table.update_item(
