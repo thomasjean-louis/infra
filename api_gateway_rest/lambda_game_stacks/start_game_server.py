@@ -32,11 +32,11 @@ def lambda_handler(event, context):
 
           table = dynamodb.Table(os.environ["GAME_STACKS_TABLE_NAME"])
       
-          response = table.get_item(Key={"ID": path_params['id']})
+          response_get_item = table.get_item(Key={"ID": path_params['id']})
           
           # All services share same cluster
           cluster_name = os.environ["CLUSTER_NAME"]
-          service_name = response["Item"][os.environ["SERVICE_NAME_COLUMN"]]
+          service_name = response_get_item["Item"][os.environ["SERVICE_NAME_COLUMN"]]
 
           logger.info("stack name : "+ cluster_name)
           logger.info("service name : "+ service_name)
@@ -46,12 +46,12 @@ def lambda_handler(event, context):
           # Set Desired count to 1
           try:
             
-            response = ecsClient.update_service(
+            response_update_service = ecsClient.update_service(
               cluster=cluster_name,
               service=service_name,
               desiredCount=1,
             )
-            print(response)
+            print(response_update_service)
           except Exception as e:
             print(e)
             raise e
@@ -61,16 +61,15 @@ def lambda_handler(event, context):
 
           try:
             while runningCount==0:
-              response = ecsClient.describe_services(
+              response_describe_service = ecsClient.describe_services(
                 cluster="quakejs-cluster-dev", 
                 services=["GameServer-service-rulzulytav",]
               )
-              runningCount = response["services"][0]["runningCount"]
+              runningCount = response_describe_service["services"][0]["runningCount"]
               print("runningCount ")
-              print(response["services"][0]["runningCount"])
+              print(response_describe_service["services"][0]["runningCount"])
               time.sleep(3)
-
-            print(response)
+            
           except Exception as e:
             print(e)
             raise e       
