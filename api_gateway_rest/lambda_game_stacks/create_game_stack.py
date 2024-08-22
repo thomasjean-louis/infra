@@ -110,12 +110,16 @@ def lambda_handler(event, context):
             'ParameterValue': os.environ["GAME_STACKS_IS_ACTIVE_COLUMN_NAME"]
         },
         {
-            'ParameterKey': 'IsUpColumnName',
-            'ParameterValue': os.environ["Is_UP_COLUMN_NAME"]
+            'ParameterKey': 'StatusColumnName',
+            'ParameterValue': os.environ["STATUS_COLUMN_NAME"]
         },
         {
             'ParameterKey': 'ServiceNameColumn',
             'ParameterValue': os.environ["SERVICE_NAME_COLUMN"]
+        },
+        {
+            'ParameterKey': 'StoppedValue',
+            'ParameterValue': os.environ["STOPPED_VALUE"]
         },
         
     ]

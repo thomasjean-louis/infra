@@ -19,7 +19,7 @@ def lambda_handler(event,context):
             event['game_stacks_server_link_column_name']: event['game_server_random_string']+"."+event['game_server_hosted_zone_name'],             
             event['game_stacks_cloud_formation_stack_name_column']: event['game_stacks_cloud_formation_stack_name_value'],
             event['service_name_column']: event['service_name_value'],
-            event['is_up_column_name']: False,    
+            event['status_column_name']: event['stopped_value'],    
             event['game_stacks_is_active_columnn_name']: True        
         } 
     ) 

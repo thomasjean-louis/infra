@@ -59,7 +59,7 @@ def lambda_handler(event, context):
           table.update_item(
               ConditionExpression="attribute_exists(ID)",
               Key={"ID": path_params['id']},
-              UpdateExpression="SET "+os.environ["IS_UP_COLUMN_NAME"]+" = :val1",
+              UpdateExpression="SET "+os.environ["STATUS_COLUMN_NAME"]+" = :val1",
               ExpressionAttributeValues={
               ':val1': False
               }

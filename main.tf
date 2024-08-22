@@ -138,6 +138,8 @@ module "lambda_game_stacks" {
   gamestacks_table_name              = module.dynamodb.gamestacks_table_name
   create_game_stack_cf_stack_name    = var.create_game_stack_cf_stack_name
   create_game_stack_cf_template_url  = module.cloud_formation.create_game_stack_cf_template_url
+  pending_value = var.pending_value
+  stopped_value = var.stopped_value
   s3_bucket_cf_templates             = module.cloud_formation.s3_bucket_cf_templates
   hosted_zone_name                   = var.hosted_zone_name
   hosted_zone_id                     = local.hosted_zone_id
@@ -165,7 +167,7 @@ module "lambda_game_stacks" {
   invoked_lambda_function_name                  = var.invoked_lambda_function_name
   game_stacks_is_active_columnn_name            = var.game_stacks_is_active_columnn_name
   service_name_column = var.service_name_column
-  is_up_column_name = var.is_up_column_name
+  status_column_name = var.status_column_name
 
   deployment_branch = var.deployment_branch
 }

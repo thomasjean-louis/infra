@@ -55,35 +55,19 @@ def lambda_handler(event, context):
           except Exception as e:
             print(e)
             raise e
-
-          # Check when ecs service is ready
-          runningCount=0
-
-          try:
-            while runningCount==0:
-              response_describe_service = ecsClient.describe_services(
-                cluster=cluster_name, 
-                services=[service_name,]
-              )
-              runningCount = response_describe_service["services"][0]["runningCount"]
-              print("runningCount ")
-              print(response_describe_service["services"][0]["runningCount"])
-              time.sleep(3)
-            
-          except Exception as e:
-            print(e)
-            raise e       
-
-          # Update record in dynamodb 
+          
+          # Set Pending status
           table.update_item(
-              ConditionExpression="attribute_exists(ID)",
-              Key={"ID": path_params['id']},
-              UpdateExpression="SET "+os.environ["IS_UP_COLUMN_NAME"]+" = :val1",
-              ExpressionAttributeValues={
-              ':val1': True
-              }
-          )
-          responseBody.append("Game server started ")
+            ConditionExpression="attribute_exists(ID)",
+            Key={"ID": path_params['id']},
+            UpdateExpression="SET "+os.environ["STATUS_COLUMN_NAME"]+" = :val1",
+            ExpressionAttributeValues={
+            ':val1': os.environ["PENDING_VALUE"]
+            }
+        )
+
+          
+          responseBody.append("Game server starting .. ")
           body = responseBody
 
         else:

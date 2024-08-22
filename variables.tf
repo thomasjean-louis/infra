@@ -201,10 +201,21 @@ variable "service_name_column" {
   default = "ServiceName"  
 }
 
-variable "is_up_column_name" {
-  default = "IsUp"
+variable "status_column_name" {
+  default = "Status"
 }
 
+variable "running_value" {
+  default = "running"
+}
+
+variable "stopped_value" {
+  default = "stopped"
+}
+
+variable "pending_value" {
+  default = "pending"
+}
 
 ## Lambda
 variable "create_game_stack_cf_stack_name" {

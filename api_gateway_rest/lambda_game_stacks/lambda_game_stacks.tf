@@ -121,7 +121,7 @@ variable "service_name_column" {
   type = string
 }
 
-variable "is_up_column_name" {
+variable "status_column_name" {
   type = string
 }
 
@@ -129,6 +129,13 @@ variable "cluster_name" {
   type = string
 }
 
+variable "pending_value" {
+  type = string
+}
+
+variable "stopped_value" {
+  type = string
+}
 
 ## Lambda scripts
 
@@ -485,7 +492,7 @@ resource "aws_lambda_function" "lambda_get_game_stacks" {
       GAME_STACKS_CAPACITY_COLUMN_NAME    = var.game_stacks_capacity_column_name
       GAME_STACKS_SERVER_LINK_COLUMN_NAME = var.game_stacks_server_link_column_name
       GAME_STACKS_IS_ACTIVE_COLUMN_NAME   = var.game_stacks_is_active_columnn_name
-      IS_UP_COLUMN_NAME = var.is_up_column_name
+      STATUS_COLUMN_NAME = var.status_column_name
     }
   }
 }
@@ -541,8 +548,9 @@ resource "aws_lambda_function" "lambda_create_game_stack" {
       GAME_STACKS_SERVER_LINK_COLUMN_NAME           = var.game_stacks_server_link_column_name
       GAME_STACKS_CLOUD_FORMATION_STACK_NAME_COLUMN = var.game_stacks_cloud_formation_stack_name_column
       GAME_STACKS_IS_ACTIVE_COLUMN_NAME             = var.game_stacks_is_active_columnn_name
-      Is_UP_COLUMN_NAME = var.is_up_column_name
+      Is_UP_COLUMN_NAME = var.status_column_name
       SERVICE_NAME_COLUMN             = var.service_name_column
+      STOPPED_VALUE = var.stopped_value
     }
   }
 }
@@ -613,7 +621,34 @@ resource "aws_lambda_function" "lambda_start_game_server" {
       GAME_STACKS_TABLE_NAME                        = var.gamestacks_table_name
       CLUSTER_NAME = var.cluster_name
       SERVICE_NAME_COLUMN = var.service_name_column
-      IS_UP_COLUMN_NAME = var.is_up_column_name
+      STATUS_COLUMN_NAME = var.status_column_name
+      PENDING_VALUE = var.pending_value
+    }
+  }
+}
+
+# DetectServiceReady lambda function
+data "archive_file" "detect_service_ready_zip" {
+  type        = "zip"
+  source_file = "${path.module}/detect_service_ready.py"
+  output_path = "${path.module}/detect_service_ready.zip"
+}
+
+resource "aws_lambda_function" "lambda_detect_service_ready" {
+  function_name    = "detect_service_ready"
+  filename         = data.archive_file.detect_service_ready_zip.output_path
+  source_code_hash = data.archive_file.detect_service_ready_zip.output_base64sha256
+  role             = aws_iam_role.lambda_api_service_role.arn
+  handler          = "detect_service_ready.lambda_handler"
+  runtime          = "python3.9"
+  timeout          = 300
+
+  environment {
+    variables = {
+      GAME_STACKS_TABLE_NAME                        = var.gamestacks_table_name
+      CLUSTER_NAME = var.cluster_name
+      SERVICE_NAME_COLUMN = var.service_name_column
+      STATUS_COLUMN_NAME = var.status_column_name
     }
   }
 }
@@ -639,7 +674,7 @@ resource "aws_lambda_function" "lambda_stop_game_server" {
       GAME_STACKS_TABLE_NAME                        = var.gamestacks_table_name
       CLUSTER_NAME = var.cluster_name
       SERVICE_NAME_COLUMN = var.service_name_column
-      IS_UP_COLUMN_NAME = var.is_up_column_name
+      STATUS_COLUMN_NAME = var.status_column_name
     }
   }
 }
@@ -674,6 +709,10 @@ output "lambda_stop_game_server_uri" {
 
 output "lambda_stop_game_server_name" {
   value = aws_lambda_function.lambda_stop_game_server.function_name
+}
+
+output "lambda_detect_service_ready_name" {
+  value = aws_lambda_function.lambda_detect_service_ready.function_name
 }
 
 
