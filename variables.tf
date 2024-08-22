@@ -202,7 +202,7 @@ variable "service_name_column" {
 }
 
 variable "status_column_name" {
-  default = "Status"
+  default = "ServerStatus"
 }
 
 variable "running_value" {
