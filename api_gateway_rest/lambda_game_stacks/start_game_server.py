@@ -62,8 +62,8 @@ def lambda_handler(event, context):
           try:
             while runningCount==0:
               response_describe_service = ecsClient.describe_services(
-                cluster="quakejs-cluster-dev", 
-                services=["GameServer-service-rulzulytav",]
+                cluster=cluster_name, 
+                services=[service_name,]
               )
               runningCount = response_describe_service["services"][0]["runningCount"]
               print("runningCount ")
