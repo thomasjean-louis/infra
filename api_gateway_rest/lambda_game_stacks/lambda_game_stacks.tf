@@ -386,10 +386,17 @@ resource "aws_iam_role_policy" "ecs_service_policy" {
           "ecs:DescribeServices",
           "ecs:CreateService",
           "ecs:DeleteService",
-          "ecs:UpdateService"
+          "ecs:UpdateService",
         ]
         Effect   = "Allow"
         Resource = "arn:aws:ecs:${var.region}:${var.account_id}:service/*"
+      },
+      {
+        Action = [
+          "ecs:DescribeTaskSets"
+        ]
+        Effect   = "Allow"
+        Resource = "arn:aws:ecs:${var.region}:${var.account_id}:task-set/*"
       }
     ]
   })
