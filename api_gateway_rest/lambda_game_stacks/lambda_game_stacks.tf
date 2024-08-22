@@ -606,7 +606,7 @@ resource "aws_lambda_function" "lambda_start_game_server" {
   role             = aws_iam_role.lambda_api_service_role.arn
   handler          = "start_game_server.lambda_handler"
   runtime          = "python3.9"
-  timeout          = 300
+  timeout          = 3000
 
   environment {
     variables = {
