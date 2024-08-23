@@ -517,6 +517,10 @@ resource "aws_lambda_function" "lambda_get_game_stacks" {
   }
 }
 
+resource "aws_cloudwatch_log_group" "log_group_get" {
+  name = "/aws/lambda/${aws_lambda_function.lambda_get_game_stacks.function_name}"
+}
+
 output "lambda_get_game_stacks_uri" {
   value = aws_lambda_function.lambda_get_game_stacks.invoke_arn
 }
@@ -575,6 +579,10 @@ resource "aws_lambda_function" "lambda_create_game_stack" {
   }
 }
 
+resource "aws_cloudwatch_log_group" "log_group_create" {
+  name = "/aws/lambda/${aws_lambda_function.lambda_create_game_stack.function_name}"
+}
+
 # PUT /gamestack
 data "archive_file" "add_game_stack_zip" {
   type        = "zip"
@@ -590,6 +598,10 @@ resource "aws_lambda_function" "lambda_add_game_stack" {
   handler          = "add_game_stack.lambda_handler"
   runtime          = "python3.9"
   timeout          = 20
+}
+
+resource "aws_cloudwatch_log_group" "log_group_add" {
+  name = "/aws/lambda/${aws_lambda_function.lambda_add_game_stack.function_name}"
 }
 
 # DELETE /gamestack
@@ -620,6 +632,11 @@ resource "aws_lambda_function" "lambda_delete_game_stack" {
   }
 }
 
+resource "aws_cloudwatch_log_group" "log_group_delete" {
+  name = "/aws/lambda/${aws_lambda_function.lambda_delete_game_stack.function_name}"
+}
+
+
 # POST /startgameserver/{id}
 data "archive_file" "start_game_server_zip" {
   type        = "zip"
@@ -646,6 +663,10 @@ resource "aws_lambda_function" "lambda_start_game_server" {
       DETECT_SERVICE_FUNCTION_NAME = aws_lambda_function.lambda_detect_service_ready.function_name
     }
   }
+}
+
+resource "aws_cloudwatch_log_group" "log_group_start_game" {
+  name = "/aws/lambda/${aws_lambda_function.lambda_start_game_server.function_name}"
 }
 
 # DetectServiceReady lambda function
@@ -704,6 +725,10 @@ resource "aws_lambda_function" "lambda_stop_game_server" {
       STOPPED_VALUE = var.stopped_value
     }
   }
+}
+
+resource "aws_cloudwatch_log_group" "log_group_stop" {
+  name = "/aws/lambda/${aws_lambda_function.lambda_stop_game_server.function_name}"
 }
 
 output "lambda_create_game_stack_uri" {

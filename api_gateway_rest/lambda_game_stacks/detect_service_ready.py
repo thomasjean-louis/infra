@@ -38,8 +38,6 @@ def lambda_handler(event, context):
               services=[service_name,]
             )
             runningCount = response_describe_service["services"][0]["runningCount"]
-            print("runningCount ")
-            print(response_describe_service["services"][0]["runningCount"])
             time.sleep(3)
           
         except Exception as e:
