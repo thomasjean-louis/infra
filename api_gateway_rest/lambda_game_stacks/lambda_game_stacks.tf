@@ -145,6 +145,12 @@ variable "running_value"  {
 
 ## IAM Lambda role
 
+# Get AWS Managed Policy for ecr 
+data "aws_iam_policy" "lambda_managed_policy" {
+  arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+}
+
+
 # Lambda Invoker role
 resource "aws_iam_role" "lambda_invoker_role" {
   name = "${var.app_name}_lambda_invoker_role_${var.deployment_branch}"
@@ -164,6 +170,11 @@ resource "aws_iam_role" "lambda_invoker_role" {
       },
     ]
   })
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_invoker_managed_policy" {
+  role       = aws_iam_role.lambda_invoker_role.name
+  policy_arn = data.aws_iam_policy.lambda_managed_policy.arn
 }
 
 resource "aws_iam_role_policy" "lambda_invoker_service_policy" {
@@ -205,6 +216,11 @@ resource "aws_iam_role" "lambda_api_service_role" {
       },
     ]
   })
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_invoker_managed_policy" {
+  role       = aws_iam_role.lambda_api_service_role.name
+  policy_arn = data.aws_iam_policy.lambda_managed_policy.arn
 }
 
 resource "aws_iam_role_policy" "ec2_service_policy" {
