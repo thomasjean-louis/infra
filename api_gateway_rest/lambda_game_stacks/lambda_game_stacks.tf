@@ -676,7 +676,7 @@ resource "aws_lambda_function" "lambda_detect_service_ready" {
 }
 
 resource "aws_cloudwatch_log_group" "log_group" {
-  name = aws_lambda_function.lambda_detect_service_ready.function_name
+  name = "/aws/lambda/${aws_lambda_function.lambda_detect_service_ready.function_name}"
 }
 
 # POST /stopgameserver/{id}
