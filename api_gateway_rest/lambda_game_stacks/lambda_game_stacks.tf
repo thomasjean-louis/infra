@@ -218,7 +218,7 @@ resource "aws_iam_role" "lambda_api_service_role" {
   })
 }
 
-resource "aws_iam_role_policy_attachment" "lambda_invoker_managed_policy" {
+resource "aws_iam_role_policy_attachment" "lambda_api_managed_policy" {
   role       = aws_iam_role.lambda_api_service_role.name
   policy_arn = data.aws_iam_policy.lambda_managed_policy.arn
 }
