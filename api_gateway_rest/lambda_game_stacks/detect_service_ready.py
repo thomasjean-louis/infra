@@ -18,12 +18,10 @@ def lambda_handler(event, context):
     try:
         dynamodb = boto3.resource("dynamodb")
 
-        table = dynamodb.Table(os.environ["GAME_STACKS_TABLE_NAME"])
-     
-        response_get_item = table.get_item(Key={"ID": path_params['id']}) 
+        table = dynamodb.Table(os.environ["GAME_STACKS_TABLE_NAME"])     
 
         cluster_name = os.environ["CLUSTER_NAME"]
-        service_name = response_get_item["Item"][os.environ["SERVICE_NAME_COLUMN"]]
+        service_name = event['service_name']
 
         logger.info("stack name : "+ cluster_name)
         logger.info("service name : "+ service_name)
@@ -51,10 +49,10 @@ def lambda_handler(event, context):
         # Update record in dynamodb 
         table.update_item(
             ConditionExpression="attribute_exists(ID)",
-            Key={"ID": path_params['id']},
+            Key={"ID": event['record_id']},
             UpdateExpression="SET "+os.environ["STATUS_COLUMN_NAME"]+" = :val1",
             ExpressionAttributeValues={
-            ':val1': True
+            ':val1': os.environ["RUNNING_VALUE"]
             }
         )
 

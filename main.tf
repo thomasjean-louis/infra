@@ -140,6 +140,7 @@ module "lambda_game_stacks" {
   create_game_stack_cf_template_url  = module.cloud_formation.create_game_stack_cf_template_url
   pending_value = var.pending_value
   stopped_value = var.stopped_value
+  running_value = var.running_value
   s3_bucket_cf_templates             = module.cloud_formation.s3_bucket_cf_templates
   hosted_zone_name                   = var.hosted_zone_name
   hosted_zone_id                     = local.hosted_zone_id

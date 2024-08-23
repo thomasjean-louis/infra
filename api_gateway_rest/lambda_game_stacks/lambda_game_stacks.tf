@@ -137,6 +137,10 @@ variable "stopped_value" {
   type = string
 }
 
+variable "running_value"  {
+  type = string
+}
+
 ## Lambda scripts
 
 ## IAM Lambda role
@@ -623,6 +627,7 @@ resource "aws_lambda_function" "lambda_start_game_server" {
       SERVICE_NAME_COLUMN = var.service_name_column
       STATUS_COLUMN_NAME = var.status_column_name
       PENDING_VALUE = var.pending_value
+      DETECT_SERVICE_FUNCTION_NAME = aws_lambda_function.lambda_detect_service_ready.function_name
     }
   }
 }
@@ -649,6 +654,7 @@ resource "aws_lambda_function" "lambda_detect_service_ready" {
       CLUSTER_NAME = var.cluster_name
       SERVICE_NAME_COLUMN = var.service_name_column
       STATUS_COLUMN_NAME = var.status_column_name
+      RUNNING_VALUE = var.running_value
     }
   }
 }

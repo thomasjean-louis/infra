@@ -64,8 +64,21 @@ def lambda_handler(event, context):
             ExpressionAttributeValues={
             ':val1': os.environ["PENDING_VALUE"]
             }
-        )
+          )
 
+          # Invoke lambda that checks when the ecs task is running
+          lambda_client = boto3.client('lambda')
+          
+          cfn_event = {
+                "service_name": service_name,
+                "record_id": path_params['id'],
+          }
+
+          lambda_client.invoke( 
+                 FunctionName=os.environ["DETECT_SERVICE_FUNCTION_NAME"],
+                 InvocationType='Event',
+                 Payload=json.dumps(cfn_event)
+          )
           
           responseBody.append("Game server starting .. ")
           body = responseBody
