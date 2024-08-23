@@ -675,6 +675,10 @@ resource "aws_lambda_function" "lambda_detect_service_ready" {
   }
 }
 
+resource "aws_cloudwatch_log_group" "log_group" {
+  name = aws_lambda_function.lambda_detect_service_ready.name
+}
+
 # POST /stopgameserver/{id}
 data "archive_file" "stop_game_server_zip" {
   type        = "zip"
