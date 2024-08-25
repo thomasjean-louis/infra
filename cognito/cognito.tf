@@ -70,6 +70,69 @@ resource "aws_cognito_identity_pool" "identity_pool" {
   }
 }
 
+# Iam identity role
+resource "aws_iam_role" "role_identity_pool" {
+  name = "${var.app_name}_identity_pool"
+
+  # Terraform's "jsonencode" function converts a
+  # Terraform expression result to valid JSON syntax.
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "Federated": "cognito-identity.amazonaws.com"
+            },
+            "Action": "sts:AssumeRoleWithWebIdentity",
+            "Condition": {
+                "StringEquals": {
+                    "cognito-identity.amazonaws.com:aud": "${aws_cognito_identity_pool.identity_pool.id}"
+                },
+                "ForAnyValue:StringLike": {
+                    "cognito-identity.amazonaws.com:amr": "authenticated"
+                }
+            }
+        }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy" "cognito_authenticated_policy" {
+  name = "${var.app_name}_cognito_authenticated_policy_${var.deployment_branch}"
+  role = aws_iam_role.role_identity_pool.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "cognito-identity:GetCredentialsForIdentity"
+            ],
+            "Resource": [
+                "*"
+            ]
+        }
+    ]
+  })
+}
+
+resource "aws_cognito_identity_pool_roles_attachment" "cognito_identity_role_attachment" {
+  identity_pool_id = aws_cognito_identity_pool.identity_pool.id
+
+  role_mapping {
+    identity_provider         = aws_cognito_user_pool.user_pool.id
+    type                      = "Rules"
+  }
+
+  roles = {
+    "authenticated" = aws_iam_role.role_identity_pool.arn
+  }
+}
+
+
+
 output "user_pool_id" {
   value = aws_cognito_user_pool.user_pool.id
 }
