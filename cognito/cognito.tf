@@ -214,7 +214,7 @@ resource "aws_cognito_user_group" "admin_group" {
   description = "Admin group"
 }
 
-resource "aws_cognito_user_group" "userr_group" {
+resource "aws_cognito_user_group" "user_group" {
   name        = var.user_group_name
   user_pool_id = aws_cognito_user_pool.user_pool.id
   description = "User group"
@@ -235,7 +235,7 @@ resource "aws_cognito_user" "admin_user" {
   }
 }
 
-resource "aws_cognito_user_in_group" "default_user_group" {
+resource "aws_cognito_user_in_group" "admin_user_group" {
   user_pool_id = aws_cognito_user_pool.user_pool.id
   group_name   = aws_cognito_user_group.admin_group.name
   username     = aws_cognito_user.admin_user.username
@@ -254,8 +254,8 @@ resource "aws_cognito_user" "classic_user" {
   }
 }
 
-resource "aws_cognito_user_in_group" "classic_user" {
+resource "aws_cognito_user_in_group" "classic_user_group" {
   user_pool_id = aws_cognito_user_pool.user_pool.id
-  group_name   = aws_cognito_user_group.admin_group.name
+  group_name   = aws_cognito_user_group.user_group.name
   username     = aws_cognito_user.admin_user.username
 }
