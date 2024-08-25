@@ -26,7 +26,7 @@ jobs:
       TF_VAR_admin_cognito_username: ${{secrets.ADMIN_COGNITO_USERNAME}}
       TF_VAR_admin_cognito_password: ${{secrets.ADMIN_COGNITO_PASSWORD}}
       TF_VAR_classic_cognito_username: ${{secrets.CLASSIC_COGNITO_USERNAME}}
-      TF_VAR_classic_cognito_passwordd: ${{secrets.CLASSIC_COGNITO_PASSWORD}}
+      TF_VAR_classic_cognito_password: ${{secrets.CLASSIC_COGNITO_PASSWORD}}
       TF_VAR_default_cognito_mail: ${{secrets.DEFAULT_COGNITO_MAIL}}
       TF_VAR_subdomain_homepage: ${{secrets.SUBDOMAIN_HOMEPAGE}}
       TF_VAR_subdomain_game_stacks: ${{secrets.SUBDOMAIN_GAME_STACKS}}
