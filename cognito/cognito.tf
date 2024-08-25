@@ -2,15 +2,23 @@ variable "app_name" {
   type = string
 }
 
-variable "default_cognito_username" {
-  type = string
-}
-
 variable "default_cognito_mail" {
   type = string
 }
 
-variable "default_cognito_password" {
+variable "admin_cognito_username" {
+  type = string
+}
+
+variable "admin_cognito_password" {
+  type = string
+}
+
+variable "classic_cognito_username" {
+  type = string
+}
+
+variable "classic_cognito_password" {
   type = string
 }
 
@@ -213,11 +221,11 @@ resource "aws_cognito_user_group" "userr_group" {
 }
 
 
-# User
-resource "aws_cognito_user" "default_cognito_user" {
+# Users
+resource "aws_cognito_user" "admin_user" {
   user_pool_id = aws_cognito_user_pool.user_pool.id
-  username     = var.default_cognito_username
-  password     = var.default_cognito_password
+  username     = var.admin_cognito_username
+  password     = var.admin_cognito_password
 
   enabled = true
 
@@ -230,5 +238,24 @@ resource "aws_cognito_user" "default_cognito_user" {
 resource "aws_cognito_user_in_group" "default_user_group" {
   user_pool_id = aws_cognito_user_pool.user_pool.id
   group_name   = aws_cognito_user_group.admin_group.name
-  username     = aws_cognito_user.default_cognito_user.username
+  username     = aws_cognito_user.admin_user.username
+}
+
+resource "aws_cognito_user" "classic_user" {
+  user_pool_id = aws_cognito_user_pool.user_pool.id
+  username     = var.classic_cognito_username
+  password     = var.classic_cognito_password
+
+  enabled = true
+
+  attributes = {
+    email          = var.default_cognito_mail
+    email_verified = true
+  }
+}
+
+resource "aws_cognito_user_in_group" "classic_user" {
+  user_pool_id = aws_cognito_user_pool.user_pool.id
+  group_name   = aws_cognito_user_group.admin_group.name
+  username     = aws_cognito_user.admin_user.username
 }

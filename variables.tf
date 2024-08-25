@@ -69,12 +69,22 @@ variable "subdomain_api" {
 }
 
 ###### Cognito
-variable "default_cognito_username" {
+variable "admin_cognito_username" {
   type      = string
   sensitive = true
 }
 
-variable "default_cognito_password" {
+variable "admin_cognito_password" {
+  type      = string
+  sensitive = true
+}
+
+variable "classic_cognito_username" {
+  type      = string
+  sensitive = true
+}
+
+variable "classic_cognito_password" {
   type      = string
   sensitive = true
 }
