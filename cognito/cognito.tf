@@ -257,5 +257,5 @@ resource "aws_cognito_user" "classic_user" {
 resource "aws_cognito_user_in_group" "classic_user_group" {
   user_pool_id = aws_cognito_user_pool.user_pool.id
   group_name   = aws_cognito_user_group.user_group.name
-  username     = aws_cognito_user.admin_user.username
+  username     = aws_cognito_user.classic_user.username
 }
