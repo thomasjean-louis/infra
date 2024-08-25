@@ -142,13 +142,13 @@ output "identity_pool_id" {
 # }
 
 # Groups
-resource "aws_cognito_user_group" "user_group" {
+resource "aws_cognito_user_group" "admin_group" {
   name        = var.admin_group_name
   user_pool_id = aws_cognito_user_pool.user_pool.id
   description = "Admin group"
 }
 
-resource "aws_cognito_user_group" "user_group" {
+resource "aws_cognito_user_group" "userr_group" {
   name        = var.user_group_name
   user_pool_id = aws_cognito_user_pool.user_pool.id
   description = "User group"
