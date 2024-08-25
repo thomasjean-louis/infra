@@ -121,12 +121,6 @@ resource "aws_iam_role_policy" "cognito_authenticated_policy" {
 resource "aws_cognito_identity_pool_roles_attachment" "cognito_identity_role_attachment" {
   identity_pool_id = aws_cognito_identity_pool.identity_pool.id
 
-  role_mapping {
-    identity_provider         = "${aws_cognito_user_pool.user_pool.endpoint}:${aws_cognito_user_pool_client.user_pool_client.id}"
-    type                      = "Token"
-    ambiguous_role_resolution = "Deny"
-  }
-
   roles = {
     "authenticated" = aws_iam_role.role_identity_pool.arn
   }
