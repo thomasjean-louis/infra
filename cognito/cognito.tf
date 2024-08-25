@@ -123,7 +123,8 @@ resource "aws_cognito_identity_pool_roles_attachment" "cognito_identity_role_att
 
   role_mapping {
     identity_provider         = aws_cognito_user_pool.user_pool.id
-    type                      = "Rules"
+    type                      = "Token"
+    ambiguous_role_resolution = "Deny"
   }
 
   roles = {
