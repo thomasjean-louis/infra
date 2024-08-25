@@ -30,6 +30,14 @@ variable "deployment_branch" {
   type = string
 }
 
+variable "admin_group_name" {
+  type = string
+}
+
+variable "user_group_name" {
+  type = string
+}
+
 resource "aws_cognito_user_pool" "user_pool" {
   name = "${var.app_name}-user-pool-${var.deployment_branch}"
 
@@ -132,6 +140,19 @@ output "identity_pool_id" {
 #   certificate_arn = aws_acm_certificate.auth_domaine_name_certificate.arn
 #   user_pool_id    = aws_cognito_user_pool.user_pool.id
 # }
+
+# Groups
+resource "aws_cognito_user_group" "user_group" {
+  name        = var.admin_group_name
+  user_pool_id = aws_cognito_user_pool.user_pool.id
+  description = "Admin group"
+}
+
+resource "aws_cognito_user_group" "user_group" {
+  name        = var.user_group_name
+  user_pool_id = aws_cognito_user_pool.user_pool.id
+  description = "User group"
+}
 
 
 # User

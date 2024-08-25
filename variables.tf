@@ -84,6 +84,13 @@ variable "default_cognito_mail" {
   sensitive = true
 }
 
+variable "admin_group_name" {
+  default = "admin"
+}
+
+variable "user_group_name" {
+  default = "user"
+}
 
 ###### ECS
 

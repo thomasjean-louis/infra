@@ -215,6 +215,8 @@ module "cognito" {
   hosted_zone_name         = var.hosted_zone_name
   default_cognito_mail     = var.default_cognito_mail
   deployment_branch        = var.deployment_branch
+  admin_group_name = var.admin_group_name
+  user_group_name = var.user_group_name
 }
 
 # Serverless FrontEnd
