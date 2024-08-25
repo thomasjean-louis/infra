@@ -168,3 +168,9 @@ resource "aws_cognito_user" "default_cognito_user" {
     email_verified = true
   }
 }
+
+resource "aws_cognito_user_in_group" "default_user_group" {
+  user_pool_id = aws_cognito_user_pool.user_pool.id
+  group_name   = aws_cognito_user_group.admin_group.name
+  username     = aws_cognito_user.default_cognito_user.username
+}
