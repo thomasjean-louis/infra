@@ -237,6 +237,7 @@ resource "aws_iam_role_policy" "wafv2_service_policy" {
       {
         Action = [
           "wafv2:GetWebACLForResource",
+          "wafv2:AssociateWebACL"
         ]
         Effect   = "Allow"
         Resource = "arn:aws:wafv2:${var.region}:${var.account_id}:regional/webacl/*/*"
