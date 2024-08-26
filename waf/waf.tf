@@ -31,6 +31,10 @@ resource "aws_wafv2_web_acl" "this" {
       }
     }
 
+    override_action {
+      none {}
+    }
+
     visibility_config {
       cloudwatch_metrics_enabled = true
       metric_name                = "AWSManagedRulesCommonRuleSetMetric"
@@ -47,6 +51,10 @@ resource "aws_wafv2_web_acl" "this" {
         name        = "AWSManagedRulesAdminProtectionRuleSet"
         vendor_name = "AWS"
       }
+    }
+
+    override_action {
+      none {}
     }
 
     visibility_config {
@@ -67,6 +75,10 @@ resource "aws_wafv2_web_acl" "this" {
       }
     }
 
+    override_action {
+      none {}
+    }
+
     visibility_config {
       cloudwatch_metrics_enabled = true
       metric_name                = "AWSManagedRulesKnownBadInputsRuleSetMetric"
@@ -83,6 +95,10 @@ resource "aws_wafv2_web_acl" "this" {
         name        = "AWSManagedRulesAmazonIpReputationList"
         vendor_name = "AWS"
       }
+    }
+
+    override_action {
+      none {}
     }
 
     visibility_config {
