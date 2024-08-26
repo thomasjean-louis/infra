@@ -48,6 +48,12 @@ module "bucket" {
   deployment_branch = var.deployment_branch
 }
 
+module "waf" {
+
+  source   = "./waf"
+  app_name = var.app_name
+}
+
 module "alb_gameserver" {
   source                     = "./gameserver/alb"
   app_name                   = var.app_name
@@ -138,9 +144,9 @@ module "lambda_game_stacks" {
   gamestacks_table_name              = module.dynamodb.gamestacks_table_name
   create_game_stack_cf_stack_name    = var.create_game_stack_cf_stack_name
   create_game_stack_cf_template_url  = module.cloud_formation.create_game_stack_cf_template_url
-  pending_value = var.pending_value
-  stopped_value = var.stopped_value
-  running_value = var.running_value
+  pending_value                      = var.pending_value
+  stopped_value                      = var.stopped_value
+  running_value                      = var.running_value
   s3_bucket_cf_templates             = module.cloud_formation.s3_bucket_cf_templates
   hosted_zone_name                   = var.hosted_zone_name
   hosted_zone_id                     = local.hosted_zone_id
@@ -155,7 +161,7 @@ module "lambda_game_stacks" {
   task_definition_arn                = module.gameserver.task_definition_game_server_arn
   proxy_server_name_container        = var.proxy_server_name_container
   task_execution_role_name           = module.iam.task_execution_role_name
-  cluster_name = module.ecs.cluster_name
+  cluster_name                       = module.ecs.cluster_name
 
 
 
@@ -167,8 +173,8 @@ module "lambda_game_stacks" {
   game_stacks_cloud_formation_stack_name_column = var.game_stacks_cloud_formation_stack_name_column
   invoked_lambda_function_name                  = var.invoked_lambda_function_name
   game_stacks_is_active_columnn_name            = var.game_stacks_is_active_columnn_name
-  service_name_column = var.service_name_column
-  status_column_name = var.status_column_name
+  service_name_column                           = var.service_name_column
+  status_column_name                            = var.status_column_name
 
   deployment_branch = var.deployment_branch
 }
@@ -195,31 +201,31 @@ module "api_gateway_rest" {
   lambda_delete_game_stack_uri  = module.lambda_game_stacks.lambda_delete_game_stack_uri
   lambda_delete_game_stack_name = module.lambda_game_stacks.lambda_delete_game_stack_name
 
- lambda_start_game_server_uri = module.lambda_game_stacks.lambda_start_game_server_uri
- lambda_start_game_server_name = module.lambda_game_stacks.lambda_start_game_server_name
- 
- lambda_stop_game_server_uri = module.lambda_game_stacks.lambda_stop_game_server_uri
- lambda_stop_game_server_name = module.lambda_game_stacks.lambda_stop_game_server_name
+  lambda_start_game_server_uri  = module.lambda_game_stacks.lambda_start_game_server_uri
+  lambda_start_game_server_name = module.lambda_game_stacks.lambda_start_game_server_name
 
- deployment_branch = var.deployment_branch
+  lambda_stop_game_server_uri  = module.lambda_game_stacks.lambda_stop_game_server_uri
+  lambda_stop_game_server_name = module.lambda_game_stacks.lambda_stop_game_server_name
+
+  deployment_branch = var.deployment_branch
 }
 
 # Cognito
 module "cognito" {
   source                   = "./cognito"
   app_name                 = var.app_name
-  admin_cognito_username = var.admin_cognito_username
-  admin_cognito_password = var.admin_cognito_password
+  admin_cognito_username   = var.admin_cognito_username
+  admin_cognito_password   = var.admin_cognito_password
   classic_cognito_username = var.classic_cognito_username
   classic_cognito_password = var.classic_cognito_password
 
-  hosted_zone_id           = local.hosted_zone_id
-  subdomain_auth           = var.subdomain_auth
-  hosted_zone_name         = var.hosted_zone_name
-  default_cognito_mail     = var.default_cognito_mail
-  deployment_branch        = var.deployment_branch
-  admin_group_name = var.admin_group_name
-  user_group_name = var.user_group_name
+  hosted_zone_id       = local.hosted_zone_id
+  subdomain_auth       = var.subdomain_auth
+  hosted_zone_name     = var.hosted_zone_name
+  default_cognito_mail = var.default_cognito_mail
+  deployment_branch    = var.deployment_branch
+  admin_group_name     = var.admin_group_name
+  user_group_name      = var.user_group_name
 }
 
 # Serverless FrontEnd
