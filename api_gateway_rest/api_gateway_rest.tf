@@ -11,6 +11,10 @@ variable "app_name" {
   type = string
 }
 
+variable "waf_web_acl_arn" {
+  type = string
+}
+
 variable "subdomain_api" {
   type = string
 }
@@ -102,9 +106,16 @@ resource "aws_apigatewayv2_stage" "stage" {
   access_log_settings {
     destination_arn = aws_cloudwatch_log_group.game_stacks_api_log_group.arn
 
-    format = jsonencode({ "requestId":"$context.requestId", "ip": "$context.identity.sourceIp", "requestTime":"$context.requestTime", "httpMethod":"$context.httpMethod","routeKey":"$context.routeKey", "status":"$context.status","protocol":"$context.protocol", "responseLength":"$context.responseLength" }
+    format = jsonencode({ "requestId" : "$context.requestId", "ip" : "$context.identity.sourceIp", "requestTime" : "$context.requestTime", "httpMethod" : "$context.httpMethod", "routeKey" : "$context.routeKey", "status" : "$context.status", "protocol" : "$context.protocol", "responseLength" : "$context.responseLength" }
     )
   }
+}
+
+# Associate WAF
+
+resource "aws_wafv2_web_acl_association" "example" {
+  resource_arn = aws_apigatewayv2_stage.stage.arn
+  web_acl_arn  = var.waf_web_acl_arn
 }
 
 # GET /gamestacks

@@ -186,6 +186,7 @@ module "api_gateway_rest" {
   region             = var.region
   account_id         = local.account_id
   app_name           = var.app_name
+  waf_web_acl_arn    = module.waf.waf_web_acl_arn
   subdomain_api      = var.subdomain_api
   hosted_zone_name   = var.hosted_zone_name
   hosted_zone_id     = local.hosted_zone_id

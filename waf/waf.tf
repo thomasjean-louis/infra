@@ -2,7 +2,7 @@ variable "app_name" {
   type = string
 }
 
-resource "aws_wafv2_web_acl" "this" {
+resource "aws_wafv2_web_acl" "waf_web_acl" {
   name  = "${var.app_name}_waf"
   scope = "REGIONAL"
 
@@ -107,6 +107,9 @@ resource "aws_wafv2_web_acl" "this" {
       sampled_requests_enabled   = true
     }
   }
-
-
 }
+
+output "waf_web_acl_arn" {
+  value = aws_wafv2_web_acl.waf_web_acl.arn
+}
+
