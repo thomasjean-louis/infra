@@ -11,10 +11,6 @@ variable "app_name" {
   type = string
 }
 
-variable "waf_web_acl_arn" {
-  type = string
-}
-
 variable "subdomain_api" {
   type = string
 }
@@ -111,12 +107,6 @@ resource "aws_apigatewayv2_stage" "stage" {
   }
 }
 
-# Associate WAF
-
-resource "aws_wafv2_web_acl_association" "example" {
-  resource_arn = aws_apigatewayv2_stage.stage.arn
-  web_acl_arn  = var.waf_web_acl_arn
-}
 
 # GET /gamestacks
 resource "aws_apigatewayv2_integration" "integration_get_game_stacks" {

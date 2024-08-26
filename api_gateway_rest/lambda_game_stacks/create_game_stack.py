@@ -121,6 +121,10 @@ def lambda_handler(event, context):
             'ParameterKey': 'StoppedValue',
             'ParameterValue': os.environ["STOPPED_VALUE"]
         },
+        {
+            'ParameterKey': 'WafArn',
+            'ParameterValue': os.environ["WAF_ARN"]
+        },
         
     ]
 )  

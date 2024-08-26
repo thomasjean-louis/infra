@@ -32,6 +32,13 @@ Resources:
         - Key: Name
           Value: !Sub Alb-${RandomString}
 
+  WebAclAssociation:
+    Type: AWS::WAFv2::WebACLAssociation
+    DependsOn: Alb
+    Properties:
+      ResourceArn: !Ref Alb
+      WebACLArn: !Ref WafArn
+
   HttpsTargetGroup:
     Type: "AWS::ElasticLoadBalancingV2::TargetGroup"
     Properties:
@@ -318,3 +325,8 @@ Parameters:
     Type: String
     Default: default
     Description: DB table name
+
+  WafArn:
+    Type: String
+    Default: default
+    Description: Arn of the WAF that will be used on the ALB
