@@ -227,6 +227,24 @@ resource "aws_iam_role_policy_attachment" "lambda_api_managed_policy" {
   policy_arn = data.aws_iam_policy.lambda_managed_policy.arn
 }
 
+resource "aws_iam_role_policy" "wafv2_service_policy" {
+  name = "${var.app_name}_lambda_wafv2_${var.deployment_branch}"
+  role = aws_iam_role.lambda_api_service_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "wafv2:GetWebACLForResource",
+        ]
+        Effect   = "Allow"
+        Resource = "arn:aws:wafv2:${var.region}:${var.account_id}:regional/webacl/*/*"
+      },
+    ]
+  })
+}
+
 resource "aws_iam_role_policy" "ec2_service_policy" {
   name = "${var.app_name}_lambda_ec2_service_${var.deployment_branch}"
   role = aws_iam_role.lambda_api_service_role.id
