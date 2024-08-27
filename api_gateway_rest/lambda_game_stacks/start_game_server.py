@@ -65,7 +65,7 @@ def lambda_handler(event, context):
             UpdateExpression="SET "+os.environ["STATUS_COLUMN_NAME"]+" = :val1, "+os.environ["STOP_SERVER_TIME_COLUMN_NAME"]+" = :val2",
             ExpressionAttributeValues={
             ':val1': os.environ["PENDING_VALUE"],
-            ':val2': (datetime.utcnow(tz=timezone.utc) + timedelta(minutes = 10)).isoformat(),
+            ':val2': (datetime.utcnow() + timedelta(minutes = 10)).isoformat(),
             }
           )
 
