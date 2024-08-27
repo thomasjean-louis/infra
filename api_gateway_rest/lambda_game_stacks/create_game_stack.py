@@ -106,6 +106,11 @@ def lambda_handler(event, context):
             'ParameterValue': os.environ["GAME_STACKS_CLOUD_FORMATION_STACK_NAME_COLUMN"]
         },
         {
+            'ParameterKey': 'StopServerTimeColumnName',
+            'ParameterValue': os.environ["STOP_SERVER_TIME_COLUMN_NAME"]
+        }
+        ,
+        {
             'ParameterKey': 'GameStacksIsActiveColumnName',
             'ParameterValue': os.environ["GAME_STACKS_IS_ACTIVE_COLUMN_NAME"]
         },

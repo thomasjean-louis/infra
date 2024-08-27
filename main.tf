@@ -164,7 +164,6 @@ module "lambda_game_stacks" {
   cluster_name                       = module.ecs.cluster_name
 
 
-
   game_stacks_id_column_name       = var.game_stacks_id_column_name
   game_stacks_capacity_column_name = var.game_stacks_capacity_column_name
 
@@ -175,6 +174,7 @@ module "lambda_game_stacks" {
   game_stacks_is_active_columnn_name            = var.game_stacks_is_active_columnn_name
   service_name_column                           = var.service_name_column
   status_column_name                            = var.status_column_name
+  stop_server_time_column_name                  = var.stop_server_time_column_name
 
   deployment_branch = var.deployment_branch
   waf_arn           = module.waf.waf_web_acl_arn

@@ -109,6 +109,10 @@ variable "game_stacks_cloud_formation_stack_name_column" {
   type = string
 }
 
+variable "stop_server_time_column_name" {
+  type = string
+}
+
 variable "game_stacks_is_active_columnn_name" {
   type = string
 }
@@ -538,6 +542,7 @@ resource "aws_lambda_function" "lambda_get_game_stacks" {
       GAME_STACKS_SERVER_LINK_COLUMN_NAME = var.game_stacks_server_link_column_name
       GAME_STACKS_IS_ACTIVE_COLUMN_NAME   = var.game_stacks_is_active_columnn_name
       STATUS_COLUMN_NAME                  = var.status_column_name
+      STOP_SERVER_TIME_COLUMN_NAME        = var.stop_server_time_column_name
     }
   }
 }
@@ -596,6 +601,7 @@ resource "aws_lambda_function" "lambda_create_game_stack" {
       GAME_STACKS_CAPACITY_VALUE                    = var.game_stacks_capacity_value
       GAME_STACKS_SERVER_LINK_COLUMN_NAME           = var.game_stacks_server_link_column_name
       GAME_STACKS_CLOUD_FORMATION_STACK_NAME_COLUMN = var.game_stacks_cloud_formation_stack_name_column
+      STOP_SERVER_TIME_COLUMN_NAME                  = var.stop_server_time_column_name
       GAME_STACKS_IS_ACTIVE_COLUMN_NAME             = var.game_stacks_is_active_columnn_name
       STATUS_COLUMN_NAME                            = var.status_column_name
       SERVICE_NAME_COLUMN                           = var.service_name_column
@@ -685,6 +691,7 @@ resource "aws_lambda_function" "lambda_start_game_server" {
       CLUSTER_NAME                 = var.cluster_name
       SERVICE_NAME_COLUMN          = var.service_name_column
       STATUS_COLUMN_NAME           = var.status_column_name
+      STOP_SERVER_TIME_COLUMN_NAME = var.stop_server_time_column_name
       PENDING_VALUE                = var.pending_value
       DETECT_SERVICE_FUNCTION_NAME = aws_lambda_function.lambda_detect_service_ready.function_name
     }

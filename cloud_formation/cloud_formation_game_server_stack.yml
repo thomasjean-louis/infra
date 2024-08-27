@@ -163,6 +163,7 @@ Resources:
                 "game_stacks_capacity_value": "${GameStacksCapacityValue}",
                 "game_stacks_server_link_column_name": "${GameStacksServerLinkColumnName}",
                 "game_stacks_cloud_formation_stack_name_column": "${GameStacksCloudFormationStackNameColumn}",
+                "stop_server_time_column_name": "${StopServerTimeColumnName}",                
                 "game_stacks_cloud_formation_stack_name_value": "${AWS::StackName}",
                 "service_name_column": "${ServiceNameColumn}",
                 "service_name_value": "GameServer-service-${RandomString}",
@@ -300,6 +301,11 @@ Parameters:
     Type: String
     Default: default
     Description: DB CF stack name column name
+
+  StopServerTimeColumnName:
+    Type: String
+    Default: default
+    Description: DB stop server time column name
 
   ServiceNameColumn:
     Type: String

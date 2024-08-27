@@ -210,12 +210,16 @@ variable "game_stacks_cloud_formation_stack_name_column" {
   default = "CloudFormationStackName"
 }
 
+variable "stop_server_time_column_name" {
+  default = "StopServerTime"
+}
+
 variable "game_stacks_is_active_columnn_name" {
   default = "IsActive"
 }
 
 variable "service_name_column" {
-  default = "ServiceName"  
+  default = "ServiceName"
 }
 
 variable "status_column_name" {

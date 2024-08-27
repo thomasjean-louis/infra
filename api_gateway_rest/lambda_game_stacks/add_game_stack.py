@@ -2,6 +2,7 @@ import json
 import os
 import boto3 
 import uuid
+import datetime
 
 #function definition 
 def lambda_handler(event,context): 
@@ -20,7 +21,8 @@ def lambda_handler(event,context):
             event['game_stacks_cloud_formation_stack_name_column']: event['game_stacks_cloud_formation_stack_name_value'],
             event['service_name_column']: event['service_name_value'],
             event['status_column_name']: event['stopped_value'],    
-            event['game_stacks_is_active_columnn_name']: True        
+            event['game_stacks_is_active_columnn_name']: True,
+            event['stop_server_time_colmn_name']:  "",
         } 
     ) 
     return response
