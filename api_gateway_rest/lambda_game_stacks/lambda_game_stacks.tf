@@ -372,6 +372,7 @@ resource "aws_iam_role_policy" "alb_service_policy" {
         Action = [
           "elasticloadbalancing:DeleteLoadBalancer",
           "elasticloadbalancing:CreateListener",
+          "elasticloadbalancing:SetWebACL",
         ]
         Effect   = "Allow"
         Resource = "arn:aws:elasticloadbalancing:${var.region}:${var.account_id}:loadbalancer/*"
