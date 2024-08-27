@@ -4,6 +4,7 @@ import boto3
 import json
 import time
 import datetime
+from datetime import datetime
 logger = logging.getLogger()
 logger.setLevel("INFO")
 
