@@ -22,7 +22,7 @@ def lambda_handler(event,context):
             event['service_name_column']: event['service_name_value'],
             event['status_column_name']: event['stopped_value'],    
             event['game_stacks_is_active_columnn_name']: True,
-            event['stop_server_time_colmn_name']:  "",
+            event['stop_server_time_column_name']:  "",
         } 
     ) 
     return response
