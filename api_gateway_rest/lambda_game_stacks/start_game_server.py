@@ -53,15 +53,16 @@ def lambda_handler(event, context):
               service=service_name,
               desiredCount=1,
             )
-            print(response_update_service)
+            #print(response_update_service)
           except Exception as e:
             print(e)
             raise e
 
           # Start step function, to stop automatically the server after X s
           step_function_client = boto3.client('stepfunctions')
-          input_dict = {'ArnStopServerFunction': os.environ["ARN_STOPPED_SERVER_FUNCTION"],
-          'SecondsToWait': int(os.environ["NB_SECONDS_BEFORE_SERVER_STOPPED"]),
+          input_dict = {
+            'ArnStopServerFunction': os.environ["ARN_STOPPED_SERVER_FUNCTION"],
+            'SecondsToWait': int(os.environ["NB_SECONDS_BEFORE_SERVER_STOPPED"]),
           }
 
           response = step_function_client.start_execution(
