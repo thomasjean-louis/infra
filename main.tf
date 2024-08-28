@@ -138,6 +138,8 @@ module "dynamodb" {
 # Step function
 module "step_function" {
   source            = "./step_function"
+  region            = var.region
+  account_id        = local.account_id
   app_name          = var.app_name
   deployment_branch = var.deployment_branch
 }

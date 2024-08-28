@@ -1,3 +1,11 @@
+variable "region" {
+  type = string
+}
+
+variable "account_id" {
+  type = string
+}
+
 variable "app_name" {
   type = string
 }
@@ -35,7 +43,7 @@ data "aws_iam_policy_document" "state_machine_role_policy" {
       "lambda:InvokeFunction"
     ]
 
-    resources = "*"
+    resources = "arn:aws:lambda:${var.region}:${var.account_id}:function:*"
   }
 }
 
