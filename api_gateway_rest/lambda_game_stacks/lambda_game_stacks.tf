@@ -159,7 +159,6 @@ variable "nb_seconds_before_server_stopped" {
 }
 
 
-
 ## Lambda scripts
 
 ## IAM Lambda role

@@ -60,13 +60,9 @@ def lambda_handler(event, context):
 
           # Start step function, to stop automatically the server after X s
           step_function_client = boto3.client('stepfunction')
-
-          input_dict = {'SecondsToWait': os.environ["NB_SECONDS_BEFORE_SERVER_STOPPED"], 'ArnStopServerFunction': os.environ["ARN_STOPPED_SERVER_FUNCTION"]}
-
-
+          
           response = step_function_client.start_execution(
-            stateMachineArn = os.environ["STATE_MACHINE_ARN"],
-            input = json.dumps(input_dict)
+            stateMachineArn = os.environ["STATE_MACHINE_ARN"]
           )
           
           # Set Pending status
