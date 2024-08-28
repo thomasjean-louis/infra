@@ -18,7 +18,7 @@ def lambda_handler(event, context):
 
     logger.info("stop_game_stack")
 
-    var directLambdaCall = False
+    directLambdaCall = False
     # get info from direct lambda call
     if "GAME_STACK_ID" in event:
       event['pathParameters']['id'] = event["GAME_STACK_ID"]
