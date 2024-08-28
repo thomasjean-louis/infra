@@ -18,11 +18,12 @@ def lambda_handler(event, context):
 
     logger.info("stop_game_stack")
 
+    var directLambdaCall = False
+    # get info from direct lambda call
     if "GAME_STACK_ID" in event:
-      print("GAME_STACK_ID not null")
-      print(event["GAME_STACK_ID"])
-    else:
-      print("GAME_STACK_ID not defined")
+      event['pathParameters']['id'] = event["GAME_STACK_ID"]
+      directLambdaCall = True
+
 
     try:
         route_key = event['routeKey']
@@ -31,7 +32,7 @@ def lambda_handler(event, context):
 
         responseBody = []
         
-        if route_key == 'POST /stopgameserver/{id}':
+        if route_key == 'POST /stopgameserver/{id}' or directLambdaCall:
             
           # Retreive Cluster and Service name from dynamodb item id
           dynamodb = boto3.resource("dynamodb")
