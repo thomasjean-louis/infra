@@ -14,9 +14,6 @@ variable "deployment_branch" {
   type = string
 }
 
-variable "lambda_stop_server_arn" {
-  type = string
-}
 
 variable "nb_seconds_before_server_stopped" {
   type = number
@@ -101,7 +98,7 @@ resource "aws_sfn_state_machine" "step_function_waiter" {
 
   definition = templatefile("${path.module}/WaitStateMachine.asl.json", {
     "SecondsToWait"         = var.nb_seconds_before_server_stopped,
-    "ArnStopServerFunction" = var.lambda_stop_server_arn
+    "ArnStopServerFunction" = "default_arn"
   })
   logging_configuration {
     log_destination        = "${aws_cloudwatch_log_group.log_group.arn}:*"

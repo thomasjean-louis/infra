@@ -678,6 +678,37 @@ resource "aws_cloudwatch_log_group" "log_group_delete" {
   name = "/aws/lambda/${aws_lambda_function.lambda_delete_game_stack.function_name}"
 }
 
+# POST /stopgameserver/{id}
+data "archive_file" "stop_game_server_zip" {
+  type        = "zip"
+  source_file = "${path.module}/stop_game_server.py"
+  output_path = "${path.module}/stop_game_server.zip"
+}
+
+resource "aws_lambda_function" "lambda_stop_game_server" {
+  function_name    = "stop_game_server"
+  filename         = data.archive_file.stop_game_server_zip.output_path
+  source_code_hash = data.archive_file.stop_game_server_zip.output_base64sha256
+  role             = aws_iam_role.lambda_api_service_role.arn
+  handler          = "stop_game_server.lambda_handler"
+  runtime          = "python3.9"
+  timeout          = 20
+
+  environment {
+    variables = {
+      GAME_STACKS_TABLE_NAME = var.gamestacks_table_name
+      CLUSTER_NAME           = var.cluster_name
+      SERVICE_NAME_COLUMN    = var.service_name_column
+      STATUS_COLUMN_NAME     = var.status_column_name
+      STOPPED_VALUE          = var.stopped_value
+    }
+  }
+}
+
+resource "aws_cloudwatch_log_group" "log_group_stop" {
+  name = "/aws/lambda/${aws_lambda_function.lambda_stop_game_server.function_name}"
+}
+
 
 # POST /startgameserver/{id}
 data "archive_file" "start_game_server_zip" {
@@ -746,36 +777,7 @@ resource "aws_cloudwatch_log_group" "log_group" {
   name = "/aws/lambda/${aws_lambda_function.lambda_detect_service_ready.function_name}"
 }
 
-# POST /stopgameserver/{id}
-data "archive_file" "stop_game_server_zip" {
-  type        = "zip"
-  source_file = "${path.module}/stop_game_server.py"
-  output_path = "${path.module}/stop_game_server.zip"
-}
 
-resource "aws_lambda_function" "lambda_stop_game_server" {
-  function_name    = "stop_game_server"
-  filename         = data.archive_file.stop_game_server_zip.output_path
-  source_code_hash = data.archive_file.stop_game_server_zip.output_base64sha256
-  role             = aws_iam_role.lambda_api_service_role.arn
-  handler          = "stop_game_server.lambda_handler"
-  runtime          = "python3.9"
-  timeout          = 20
-
-  environment {
-    variables = {
-      GAME_STACKS_TABLE_NAME = var.gamestacks_table_name
-      CLUSTER_NAME           = var.cluster_name
-      SERVICE_NAME_COLUMN    = var.service_name_column
-      STATUS_COLUMN_NAME     = var.status_column_name
-      STOPPED_VALUE          = var.stopped_value
-    }
-  }
-}
-
-resource "aws_cloudwatch_log_group" "log_group_stop" {
-  name = "/aws/lambda/${aws_lambda_function.lambda_stop_game_server.function_name}"
-}
 
 output "lambda_create_game_stack_uri" {
   value = aws_lambda_function.lambda_create_game_stack.invoke_arn
