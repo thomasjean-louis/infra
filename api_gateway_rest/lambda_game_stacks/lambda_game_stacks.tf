@@ -800,6 +800,9 @@ output "lambda_detect_service_ready_name" {
   value = aws_lambda_function.lambda_detect_service_ready.function_name
 }
 
+output "lambda_stop_server_arn" {
+  value = aws_lambda_function.lambda_stop_game_server.arn
+}
 
 
 

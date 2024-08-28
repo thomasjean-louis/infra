@@ -246,3 +246,9 @@ variable "create_game_stack_cf_stack_name" {
 variable "invoked_lambda_function_name" {
   default = "add_game_stack"
 }
+
+# Config
+
+variable "nb_seconds_before_server_stopped" {
+  default = 15
+}
