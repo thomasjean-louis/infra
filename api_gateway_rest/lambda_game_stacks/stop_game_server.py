@@ -24,6 +24,7 @@ def lambda_handler(event, context):
       event['pathParameters']={}
       event['pathParameters']['id'] = event["GAME_STACK_ID"]
       directLambdaCall = True
+      logger.info("set directLambdaCall to true ")
 
 
     try:
