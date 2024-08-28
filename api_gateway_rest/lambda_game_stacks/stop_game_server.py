@@ -35,8 +35,9 @@ def lambda_handler(event, context):
 
         responseBody = []
         
-        if route_key == 'POST /stopgameserver/{id}' or directLambdaCall:
+        if ((route_key == 'POST /stopgameserver/{id}') or (directLambdaCall is True)):
             
+          logger.info("start stopping procedure ..")
           # Retreive Cluster and Service name from dynamodb item id
           dynamodb = boto3.resource("dynamodb")
 
