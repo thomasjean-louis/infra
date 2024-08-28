@@ -99,7 +99,7 @@ resource "aws_sfn_state_machine" "step_function_waiter" {
   definition = templatefile("${path.module}/WaitStateMachine.asl.json", {
     "SecondsToWait"         = var.nb_seconds_before_server_stopped,
     "ArnStopServerFunction" = "default_arn",
-    "GameStackId"           = "default_id"
+    "GAME_STACK_ID"         = "default_id"
   })
   logging_configuration {
     log_destination        = "${aws_cloudwatch_log_group.log_group.arn}:*"

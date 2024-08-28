@@ -63,7 +63,7 @@ def lambda_handler(event, context):
           input_dict = {
             'ArnStopServerFunction': os.environ["ARN_STOPPED_SERVER_FUNCTION"],
             'SecondsToWait': int(os.environ["NB_SECONDS_BEFORE_SERVER_STOPPED"]),
-            'GameStackId': path_params['id'],
+            'GAME_STACK_ID': path_params['id'],
           }
 
           response = step_function_client.start_execution(

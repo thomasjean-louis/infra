@@ -13,7 +13,7 @@
       "OutputPath": "$.Payload",
       "Parameters": {
         "Payload": {
-          "GameStackId.$": "$.GameStackId"
+          "GAME_STACK_ID.$": "$.GAME_STACK_ID"
         },
         "FunctionName.$": "$.ArnStopServerFunction"
       },
