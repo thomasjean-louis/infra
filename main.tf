@@ -137,7 +137,6 @@ module "dynamodb" {
 
 # Step function
 module "step_function" {
-  depends_on        = [module.lambda_game_stacks]
   source            = "./step_function"
   app_name          = var.app_name
   deployment_branch = var.deployment_branch
