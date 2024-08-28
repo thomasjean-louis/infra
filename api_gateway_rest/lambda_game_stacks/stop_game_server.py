@@ -29,13 +29,18 @@ def lambda_handler(event, context):
       logger.info("GAME_STACK_ID not sent ")
 
     try:
-        route_key = event['routeKey']
+        logger.info("try")
+
+        if "routeKey" in event:
+          route_key = event['routeKey']
+        else:
+          route_key = ""
         
         path_params = event['pathParameters']
 
         responseBody = []
         
-        if ((route_key == 'POST /stopgameserver/{id}') or (directLambdaCall is True)):
+        if ((directLambdaCall is True) or (route_key == 'POST /stopgameserver/{id}')):
             
           logger.info("start stopping procedure ..")
           # Retreive Cluster and Service name from dynamodb item id
