@@ -25,7 +25,8 @@ def lambda_handler(event, context):
       event['pathParameters']['id'] = event["GAME_STACK_ID"]
       directLambdaCall = True
       logger.info("set directLambdaCall to true ")
-
+    else:
+      logger.info("GAME_STACK_ID not sent ")
 
     try:
         route_key = event['routeKey']
@@ -50,7 +51,7 @@ def lambda_handler(event, context):
           logger.info("stack name : "+ cluster_name)
           logger.info("service name : "+ service_name)
 
-          # Set Desired count to 1
+          # Set Desired count to 0
           try:
             ecsClient = boto3.client('ecs')
             response = ecsClient.update_service(
@@ -58,7 +59,7 @@ def lambda_handler(event, context):
               service=service_name,
               desiredCount=0,
             )
-            print(response)
+            # print(response)
           except Exception as e:
             print(e)
             raise e
