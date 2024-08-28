@@ -12,7 +12,7 @@
       "Resource": "arn:aws:states:::lambda:invoke",
       "OutputPath": "$.Payload",
       "Parameters": {
-        "Payload.$": {
+        "Payload": {
           "GameStackId.$": "$.GameStackId"
         },
         "FunctionName.$": "$.ArnStopServerFunction"
