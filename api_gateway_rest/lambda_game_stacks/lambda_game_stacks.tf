@@ -284,7 +284,7 @@ resource "aws_iam_role_policy" "ec2_service_policy" {
 }
 
 resource "aws_iam_role_policy" "step_functions_policy" {
-  name = "${var.app_name}_lambda_ec2_service_${var.deployment_branch}"
+  name = "${var.app_name}_step_functions_service_${var.deployment_branch}"
   role = aws_iam_role.lambda_api_service_role.id
 
   policy = jsonencode({
