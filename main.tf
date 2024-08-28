@@ -135,6 +135,14 @@ module "dynamodb" {
   deployment_branch          = var.deployment_branch
 }
 
+# Step function
+module "step_function" {
+  depends_on        = [module.lambda_game_stacks]
+  source            = "./step_function"
+  app_name          = var.app_name
+  deployment_branch = var.deployment_branch
+}
+
 module "lambda_game_stacks" {
   source                             = "./api_gateway_rest/lambda_game_stacks"
   region                             = var.region
@@ -178,6 +186,9 @@ module "lambda_game_stacks" {
 
   deployment_branch = var.deployment_branch
   waf_arn           = module.waf.waf_web_acl_arn
+
+  wait_step_function_arn           = module.step_function.wait_step_function_arn
+  nb_seconds_before_server_stopped = var.nb_seconds_before_server_stopped
 }
 
 
@@ -248,15 +259,7 @@ module "homepage" {
   deployment_branch     = var.deployment_branch
 }
 
-# Step function
-module "step_function" {
-  depends_on                       = [module.lambda_game_stacks]
-  source                           = "./step_function"
-  app_name                         = var.app_name
-  deployment_branch                = var.deployment_branch
-  nb_seconds_before_server_stopped = var.nb_seconds_before_server_stopped
-  lambda_stop_server_arn           = module.lambda_game_stacks.lambda_stop_server_arn
-}
+
 
 
 

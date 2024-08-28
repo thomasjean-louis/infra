@@ -149,6 +149,17 @@ variable "waf_arn" {
   type = string
 }
 
+# step function
+variable "wait_step_function_arn" {
+  type = string
+}
+
+variable "nb_seconds_before_server_stopped" {
+  type = number
+}
+
+
+
 ## Lambda scripts
 
 ## IAM Lambda role
@@ -687,13 +698,16 @@ resource "aws_lambda_function" "lambda_start_game_server" {
 
   environment {
     variables = {
-      GAME_STACKS_TABLE_NAME       = var.gamestacks_table_name
-      CLUSTER_NAME                 = var.cluster_name
-      SERVICE_NAME_COLUMN          = var.service_name_column
-      STATUS_COLUMN_NAME           = var.status_column_name
-      STOP_SERVER_TIME_COLUMN_NAME = var.stop_server_time_column_name
-      PENDING_VALUE                = var.pending_value
-      DETECT_SERVICE_FUNCTION_NAME = aws_lambda_function.lambda_detect_service_ready.function_name
+      GAME_STACKS_TABLE_NAME           = var.gamestacks_table_name
+      CLUSTER_NAME                     = var.cluster_name
+      SERVICE_NAME_COLUMN              = var.service_name_column
+      STATUS_COLUMN_NAME               = var.status_column_name
+      STOP_SERVER_TIME_COLUMN_NAME     = var.stop_server_time_column_name
+      PENDING_VALUE                    = var.pending_value
+      DETECT_SERVICE_FUNCTION_NAME     = aws_lambda_function.lambda_detect_service_ready.function_name
+      NB_SECONDS_BEFORE_SERVER_STOPPED = var.nb_seconds_before_server_stopped
+      STATE_MACHINE_ARN                = var.wait_step_function_arn
+      ARN_STOPPED_SERVER_FUNCTION      = aws_lambda_function.lambda_stop_game_server.arn
     }
   }
 }

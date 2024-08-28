@@ -57,6 +57,17 @@ def lambda_handler(event, context):
           except Exception as e:
             print(e)
             raise e
+
+          # Start step function, to stop automatically the server after X s
+          step_function_client = boto3.client('stepfunction')
+
+          input_dict = {'SecondsToWait': os.environ["NB_SECONDS_BEFORE_SERVER_STOPPED"], 'ArnStopServerFunction': os.environ["ARN_STOPPED_SERVER_FUNCTION"]}
+
+
+          response = step_function_client.start_execution(
+            stateMachineArn = os.environ["STATE_MACHINE_ARN"],
+            input = json.dumps(input_dict)
+          )
           
           # Set Pending status
           table.update_item(
@@ -65,7 +76,7 @@ def lambda_handler(event, context):
             UpdateExpression="SET "+os.environ["STATUS_COLUMN_NAME"]+" = :val1, "+os.environ["STOP_SERVER_TIME_COLUMN_NAME"]+" = :val2",
             ExpressionAttributeValues={
             ':val1': os.environ["PENDING_VALUE"],
-            ':val2': (datetime.utcnow() + timedelta(minutes = 10)).isoformat(),
+            ':val2': (datetime.utcnow() + timedelta(secondes = os.environ["NB_SECONDS_BEFORE_SERVER_STOPPED"])).isoformat(),
             }
           )
 

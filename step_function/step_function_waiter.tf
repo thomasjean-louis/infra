@@ -6,13 +6,6 @@ variable "deployment_branch" {
   type = string
 }
 
-variable "nb_seconds_before_server_stopped" {
-  type = number
-}
-
-variable "lambda_stop_server_arn" {
-  type = string
-}
 
 # IAM state machine roles and policies
 resource "aws_iam_role" "step_function_waiter_role" {
@@ -42,7 +35,7 @@ data "aws_iam_policy_document" "state_machine_role_policy" {
       "lambda:InvokeFunction"
     ]
 
-    resources = [var.lambda_stop_server_arn]
+    resources = "*"
   }
 }
 
@@ -92,11 +85,7 @@ resource "aws_sfn_state_machine" "step_function_waiter" {
   name     = "${var.app_name}_step_function_waiter_role"
   role_arn = aws_iam_role.step_function_waiter_role.arn
 
-  definition = templatefile("${path.module}/WaitStateMachine.asl.json", {
-    SecondsToWait         = var.nb_seconds_before_server_stopped,
-    ArnStopServerFunction = var.lambda_stop_server_arn
-    }
-  )
+  definition = templatefile("${path.module}/WaitStateMachine.asl.json")
   logging_configuration {
     log_destination        = "${aws_cloudwatch_log_group.log_group.arn}:*"
     include_execution_data = true
@@ -104,3 +93,6 @@ resource "aws_sfn_state_machine" "step_function_waiter" {
   }
 }
 
+output "wait_step_function_arn" {
+  value = aws_sfn_state_machine.step_function_waiter.arn
+}
