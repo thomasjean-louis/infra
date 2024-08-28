@@ -253,6 +253,7 @@ module "step_function" {
   depends_on                       = [module.lambda_game_stacks]
   source                           = "./step_function"
   app_name                         = var.app_name
+  deployment_branch                = var.deployment_branch
   nb_seconds_before_server_stopped = var.nb_seconds_before_server_stopped
   lambda_stop_server_arn           = module.lambda_game_stacks.lambda_stop_server_arn
 }

@@ -2,6 +2,10 @@ variable "app_name" {
   type = string
 }
 
+variable "deployment_branch" {
+  type = string
+}
+
 variable "nb_seconds_before_server_stopped" {
   type = number
 }
@@ -44,7 +48,7 @@ data "aws_iam_policy_document" "state_machine_role_policy" {
 
 
 resource "aws_iam_role_policy" "invoke_lambda_policy" {
-  name = "${var.app_name}_lambda_pass_role_task_definition"
+  name = "${var.app_name}_lambda_pass_role_task_definition_${var.deployment_branch}"
   role = aws_iam_role.step_function_waiter_role.id
 
   policy = data.aws_iam_policy_document.state_machine_role_policy.json
@@ -54,6 +58,33 @@ resource "aws_cloudwatch_log_group" "log_group" {
   name = "/stepFunction/${var.app_name}_step_function_waiter_role"
 }
 
+resource "aws_iam_role_policy" "step_function_logs_policy" {
+  name = "${var.app_name}_logs_policy_${var.deployment_branch}"
+  role = aws_iam_role.step_function_waiter_role.id
+
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "logs:CreateLogDelivery",
+          "logs:CreateLogStream",
+          "logs:GetLogDelivery",
+          "logs:UpdateLogDelivery",
+          "logs:DeleteLogDelivery",
+          "logs:ListLogDeliveries",
+          "logs:PutLogEvents",
+          "logs:PutResourcePolicy",
+          "logs:DescribeResourcePolicies",
+          "logs:DescribeLogGroups"
+        ],
+        "Resource" : "*"
+      }
+    ]
+  })
+
+}
 
 
 # Step function
