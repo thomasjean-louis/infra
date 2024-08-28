@@ -283,6 +283,24 @@ resource "aws_iam_role_policy" "ec2_service_policy" {
   })
 }
 
+resource "aws_iam_role_policy" "step_functions_policy" {
+  name = "${var.app_name}_lambda_ec2_service_${var.deployment_branch}"
+  role = aws_iam_role.lambda_api_service_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "states:StartExecution"
+        ]
+        Effect   = "Allow"
+        Resource = "arn:aws:states:${var.region}:${var.account_id}:stateMachine:*"
+      },
+    ]
+  })
+}
+
 resource "aws_iam_role_policy" "dynamodb_service_policy" {
   name = "${var.app_name}_lambda_dynamodb_service_${var.deployment_branch}"
   role = aws_iam_role.lambda_api_service_role.id
