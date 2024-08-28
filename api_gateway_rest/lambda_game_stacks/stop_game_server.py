@@ -21,6 +21,7 @@ def lambda_handler(event, context):
     directLambdaCall = False
     # get info from direct lambda call
     if "GAME_STACK_ID" in event:
+      event['pathParameters']={}
       event['pathParameters']['id'] = event["GAME_STACK_ID"]
       directLambdaCall = True
 
