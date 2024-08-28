@@ -18,9 +18,9 @@ def lambda_handler(event, context):
 
     logger.info("stop_game_stack")
 
-    if "GAME_STACK_ID" in os.environ:
+    if "GAME_STACK_ID" in event:
       print("GAME_STACK_ID not null")
-      print(os.environ["GAME_STACK_ID"])
+      print(event["GAME_STACK_ID"])
     else:
       print("GAME_STACK_ID not defined")
 
