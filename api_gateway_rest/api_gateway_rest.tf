@@ -76,7 +76,7 @@ variable "deployment_branch" {
 }
 
 # Cognito
-variable "cognito_user_pool_id" {
+variable "user_pool_client_id" {
   type = string
 }
 
@@ -110,7 +110,7 @@ resource "aws_apigatewayv2_authorizer" "game_stacks_api_authorization" {
   name             = "cognito-authorizer"
 
   jwt_configuration {
-    audience = [var.cognito_user_pool_id]
+    audience = [var.user_pool_client_id]
     issuer   = "https://${var.cognito_user_pool_endpoint}"
   }
 }
@@ -136,6 +136,7 @@ resource "aws_apigatewayv2_integration" "integration_get_game_stacks" {
   api_id = aws_apigatewayv2_api.api.id
 
   integration_uri        = var.lambda_get_game_stacks_uri
+  connection_type        = "INTERNET"
   payload_format_version = "2.0"
   integration_type       = "AWS_PROXY"
   integration_method     = "POST"

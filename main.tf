@@ -243,7 +243,7 @@ module "api_gateway_rest" {
 
   deployment_branch = var.deployment_branch
 
-  cognito_user_pool_id       = module.cognito.user_pool_id
+  user_pool_client_id        = module.cognito.user_pool_client_id
   cognito_user_pool_endpoint = module.cognito.user_pool_endpoint
 
 }
