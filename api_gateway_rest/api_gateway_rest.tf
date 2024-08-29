@@ -75,6 +75,15 @@ variable "deployment_branch" {
   type = string
 }
 
+# Cognito
+variable "cognito_user_pool_id" {
+  type = string
+}
+
+variable "cognito_user_pool_endpoint" {
+  type = string
+}
+
 ## CloudWatch
 resource "aws_cloudwatch_log_group" "game_stacks_api_log_group" {
   name = "/aws/lambda/api"
@@ -92,6 +101,20 @@ resource "aws_apigatewayv2_api" "api" {
     max_age       = 300
   }
 }
+
+# Authorizer to manage which group can call which HTTP APIs
+resource "aws_apigatewayv2_authorizer" "game_stacks_api_authorization" {
+  api_id           = aws_apigatewayv2_api.api.id
+  authorizer_type  = "JWT"
+  identity_sources = ["$request.header.Authorization"]
+  name             = "cognito-authorizer"
+
+  jwt_configuration {
+    audience = [var.cognito_user_pool_id]
+    issuer   = "https://${var.cognito_user_pool_endpoint}"
+  }
+}
+
 
 resource "aws_apigatewayv2_stage" "stage" {
   api_id = aws_apigatewayv2_api.api.id
@@ -123,6 +146,9 @@ resource "aws_apigatewayv2_route" "route_get_game_stacks" {
 
   route_key = "GET /gamestacks"
   target    = "integrations/${aws_apigatewayv2_integration.integration_get_game_stacks.id}"
+
+  authorization_type = "JWT"
+  authorizer_id      = aws_apigatewayv2_authorizer.game_stacks_api_authorization.id
 }
 
 resource "aws_lambda_permission" "permission_get_game_stacks" {
@@ -146,8 +172,10 @@ resource "aws_apigatewayv2_integration" "integration_create_game_stack" {
 resource "aws_apigatewayv2_route" "route_create_game_stack" {
   api_id = aws_apigatewayv2_api.api.id
 
-  route_key = "POST /gamestack"
-  target    = "integrations/${aws_apigatewayv2_integration.integration_create_game_stack.id}"
+  route_key          = "POST /gamestack"
+  target             = "integrations/${aws_apigatewayv2_integration.integration_create_game_stack.id}"
+  authorization_type = "JWT"
+  authorizer_id      = aws_apigatewayv2_authorizer.game_stacks_api_authorization.id
 }
 
 resource "aws_lambda_permission" "permission_create_game_stack" {
@@ -171,9 +199,11 @@ resource "aws_apigatewayv2_integration" "integration_delete_game_stack" {
 }
 
 resource "aws_apigatewayv2_route" "route_delete_game_stack" {
-  api_id    = aws_apigatewayv2_api.api.id
-  route_key = "DELETE /gamestack/{id}"
-  target    = "integrations/${aws_apigatewayv2_integration.integration_delete_game_stack.id}"
+  api_id             = aws_apigatewayv2_api.api.id
+  route_key          = "DELETE /gamestack/{id}"
+  target             = "integrations/${aws_apigatewayv2_integration.integration_delete_game_stack.id}"
+  authorization_type = "JWT"
+  authorizer_id      = aws_apigatewayv2_authorizer.game_stacks_api_authorization.id
 
 }
 
@@ -198,9 +228,11 @@ resource "aws_apigatewayv2_integration" "integration_start_game_server" {
 }
 
 resource "aws_apigatewayv2_route" "route_start_game_server" {
-  api_id    = aws_apigatewayv2_api.api.id
-  route_key = "POST /startgameserver/{id}"
-  target    = "integrations/${aws_apigatewayv2_integration.integration_start_game_server.id}"
+  api_id             = aws_apigatewayv2_api.api.id
+  route_key          = "POST /startgameserver/{id}"
+  target             = "integrations/${aws_apigatewayv2_integration.integration_start_game_server.id}"
+  authorization_type = "JWT"
+  authorizer_id      = aws_apigatewayv2_authorizer.game_stacks_api_authorization.id
 }
 
 resource "aws_lambda_permission" "permission_start_game_server" {
@@ -223,9 +255,11 @@ resource "aws_apigatewayv2_integration" "integration_stop_game_server" {
 }
 
 resource "aws_apigatewayv2_route" "route_stop_game_server" {
-  api_id    = aws_apigatewayv2_api.api.id
-  route_key = "POST /stopgameserver/{id}"
-  target    = "integrations/${aws_apigatewayv2_integration.integration_stop_game_server.id}"
+  api_id             = aws_apigatewayv2_api.api.id
+  route_key          = "POST /stopgameserver/{id}"
+  target             = "integrations/${aws_apigatewayv2_integration.integration_stop_game_server.id}"
+  authorization_type = "JWT"
+  authorizer_id      = aws_apigatewayv2_authorizer.game_stacks_api_authorization.id
 }
 
 resource "aws_lambda_permission" "permission_stop_game_server" {
