@@ -97,7 +97,7 @@ resource "aws_apigatewayv2_api" "api" {
   cors_configuration {
     allow_origins = (var.homepage_branch == "dev" ? ["https://${var.subdomain_homepage}.${var.hosted_zone_name}", "http://localhost:5173"] : ["https://${var.subdomain_homepage}.${var.hosted_zone_name}"])
     allow_methods = ["POST", "GET", "DELETE", "OPTIONS"]
-    allow_headers = ["content-type"]
+    allow_headers = ["content-type", "Authorization"]
     max_age       = 300
   }
 }
