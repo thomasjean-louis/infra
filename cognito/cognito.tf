@@ -87,21 +87,21 @@ resource "aws_iam_role" "role_identity_pool" {
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
-        {
-            "Effect": "Allow",
-            "Principal": {
-                "Federated": "cognito-identity.amazonaws.com"
-            },
-            "Action": "sts:AssumeRoleWithWebIdentity",
-            "Condition": {
-                "StringEquals": {
-                    "cognito-identity.amazonaws.com:aud": "${aws_cognito_identity_pool.identity_pool.id}"
-                },
-                "ForAnyValue:StringLike": {
-                    "cognito-identity.amazonaws.com:amr": "authenticated"
-                }
-            }
+      {
+        "Effect" : "Allow",
+        "Principal" : {
+          "Federated" : "cognito-identity.amazonaws.com"
+        },
+        "Action" : "sts:AssumeRoleWithWebIdentity",
+        "Condition" : {
+          "StringEquals" : {
+            "cognito-identity.amazonaws.com:aud" : "${aws_cognito_identity_pool.identity_pool.id}"
+          },
+          "ForAnyValue:StringLike" : {
+            "cognito-identity.amazonaws.com:amr" : "authenticated"
+          }
         }
+      }
     ]
   })
 }
@@ -113,15 +113,15 @@ resource "aws_iam_role_policy" "cognito_authenticated_policy" {
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
-        {
-            "Effect": "Allow",
-            "Action": [
-                "cognito-identity:GetCredentialsForIdentity"
-            ],
-            "Resource": [
-                "*"
-            ]
-        }
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "cognito-identity:GetCredentialsForIdentity"
+        ],
+        "Resource" : [
+          "*"
+        ]
+      }
     ]
   })
 }
@@ -146,6 +146,10 @@ output "user_pool_client_id" {
 
 output "identity_pool_id" {
   value = aws_cognito_identity_pool.identity_pool.id
+}
+
+output "user_pool_endpoint" {
+  value = aws_cognito_user_pool.user_pool.endpoint
 }
 
 # # Cognito Domain 
@@ -209,15 +213,15 @@ output "identity_pool_id" {
 
 # Groups
 resource "aws_cognito_user_group" "admin_group" {
-  name        = var.admin_group_name
+  name         = var.admin_group_name
   user_pool_id = aws_cognito_user_pool.user_pool.id
-  description = "Admin group"
+  description  = "Admin group"
 }
 
 resource "aws_cognito_user_group" "user_group" {
-  name        = var.user_group_name
+  name         = var.user_group_name
   user_pool_id = aws_cognito_user_pool.user_pool.id
-  description = "User group"
+  description  = "User group"
 }
 
 
