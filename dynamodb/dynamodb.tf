@@ -39,6 +39,13 @@ resource "aws_dynamodb_table_item" "gamestack_01" {
     "IsActive" : {
       "BOOL" : true
     },
+    "ServerStatus" : {
+      "S" : "running"
+    },
+    "StopServerTime" : {
+      "S" : ""
+    },
+
   })
 }
 
@@ -59,6 +66,13 @@ resource "aws_dynamodb_table_item" "gamestack_02" {
     "IsActive" : {
       "BOOL" : true
     },
+    "ServerStatus" : {
+      "S" : "stopped"
+    },
+    "StopServerTime" : {
+      "S" : ""
+    },
+
   })
 }
 
@@ -78,6 +92,12 @@ resource "aws_dynamodb_table_item" "gamestack_03" {
     },
     "IsActive" : {
       "BOOL" : false
+    },
+    "ServerStatus" : {
+      "S" : "running"
+    },
+    "StopServerTime" : {
+      "S" : ""
     },
   })
 }

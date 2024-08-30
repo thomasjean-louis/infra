@@ -1,0 +1,23 @@
+{
+  "Comment": "A description of my state machine",
+  "StartAt": "Wait",
+  "States": {
+    "Wait": {
+      "Type": "Wait",
+      "SecondsPath": "$.SecondsToWait",
+      "Next": "Lambda Invoke"
+    },
+    "Lambda Invoke": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "OutputPath": "$.Payload",
+      "Parameters": {
+        "Payload": {
+          "GAME_STACK_ID.$": "$.GAME_STACK_ID"
+        },
+        "FunctionName.$": "$.ArnStopServerFunction"
+      },
+      "End": true
+    }
+  }
+}

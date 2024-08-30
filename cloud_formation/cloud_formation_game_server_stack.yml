@@ -32,6 +32,13 @@ Resources:
         - Key: Name
           Value: !Sub Alb-${RandomString}
 
+  WebAclAssociation:
+    Type: AWS::WAFv2::WebACLAssociation
+    DependsOn: Alb
+    Properties:
+      ResourceArn: !Ref Alb
+      WebACLArn: !Ref WafArn
+
   HttpsTargetGroup:
     Type: "AWS::ElasticLoadBalancingV2::TargetGroup"
     Properties:
@@ -120,7 +127,7 @@ Resources:
           Subnets:
             - !Ref PrivateSubnetA
             - !Ref PrivateSubnetB
-      DesiredCount: 1
+      DesiredCount: 0
       LaunchType: FARGATE
       TaskDefinition: !Ref TaskDefinitionArn
       HealthCheckGracePeriodSeconds: 300
@@ -156,10 +163,16 @@ Resources:
                 "game_stacks_capacity_value": "${GameStacksCapacityValue}",
                 "game_stacks_server_link_column_name": "${GameStacksServerLinkColumnName}",
                 "game_stacks_cloud_formation_stack_name_column": "${GameStacksCloudFormationStackNameColumn}",
+                "stop_server_time_column_name": "${StopServerTimeColumnName}",                
                 "game_stacks_cloud_formation_stack_name_value": "${AWS::StackName}",
+                "service_name_column": "${ServiceNameColumn}",
+                "service_name_value": "GameServer-service-${RandomString}",
                 "game_server_random_string" : "${RandomString}",
                 "game_server_hosted_zone_name" : "${HostedZoneName}",
-                "game_stacks_is_active_columnn_name" : "${GameStacksIsActiveColumnName}"
+                "status_column_name" : "${StatusColumnName}",
+                "game_stacks_is_active_columnn_name" : "${GameStacksIsActiveColumnName}",
+                "stopped_value" : "${StoppedValue}"
+
               }
 
               lambda_client.invoke( 
@@ -289,6 +302,26 @@ Parameters:
     Default: default
     Description: DB CF stack name column name
 
+  StopServerTimeColumnName:
+    Type: String
+    Default: default
+    Description: DB stop server time column name
+
+  ServiceNameColumn:
+    Type: String
+    Default: default
+    Description: DB Service column name
+
+  StatusColumnName:
+    Type: String
+    Default: default
+    Description: DB Status column name
+
+  StoppedValue:
+    Type: String
+    Default: default
+    Description: DB stopped value
+
   GameStacksIsActiveColumnName:
     Type: String
     Default: default
@@ -298,3 +331,8 @@ Parameters:
     Type: String
     Default: default
     Description: DB table name
+
+  WafArn:
+    Type: String
+    Default: default
+    Description: Arn of the WAF that will be used on the ALB

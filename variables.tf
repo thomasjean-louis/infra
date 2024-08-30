@@ -69,12 +69,22 @@ variable "subdomain_api" {
 }
 
 ###### Cognito
-variable "default_cognito_username" {
+variable "admin_cognito_username" {
   type      = string
   sensitive = true
 }
 
-variable "default_cognito_password" {
+variable "admin_cognito_password" {
+  type      = string
+  sensitive = true
+}
+
+variable "classic_cognito_username" {
+  type      = string
+  sensitive = true
+}
+
+variable "classic_cognito_password" {
   type      = string
   sensitive = true
 }
@@ -84,6 +94,13 @@ variable "default_cognito_mail" {
   sensitive = true
 }
 
+variable "admin_group_name" {
+  default = "admin"
+}
+
+variable "user_group_name" {
+  default = "user"
+}
 
 ###### ECS
 
@@ -105,11 +122,11 @@ variable "proxy_server_port" {
 }
 
 variable "proxy_server_cpu" {
-  default = 1024
+  default = 512
 }
 
 variable "proxy_server_ram" {
-  default = 2048
+  default = 1024
 }
 
 variable "proxy_server_tag" {
@@ -128,11 +145,11 @@ variable "game_server_name_container" {
 }
 
 variable "game_server_cpu" {
-  default = 2048
+  default = 512
 }
 
 variable "game_server_ram" {
-  default = 4096
+  default = 1024
 }
 
 variable "game_server_port" {
@@ -193,10 +210,33 @@ variable "game_stacks_cloud_formation_stack_name_column" {
   default = "CloudFormationStackName"
 }
 
+variable "stop_server_time_column_name" {
+  default = "StopServerTime"
+}
+
 variable "game_stacks_is_active_columnn_name" {
   default = "IsActive"
 }
 
+variable "service_name_column" {
+  default = "ServiceName"
+}
+
+variable "status_column_name" {
+  default = "ServerStatus"
+}
+
+variable "running_value" {
+  default = "running"
+}
+
+variable "stopped_value" {
+  default = "stopped"
+}
+
+variable "pending_value" {
+  default = "pending"
+}
 
 ## Lambda
 variable "create_game_stack_cf_stack_name" {
@@ -205,4 +245,10 @@ variable "create_game_stack_cf_stack_name" {
 
 variable "invoked_lambda_function_name" {
   default = "add_game_stack"
+}
+
+# Config
+
+variable "nb_seconds_before_server_stopped" {
+  default = 120
 }

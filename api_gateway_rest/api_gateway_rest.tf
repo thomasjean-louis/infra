@@ -55,7 +55,32 @@ variable "lambda_delete_game_stack_name" {
   type = string
 }
 
+variable "lambda_start_game_server_uri" {
+  type = string
+}
+
+variable "lambda_start_game_server_name" {
+  type = string
+}
+
+variable "lambda_stop_game_server_uri" {
+  type = string
+}
+
+variable "lambda_stop_game_server_name" {
+  type = string
+}
+
 variable "deployment_branch" {
+  type = string
+}
+
+# Cognito
+variable "user_pool_client_id" {
+  type = string
+}
+
+variable "cognito_user_pool_endpoint" {
   type = string
 }
 
@@ -70,12 +95,26 @@ resource "aws_apigatewayv2_api" "api" {
   protocol_type = "HTTP"
 
   cors_configuration {
-    allow_origins = (var.homepage_branch == "dev" ? ["https://${var.deployment_branch}.${var.subdomain_homepage}.${var.hosted_zone_name}", "http://localhost:5173"] : ["https://${var.deployment_branch}.${var.subdomain_homepage}.${var.hosted_zone_name}"])
+    allow_origins = (var.homepage_branch == "dev" ? ["https://${var.subdomain_homepage}.${var.hosted_zone_name}", "http://localhost:5173"] : ["https://${var.subdomain_homepage}.${var.hosted_zone_name}"])
     allow_methods = ["POST", "GET", "DELETE", "OPTIONS"]
-    allow_headers = ["content-type"]
+    allow_headers = ["content-type", "Authorization"]
     max_age       = 300
   }
 }
+
+# Authorizer to manage which group can call which HTTP APIs
+resource "aws_apigatewayv2_authorizer" "game_stacks_api_authorization" {
+  api_id           = aws_apigatewayv2_api.api.id
+  authorizer_type  = "JWT"
+  identity_sources = ["$request.header.Authorization"]
+  name             = "cognito-authorizer"
+
+  jwt_configuration {
+    audience = [var.user_pool_client_id]
+    issuer   = "https://${var.cognito_user_pool_endpoint}"
+  }
+}
+
 
 resource "aws_apigatewayv2_stage" "stage" {
   api_id = aws_apigatewayv2_api.api.id
@@ -86,27 +125,18 @@ resource "aws_apigatewayv2_stage" "stage" {
   access_log_settings {
     destination_arn = aws_cloudwatch_log_group.game_stacks_api_log_group.arn
 
-    format = jsonencode({
-      requestId               = "$context.requestId"
-      sourceIp                = "$context.identity.sourceIp"
-      requestTime             = "$context.requestTime"
-      protocol                = "$context.protocol"
-      httpMethod              = "$context.httpMethod"
-      resourcePath            = "$context.resourcePath"
-      routeKey                = "$context.routeKey"
-      status                  = "$context.status"
-      responseLength          = "$context.responseLength"
-      integrationErrorMessage = "$context.integrationErrorMessage"
-      }
+    format = jsonencode({ "requestId" : "$context.requestId", "ip" : "$context.identity.sourceIp", "requestTime" : "$context.requestTime", "httpMethod" : "$context.httpMethod", "routeKey" : "$context.routeKey", "status" : "$context.status", "protocol" : "$context.protocol", "responseLength" : "$context.responseLength" }
     )
   }
 }
+
 
 # GET /gamestacks
 resource "aws_apigatewayv2_integration" "integration_get_game_stacks" {
   api_id = aws_apigatewayv2_api.api.id
 
   integration_uri        = var.lambda_get_game_stacks_uri
+  connection_type        = "INTERNET"
   payload_format_version = "2.0"
   integration_type       = "AWS_PROXY"
   integration_method     = "POST"
@@ -117,6 +147,9 @@ resource "aws_apigatewayv2_route" "route_get_game_stacks" {
 
   route_key = "GET /gamestacks"
   target    = "integrations/${aws_apigatewayv2_integration.integration_get_game_stacks.id}"
+
+  authorization_type = "JWT"
+  authorizer_id      = aws_apigatewayv2_authorizer.game_stacks_api_authorization.id
 }
 
 resource "aws_lambda_permission" "permission_get_game_stacks" {
@@ -140,8 +173,10 @@ resource "aws_apigatewayv2_integration" "integration_create_game_stack" {
 resource "aws_apigatewayv2_route" "route_create_game_stack" {
   api_id = aws_apigatewayv2_api.api.id
 
-  route_key = "POST /gamestack"
-  target    = "integrations/${aws_apigatewayv2_integration.integration_create_game_stack.id}"
+  route_key          = "POST /gamestack"
+  target             = "integrations/${aws_apigatewayv2_integration.integration_create_game_stack.id}"
+  authorization_type = "JWT"
+  authorizer_id      = aws_apigatewayv2_authorizer.game_stacks_api_authorization.id
 }
 
 resource "aws_lambda_permission" "permission_create_game_stack" {
@@ -165,9 +200,11 @@ resource "aws_apigatewayv2_integration" "integration_delete_game_stack" {
 }
 
 resource "aws_apigatewayv2_route" "route_delete_game_stack" {
-  api_id    = aws_apigatewayv2_api.api.id
-  route_key = "DELETE /gamestack/{id}"
-  target    = "integrations/${aws_apigatewayv2_integration.integration_delete_game_stack.id}"
+  api_id             = aws_apigatewayv2_api.api.id
+  route_key          = "DELETE /gamestack/{id}"
+  target             = "integrations/${aws_apigatewayv2_integration.integration_delete_game_stack.id}"
+  authorization_type = "JWT"
+  authorizer_id      = aws_apigatewayv2_authorizer.game_stacks_api_authorization.id
 
 }
 
@@ -181,6 +218,59 @@ resource "aws_lambda_permission" "permission_delete_game_stack" {
 }
 
 
+# POST /startgameserver/{id}
+resource "aws_apigatewayv2_integration" "integration_start_game_server" {
+  api_id                 = aws_apigatewayv2_api.api.id
+  integration_type       = "AWS_PROXY"
+  connection_type        = "INTERNET"
+  integration_method     = "POST"
+  integration_uri        = var.lambda_start_game_server_uri
+  payload_format_version = "2.0"
+}
+
+resource "aws_apigatewayv2_route" "route_start_game_server" {
+  api_id             = aws_apigatewayv2_api.api.id
+  route_key          = "POST /startgameserver/{id}"
+  target             = "integrations/${aws_apigatewayv2_integration.integration_start_game_server.id}"
+  authorization_type = "JWT"
+  authorizer_id      = aws_apigatewayv2_authorizer.game_stacks_api_authorization.id
+}
+
+resource "aws_lambda_permission" "permission_start_game_server" {
+  statement_id  = "AllowExecutionFromAPIGateway"
+  action        = "lambda:InvokeFunction"
+  function_name = var.lambda_start_game_server_name
+  principal     = "apigateway.amazonaws.com"
+
+  source_arn = "${aws_apigatewayv2_api.api.execution_arn}/*/*"
+}
+
+# POST /stopgameserver/{id}
+resource "aws_apigatewayv2_integration" "integration_stop_game_server" {
+  api_id                 = aws_apigatewayv2_api.api.id
+  integration_type       = "AWS_PROXY"
+  connection_type        = "INTERNET"
+  integration_method     = "POST"
+  integration_uri        = var.lambda_stop_game_server_uri
+  payload_format_version = "2.0"
+}
+
+resource "aws_apigatewayv2_route" "route_stop_game_server" {
+  api_id             = aws_apigatewayv2_api.api.id
+  route_key          = "POST /stopgameserver/{id}"
+  target             = "integrations/${aws_apigatewayv2_integration.integration_stop_game_server.id}"
+  authorization_type = "JWT"
+  authorizer_id      = aws_apigatewayv2_authorizer.game_stacks_api_authorization.id
+}
+
+resource "aws_lambda_permission" "permission_stop_game_server" {
+  statement_id  = "AllowExecutionFromAPIGateway"
+  action        = "lambda:InvokeFunction"
+  function_name = var.lambda_stop_game_server_name
+  principal     = "apigateway.amazonaws.com"
+
+  source_arn = "${aws_apigatewayv2_api.api.execution_arn}/*/*"
+}
 
 
 # API Gateway domain name

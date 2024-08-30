@@ -101,8 +101,8 @@ module "proxy" {
 
   name = var.proxy_server_name_container
 
-  memory = 1024
-  cpu    = 512
+  memory = var.proxy_server_ram
+  cpu    = var.proxy_server_cpu
 
   image     = "${var.uri_proxy_repo}:${var.proxy_server_tag}"
   essential = true
@@ -145,8 +145,8 @@ module "gameserver" {
   image     = "${var.uri_game_server_repo}:${var.game_server_tag}"
   essential = true
 
-  memory = 2048
-  cpu    = 1024
+  memory = var.game_server_ram
+  cpu    = var.game_server_cpu
 
   environment = [
     {
@@ -194,8 +194,8 @@ resource "aws_ecs_task_definition" "game_server_task_definition" {
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   container_definitions    = module.merged.container_definitions
-  memory                   = 4096
-  cpu                      = 2048
+  memory                   = 2048
+  cpu                      = 1024
 }
 
 
