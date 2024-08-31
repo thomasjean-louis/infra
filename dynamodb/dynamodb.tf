@@ -23,7 +23,7 @@ resource "aws_dynamodb_table" "gamestacks" {
 }
 
 resource "aws_dynamodb_table_item" "gamestack_01" {
-
+  count      = (var.deployment_branch == "dev") ? 1 : 0
   table_name = aws_dynamodb_table.gamestacks.name
   hash_key   = aws_dynamodb_table.gamestacks.hash_key
   item = jsonencode({
@@ -50,6 +50,7 @@ resource "aws_dynamodb_table_item" "gamestack_01" {
 }
 
 resource "aws_dynamodb_table_item" "gamestack_02" {
+  count = (var.deployment_branch == "dev") ? 1 : 0
 
   table_name = aws_dynamodb_table.gamestacks.name
   hash_key   = aws_dynamodb_table.gamestacks.hash_key
@@ -77,6 +78,7 @@ resource "aws_dynamodb_table_item" "gamestack_02" {
 }
 
 resource "aws_dynamodb_table_item" "gamestack_03" {
+  count = (var.deployment_branch == "dev") ? 1 : 0
 
   table_name = aws_dynamodb_table.gamestacks.name
   hash_key   = aws_dynamodb_table.gamestacks.hash_key
