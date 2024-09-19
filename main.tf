@@ -193,29 +193,8 @@ module "lambda_game_stacks" {
   nb_seconds_before_server_stopped = var.nb_seconds_before_server_stopped
 }
 
-
-# Cognito
-module "cognito" {
-  source                   = "./cognito"
-  app_name                 = var.app_name
-  admin_cognito_username   = var.admin_cognito_username
-  admin_cognito_password   = var.admin_cognito_password
-  classic_cognito_username = var.classic_cognito_username
-  classic_cognito_password = var.classic_cognito_password
-
-  hosted_zone_id       = local.hosted_zone_id
-  subdomain_auth       = var.subdomain_auth
-  hosted_zone_name     = var.hosted_zone_name
-  default_cognito_mail = var.default_cognito_mail
-  deployment_branch    = var.deployment_branch
-  admin_group_name     = var.admin_group_name
-  user_group_name      = var.user_group_name
-}
-
-
-
 module "api_gateway_rest" {
-  depends_on         = [module.dynamodb, module.lambda_game_stacks, module.cognito]
+  depends_on         = [module.dynamodb, module.lambda_game_stacks]
   source             = "./api_gateway_rest"
   region             = var.region
   account_id         = local.account_id
@@ -243,8 +222,8 @@ module "api_gateway_rest" {
 
   deployment_branch = var.deployment_branch
 
-  user_pool_client_id        = module.cognito.user_pool_client_id
-  cognito_user_pool_endpoint = module.cognito.user_pool_endpoint
+  user_pool_client_id        = var.user_pool_client_id
+  cognito_user_pool_endpoint = var.user_pool_endpoint
 
 }
 
@@ -252,7 +231,6 @@ module "api_gateway_rest" {
 
 # Serverless FrontEnd
 module "homepage" {
-  depends_on            = [module.cognito]
   source                = "./homepage"
   region                = var.region
   amplify_app_name      = var.amplify_app_name
@@ -263,9 +241,9 @@ module "homepage" {
   homepage_github_token = var.homepage_github_token
   proxy_server_port     = var.proxy_server_port
   api_https_url         = module.api_gateway_rest.api_https_url
-  user_pool_id          = module.cognito.user_pool_id
-  user_pool_client_id   = module.cognito.user_pool_client_id
-  identity_pool_id      = module.cognito.identity_pool_id
+  user_pool_id          = var.user_pool_id
+  user_pool_client_id   = var.user_pool_client_id
+  identity_pool_id      = var.identity_pool_id
   deployment_branch     = var.deployment_branch
 }
 
