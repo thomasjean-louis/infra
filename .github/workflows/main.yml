@@ -26,10 +26,10 @@ jobs:
       TF_VAR_subdomain_homepage: ${{secrets.SUBDOMAIN_HOMEPAGE}}
       TF_VAR_subdomain_game_stacks: ${{secrets.SUBDOMAIN_GAME_STACKS}}
       TF_VAR_subdomain_api: ${{secrets.SUBDOMAIN_API}}
-       TF_VAR_user_pool_id: ${{secrets.USER_POOL_ID}}
-       TF_VAR_user_pool_client_id: ${{secrets.USER_POOL_CLIENT_ID}}
-       TF_VAR_identity_pool_id: ${{secrets.IDENTITY_POOL_ID}}
-       TF_VAR_user_pool_endpoint: ${{secrets.USER_POOL_ENDPOINT}}
+      TF_VAR_user_pool_id: ${{secrets.USER_POOL_ID}}
+      TF_VAR_user_pool_client_id: ${{secrets.USER_POOL_CLIENT_ID}}
+      TF_VAR_identity_pool_id: ${{secrets.IDENTITY_POOL_ID}}
+      TF_VAR_user_pool_endpoint: ${{secrets.USER_POOL_ENDPOINT}}
 
     steps:
       - run: 'echo "ENV: ${{ github.ref_name }}"'
