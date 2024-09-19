@@ -647,7 +647,9 @@ resource "aws_cloudwatch_log_group" "log_group_create" {
 resource "aws_lambda_invocation" "invoke_create_create_game_stack_function" {
   depends_on    = [aws_lambda_function.lambda_create_game_stack]
   function_name = aws_lambda_function.lambda_create_game_stack.function_name
-  input         = {}
+  input = jsonencode({
+    key1 = "value1"
+  })
 }
 
 # PUT /gamestack
