@@ -48,10 +48,10 @@ variable "hosted_zone_name" {
   sensitive = true
 }
 
-variable "subdomain_auth" {
-  type      = string
-  sensitive = true
-}
+# variable "subdomain_auth" {
+#   type      = string
+#   sensitive = true
+# }
 
 variable "subdomain_homepage" {
   type      = string
@@ -66,40 +66,6 @@ variable "subdomain_game_stacks" {
 variable "subdomain_api" {
   type      = string
   sensitive = true
-}
-
-###### Cognito
-variable "admin_cognito_username" {
-  type      = string
-  sensitive = true
-}
-
-variable "admin_cognito_password" {
-  type      = string
-  sensitive = true
-}
-
-variable "classic_cognito_username" {
-  type      = string
-  sensitive = true
-}
-
-variable "classic_cognito_password" {
-  type      = string
-  sensitive = true
-}
-
-variable "default_cognito_mail" {
-  type      = string
-  sensitive = true
-}
-
-variable "admin_group_name" {
-  default = "admin"
-}
-
-variable "user_group_name" {
-  default = "user"
 }
 
 ###### ECS
@@ -181,6 +147,26 @@ variable "homepage_branch" {
 }
 
 variable "homepage_github_token" {
+  type      = string
+  sensitive = true
+}
+
+variable "user_pool_id" {
+  type      = string
+  sensitive = true
+}
+
+variable "user_pool_client_id" {
+  type      = string
+  sensitive = true
+}
+
+variable "identity_pool_id" {
+  type      = string
+  sensitive = true
+}
+
+variable "user_pool_endpoint" {
   type      = string
   sensitive = true
 }

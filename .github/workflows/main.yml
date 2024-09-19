@@ -23,15 +23,13 @@ jobs:
       TF_VAR_proxy_server_name_container: ${{secrets.PROXY_SERVER_NAME_CONTAINER}}
       TF_VAR_app_name: ${{secrets.APP_NAME}}
       TF_VAR_hosted_zone_name: ${{secrets.HOSTED_ZONE_NAME}}
-      TF_VAR_admin_cognito_username: ${{secrets.ADMIN_COGNITO_USERNAME}}
-      TF_VAR_admin_cognito_password: ${{secrets.ADMIN_COGNITO_PASSWORD}}
-      TF_VAR_classic_cognito_username: ${{secrets.CLASSIC_COGNITO_USERNAME}}
-      TF_VAR_classic_cognito_password: ${{secrets.CLASSIC_COGNITO_PASSWORD}}
-      TF_VAR_default_cognito_mail: ${{secrets.DEFAULT_COGNITO_MAIL}}
       TF_VAR_subdomain_homepage: ${{secrets.SUBDOMAIN_HOMEPAGE}}
       TF_VAR_subdomain_game_stacks: ${{secrets.SUBDOMAIN_GAME_STACKS}}
       TF_VAR_subdomain_api: ${{secrets.SUBDOMAIN_API}}
-      TF_VAR_subdomain_auth: ${{secrets.SUBDOMAIN_AUTH}}
+      TF_VAR_user_pool_id: ${{secrets.USER_POOL_ID}}
+      TF_VAR_user_pool_client_id: ${{secrets.USER_POOL_CLIENT_ID}}
+      TF_VAR_identity_pool_id: ${{secrets.IDENTITY_POOL_ID}}
+      TF_VAR_user_pool_endpoint: ${{secrets.USER_POOL_ENDPOINT}}
 
     steps:
       - run: 'echo "ENV: ${{ github.ref_name }}"'
