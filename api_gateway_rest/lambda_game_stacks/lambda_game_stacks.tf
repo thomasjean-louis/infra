@@ -734,6 +734,7 @@ resource "aws_lambda_function" "lambda_stop_game_server" {
       SERVICE_NAME_COLUMN    = var.service_name_column
       STATUS_COLUMN_NAME     = var.status_column_name
       STOPPED_VALUE          = var.stopped_value
+      MESSAGE_COLUMN_NAME    = var.message_column_name
     }
   }
 }
@@ -804,6 +805,7 @@ resource "aws_lambda_function" "lambda_detect_service_ready" {
       SERVICE_NAME_COLUMN    = var.service_name_column
       STATUS_COLUMN_NAME     = var.status_column_name
       RUNNING_VALUE          = var.running_value
+      MESSAGE_COLUMN_NAME    = var.message_column_name
     }
   }
 }
