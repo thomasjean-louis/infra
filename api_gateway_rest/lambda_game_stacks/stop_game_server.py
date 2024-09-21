@@ -75,9 +75,11 @@ def lambda_handler(event, context):
           table.update_item(
               ConditionExpression="attribute_exists(ID)",
               Key={"ID": path_params['id']},
-              UpdateExpression="SET "+os.environ["STATUS_COLUMN_NAME"]+" = :val1",
+              UpdateExpression="SET "+os.environ["STATUS_COLUMN_NAME"]+" = :val1,"+os.environ["MESSAGE_COLUMN_NAME"]+" = :val2",
               ExpressionAttributeValues={
-              ':val1': os.environ["STOPPED_VALUE"]
+              ':val1': os.environ["STOPPED_VALUE"],
+              ':val2':"Game server stopped",
+
               }
           )
           responseBody.append("Game server stopped ")
