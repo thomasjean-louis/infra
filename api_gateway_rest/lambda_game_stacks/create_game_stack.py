@@ -108,6 +108,10 @@ def lambda_handler(event, context):
         {
             'ParameterKey': 'StopServerTimeColumnName',
             'ParameterValue': os.environ["STOP_SERVER_TIME_COLUMN_NAME"]
+        },
+        {
+            'ParameterKey': 'MessageColumnName',
+            'ParameterValue': os.environ["MESSAGE_COLUMN_NAME"]
         }
         ,
         {

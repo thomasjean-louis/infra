@@ -45,6 +45,9 @@ resource "aws_dynamodb_table_item" "gamestack_01" {
     "StopServerTime" : {
       "S" : ""
     },
+    "Message" : {
+      "S" : "stack 01 message"
+    },
 
   })
 }
@@ -73,6 +76,9 @@ resource "aws_dynamodb_table_item" "gamestack_02" {
     "StopServerTime" : {
       "S" : ""
     },
+    "Message" : {
+      "S" : "stack 02 message"
+    },
 
   })
 }
@@ -100,6 +106,9 @@ resource "aws_dynamodb_table_item" "gamestack_03" {
     },
     "StopServerTime" : {
       "S" : ""
+    },
+    "Message" : {
+      "S" : "stack 03 message"
     },
   })
 }

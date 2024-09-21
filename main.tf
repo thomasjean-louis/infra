@@ -185,6 +185,7 @@ module "lambda_game_stacks" {
   service_name_column                           = var.service_name_column
   status_column_name                            = var.status_column_name
   stop_server_time_column_name                  = var.stop_server_time_column_name
+  message_column_name                           = var.message_column_name
 
   deployment_branch = var.deployment_branch
   waf_arn           = module.waf.waf_web_acl_arn

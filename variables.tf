@@ -200,6 +200,10 @@ variable "stop_server_time_column_name" {
   default = "StopServerTime"
 }
 
+variable "message_column_name" {
+  default = "Message"
+}
+
 variable "game_stacks_is_active_columnn_name" {
   default = "IsActive"
 }
