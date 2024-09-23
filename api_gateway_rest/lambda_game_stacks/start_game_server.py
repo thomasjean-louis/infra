@@ -75,10 +75,11 @@ def lambda_handler(event, context):
           table.update_item(
             ConditionExpression="attribute_exists(ID)",
             Key={"ID": path_params['id']},
-            UpdateExpression="SET "+os.environ["STATUS_COLUMN_NAME"]+" = :val1, "+os.environ["STOP_SERVER_TIME_COLUMN_NAME"]+" = :val2",
+            UpdateExpression="SET "+os.environ["STATUS_COLUMN_NAME"]+" = :val1, "+os.environ["STOP_SERVER_TIME_COLUMN_NAME"]+" = :val2,"+os.environ["MESSAGE_COLUMN_NAME"]+" = :val3",
             ExpressionAttributeValues={
             ':val1': os.environ["PENDING_VALUE"],
             ':val2': (datetime.utcnow() + timedelta(seconds = int(os.environ["NB_SECONDS_BEFORE_SERVER_STOPPED"]))).isoformat(),
+            ':val3': "Game server is starting ...",
             }
           )
 

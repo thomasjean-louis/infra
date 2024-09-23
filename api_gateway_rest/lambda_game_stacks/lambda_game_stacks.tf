@@ -113,6 +113,10 @@ variable "stop_server_time_column_name" {
   type = string
 }
 
+variable "message_column_name" {
+  type = string
+}
+
 variable "game_stacks_is_active_columnn_name" {
   type = string
 }
@@ -571,6 +575,7 @@ resource "aws_lambda_function" "lambda_get_game_stacks" {
       GAME_STACKS_IS_ACTIVE_COLUMN_NAME   = var.game_stacks_is_active_columnn_name
       STATUS_COLUMN_NAME                  = var.status_column_name
       STOP_SERVER_TIME_COLUMN_NAME        = var.stop_server_time_column_name
+      MESSAGE_COLUMN_NAME                 = var.message_column_name
     }
   }
 }
@@ -630,6 +635,7 @@ resource "aws_lambda_function" "lambda_create_game_stack" {
       GAME_STACKS_SERVER_LINK_COLUMN_NAME           = var.game_stacks_server_link_column_name
       GAME_STACKS_CLOUD_FORMATION_STACK_NAME_COLUMN = var.game_stacks_cloud_formation_stack_name_column
       STOP_SERVER_TIME_COLUMN_NAME                  = var.stop_server_time_column_name
+      MESSAGE_COLUMN_NAME                           = var.message_column_name
       GAME_STACKS_IS_ACTIVE_COLUMN_NAME             = var.game_stacks_is_active_columnn_name
       STATUS_COLUMN_NAME                            = var.status_column_name
       SERVICE_NAME_COLUMN                           = var.service_name_column
@@ -641,6 +647,16 @@ resource "aws_lambda_function" "lambda_create_game_stack" {
 
 resource "aws_cloudwatch_log_group" "log_group_create" {
   name = "/aws/lambda/${aws_lambda_function.lambda_create_game_stack.function_name}"
+}
+
+# Invoke lambda function to get Ecs service running at start (only for prod to save money)
+resource "aws_lambda_invocation" "invoke_create_create_game_stack_function" {
+  count         = (var.deployment_branch == "dev") ? 0 : 1
+  depends_on    = [aws_lambda_function.lambda_create_game_stack]
+  function_name = aws_lambda_function.lambda_create_game_stack.function_name
+  input = jsonencode({
+    key1 = "value1"
+  })
 }
 
 # PUT /gamestack
@@ -719,6 +735,7 @@ resource "aws_lambda_function" "lambda_stop_game_server" {
       SERVICE_NAME_COLUMN    = var.service_name_column
       STATUS_COLUMN_NAME     = var.status_column_name
       STOPPED_VALUE          = var.stopped_value
+      MESSAGE_COLUMN_NAME    = var.message_column_name
     }
   }
 }
@@ -746,11 +763,13 @@ resource "aws_lambda_function" "lambda_start_game_server" {
 
   environment {
     variables = {
-      GAME_STACKS_TABLE_NAME           = var.gamestacks_table_name
-      CLUSTER_NAME                     = var.cluster_name
-      SERVICE_NAME_COLUMN              = var.service_name_column
-      STATUS_COLUMN_NAME               = var.status_column_name
-      STOP_SERVER_TIME_COLUMN_NAME     = var.stop_server_time_column_name
+      GAME_STACKS_TABLE_NAME       = var.gamestacks_table_name
+      CLUSTER_NAME                 = var.cluster_name
+      SERVICE_NAME_COLUMN          = var.service_name_column
+      STATUS_COLUMN_NAME           = var.status_column_name
+      STOP_SERVER_TIME_COLUMN_NAME = var.stop_server_time_column_name
+      MESSAGE_COLUMN_NAME          = var.message_column_name
+
       PENDING_VALUE                    = var.pending_value
       DETECT_SERVICE_FUNCTION_NAME     = aws_lambda_function.lambda_detect_service_ready.function_name
       NB_SECONDS_BEFORE_SERVER_STOPPED = var.nb_seconds_before_server_stopped
@@ -787,6 +806,7 @@ resource "aws_lambda_function" "lambda_detect_service_ready" {
       SERVICE_NAME_COLUMN    = var.service_name_column
       STATUS_COLUMN_NAME     = var.status_column_name
       RUNNING_VALUE          = var.running_value
+      MESSAGE_COLUMN_NAME    = var.message_column_name
     }
   }
 }

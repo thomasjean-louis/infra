@@ -25,7 +25,7 @@ def lambda_handler(event, context):
                 if not items[os.environ['GAME_STACKS_IS_ACTIVE_COLUMN_NAME']]:                  
                   continue
                 responseItems = [
-                    {os.environ["GAME_STACKS_ID_COLUMN_NAME"]: items[os.environ["GAME_STACKS_ID_COLUMN_NAME"]], os.environ["GAME_STACKS_CAPACITY_COLUMN_NAME"]: float(items[os.environ["GAME_STACKS_CAPACITY_COLUMN_NAME"]]), os.environ['GAME_STACKS_SERVER_LINK_COLUMN_NAME']: items[os.environ['GAME_STACKS_SERVER_LINK_COLUMN_NAME']],os.environ['GAME_STACKS_IS_ACTIVE_COLUMN_NAME']: items[os.environ['GAME_STACKS_IS_ACTIVE_COLUMN_NAME']],os.environ['STATUS_COLUMN_NAME']: items[os.environ['STATUS_COLUMN_NAME']],os.environ['STOP_SERVER_TIME_COLUMN_NAME']: items[os.environ['STOP_SERVER_TIME_COLUMN_NAME']],}]
+                    {os.environ["GAME_STACKS_ID_COLUMN_NAME"]: items[os.environ["GAME_STACKS_ID_COLUMN_NAME"]], os.environ["GAME_STACKS_CAPACITY_COLUMN_NAME"]: float(items[os.environ["GAME_STACKS_CAPACITY_COLUMN_NAME"]]), os.environ['GAME_STACKS_SERVER_LINK_COLUMN_NAME']: items[os.environ['GAME_STACKS_SERVER_LINK_COLUMN_NAME']],os.environ['GAME_STACKS_IS_ACTIVE_COLUMN_NAME']: items[os.environ['GAME_STACKS_IS_ACTIVE_COLUMN_NAME']],os.environ['STATUS_COLUMN_NAME']: items[os.environ['STATUS_COLUMN_NAME']],os.environ['STOP_SERVER_TIME_COLUMN_NAME']: items[os.environ['STOP_SERVER_TIME_COLUMN_NAME']],os.environ['MESSAGE_COLUMN_NAME']: items[os.environ['MESSAGE_COLUMN_NAME']],}]
                 
                 responseBody.append(responseItems)
             body = responseBody
