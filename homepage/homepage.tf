@@ -105,6 +105,7 @@ resource "aws_amplify_app" "homepage_app" {
             - echo "VITE_USER_POOL_ID=${var.user_pool_id}" >> .env
             - echo "VITE_USER_POOL_CLIENT_ID=${var.user_pool_client_id}" >> .env
             - echo "VITE_IDENTITY_POOL_ID=${var.identity_pool_id}" >> .env
+            - echo "VITE_DEPLOYMENT_BRANCH=${var.deployment_branch}" >> .env
             - cat .env # This is optional, just to verify the contents of .env
             - yarn run build
       artifacts:
