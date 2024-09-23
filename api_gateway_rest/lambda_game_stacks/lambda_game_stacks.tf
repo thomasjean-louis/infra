@@ -649,8 +649,9 @@ resource "aws_cloudwatch_log_group" "log_group_create" {
   name = "/aws/lambda/${aws_lambda_function.lambda_create_game_stack.function_name}"
 }
 
-# Invoke lambda function to get Ecs service running at start
+# Invoke lambda function to get Ecs service running at start (only for prod to save money)
 resource "aws_lambda_invocation" "invoke_create_create_game_stack_function" {
+  count         = (var.deployment_branch == "dev") ? 0 : 1
   depends_on    = [aws_lambda_function.lambda_create_game_stack]
   function_name = aws_lambda_function.lambda_create_game_stack.function_name
   input = jsonencode({
