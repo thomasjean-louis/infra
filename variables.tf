@@ -240,5 +240,5 @@ variable "invoked_lambda_function_name" {
 # Config
 
 variable "nb_seconds_before_server_stopped" {
-  default = 120
+  default = 600
 }
