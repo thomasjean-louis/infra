@@ -50,6 +50,7 @@ Resources:
       VpcId: !Ref VpcId
       HealthCheckIntervalSeconds: 5
       HealthyThresholdCount: 2
+      HealthCheckTimeoutSeconds: 4
       TargetGroupAttributes:
         - Key: deregistration_delay.timeout_seconds
           Value: 5
@@ -68,6 +69,7 @@ Resources:
       VpcId: !Ref VpcId
       HealthCheckIntervalSeconds: 5
       HealthyThresholdCount: 2
+      HealthCheckTimeoutSeconds: 4
       TargetGroupAttributes:
         - Key: deregistration_delay.timeout_seconds
           Value: 5
