@@ -88,11 +88,11 @@ variable "proxy_server_port" {
 }
 
 variable "proxy_server_cpu" {
-  default = 512
+  default = 256
 }
 
 variable "proxy_server_ram" {
-  default = 1024
+  default = 512
 }
 
 variable "proxy_server_tag" {
