@@ -48,6 +48,11 @@ Resources:
       Matcher:
         HttpCode: 404
       VpcId: !Ref VpcId
+      HealthCheckIntervalSeconds: 5
+      HealthyThresholdCount: 2
+      TargetGroupAttributes:
+        - Key: deregistration_delay.timeout_seconds
+          Value: 5
       Tags:
         - Key: Name
           Value: !Sub TargetGroup-HTTPS-${RandomString}
@@ -61,6 +66,11 @@ Resources:
         HttpCode: 404
       TargetType: ip
       VpcId: !Ref VpcId
+      HealthCheckIntervalSeconds: 5
+      HealthyThresholdCount: 2
+      TargetGroupAttributes:
+        - Key: deregistration_delay.timeout_seconds
+          Value: 5
       Tags:
         - Key: Name
           Value: !Sub TargetGroup-WS-${RandomString}
@@ -130,7 +140,6 @@ Resources:
       DesiredCount: 0
       LaunchType: FARGATE
       TaskDefinition: !Ref TaskDefinitionArn
-      HealthCheckGracePeriodSeconds: 300
       LoadBalancers:
         - TargetGroupArn: !Ref HttpsTargetGroup
           ContainerPort: !Ref ProxyServerPort

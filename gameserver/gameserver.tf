@@ -107,6 +107,7 @@ module "proxy" {
   image     = "${var.uri_proxy_repo}:${var.proxy_server_tag}"
   essential = true
 
+
   logConfiguration = {
     logDriver : "awslogs",
     options : {
