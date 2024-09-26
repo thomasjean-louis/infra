@@ -416,6 +416,7 @@ resource "aws_iam_role_policy" "alb_service_policy" {
         }, {
         Action = [
           "elasticloadbalancing:CreateTargetGroup",
+          "elasticloadbalancing:ModifyTargetGroupAttributes",
         ]
         Effect   = "Allow"
         Resource = "arn:aws:elasticloadbalancing:${var.region}:${var.account_id}:targetgroup/*"
