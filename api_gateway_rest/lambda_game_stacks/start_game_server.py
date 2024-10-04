@@ -27,6 +27,7 @@ def lambda_handler(event, context):
     #inserting values into table 
     response = tableGameMonitoring.put_item( 
       Item={ 
+            os.environ['ID_COLUMN_NAME']: str(uuid.uuid4()),
             os.environ['TIMESTAMP_COLUMN_NAME']: str(datetime.now()),
             os.environ['USERNAME_COLOMN_NAME']: event['requestContext']['authorizer']['jwt']['claims']['username'],
             os.environ['ACTION_COLUMN_NAME']: os.environ['START_ACTION_COLUMN_NAME'],                   

@@ -808,6 +808,7 @@ resource "aws_lambda_function" "lambda_start_game_server" {
       ARN_STOPPED_SERVER_FUNCTION      = aws_lambda_function.lambda_stop_game_server.arn
 
       GAME_MONITORING_TABLE_NAME = var.game_monitoring_table_name
+      ID_COLUMN_NAME             = var.game_stacks_id_column_name
       TIMESTAMP_COLUMN_NAME      = var.timestamp_column_name
       USERNAME_COLOMN_NAME       = var.username_colomn_name
       ACTION_COLUMN_NAME         = var.action_column_name
