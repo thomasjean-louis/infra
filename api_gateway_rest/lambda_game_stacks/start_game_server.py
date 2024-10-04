@@ -4,6 +4,7 @@ import boto3
 import json
 import time
 import datetime
+import uuid
 from datetime import *
 logger = logging.getLogger()
 logger.setLevel("INFO")
