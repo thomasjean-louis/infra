@@ -228,6 +228,28 @@ variable "pending_value" {
   default = "pending"
 }
 
+# Game Monitoring DB
+variable "game_monitoring_table_name" {
+  default = "gamemonitoring"
+}
+
+variable "timestamp_column_name" {
+  default = "timestamp"
+}
+
+variable "username_colomn_name" {
+  default = "username"
+}
+
+variable "action_column_name" {
+  default = "action"
+}
+
+variable "start_action_column_name" {
+  default = "start"
+}
+
+
 ## Lambda
 variable "create_game_stack_cf_stack_name" {
   default = "game-server-stack"

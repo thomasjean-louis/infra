@@ -162,6 +162,26 @@ variable "nb_seconds_before_server_stopped" {
   type = number
 }
 
+# game Monitoring variables
+variable "game_monitoring_table_name" {
+  type = string
+}
+
+variable "timestamp_column_name" {
+  type = string
+}
+
+variable "username_colomn_name" {
+  type = string
+}
+
+variable "action_column_name" {
+  type = string
+}
+
+variable "start_action_column_name" {
+  type = string
+}
 
 ## Lambda scripts
 
@@ -776,6 +796,13 @@ resource "aws_lambda_function" "lambda_start_game_server" {
       NB_SECONDS_BEFORE_SERVER_STOPPED = var.nb_seconds_before_server_stopped
       STATE_MACHINE_ARN                = var.wait_step_function_arn
       ARN_STOPPED_SERVER_FUNCTION      = aws_lambda_function.lambda_stop_game_server.arn
+
+      GAME_MONITORING_TABLE_NAME = var.game_monitoring_table_name
+      TIMESTAMP_COLUMN_NAME      = var.timestamp_column_name
+      USERNAME_COLOMN_NAME       = var.username_colomn_name
+      ACTION_COLUMN_NAME         = var.action_column_name
+      START_ACTION_COLUMN_NAME   = var.start_action_column_name
+
     }
   }
 }

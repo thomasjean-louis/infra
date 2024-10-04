@@ -15,9 +15,6 @@ def lambda_handler(event, context):
     body = {}
     statusCode = 200
 
-    print(event.requestContext.authorizer.claims)
-    print(event.requestContext.authorizer.claims["cognito:username"])
-
     try:
         if event['routeKey'] == "GET /gamestacks":
             body = table.scan()
