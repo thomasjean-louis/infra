@@ -106,13 +106,13 @@ def lambda_handler(event, context):
           tableGameMonitoring = dynamodbGameMonitoring.Table(os.environ["GAME_MONITORING_TABLE_NAME"])
           
           #inserting values into table 
-           response = table.put_item( 
-              Item={ 
-                   os.environ['TIMESTAMP_COLUMN_NAME']: str(datetime.now()),
-                   os.environ['USERNAME_COLOMN_NAME']: event['requestContext']['authorizer']['jwt']['claims']['username'],
-                   os.environ['ACTION_COLUMN_NAME']: os.environ['START_ACTION_COLUMN_NAME'],                   
-                   } 
-           )
+          response = table.put_item( 
+            Item={ 
+                  os.environ['TIMESTAMP_COLUMN_NAME']: str(datetime.now()),
+                  os.environ['USERNAME_COLOMN_NAME']: event['requestContext']['authorizer']['jwt']['claims']['username'],
+                  os.environ['ACTION_COLUMN_NAME']: os.environ['START_ACTION_COLUMN_NAME'],                   
+                  } 
+          )
 
           # Send SNS notification
 
