@@ -342,6 +342,16 @@ resource "aws_iam_role_policy" "dynamodb_service_policy" {
         Effect   = "Allow"
         Resource = "arn:aws:dynamodb:${var.region}:${var.account_id}:table/${var.gamestacks_table_name}"
       },
+      {
+        Action = [
+          "dynamodb:Scan",
+          "dynamodb:PutItem",
+          "dynamodb:GetItem",
+          "dynamodb:UpdateItem"
+        ]
+        Effect   = "Allow"
+        Resource = "arn:aws:dynamodb:${var.region}:${var.account_id}:table/${var.game_monitoring_table_name}"
+      },
     ]
   })
 }
