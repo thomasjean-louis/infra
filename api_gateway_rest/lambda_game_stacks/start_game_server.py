@@ -20,6 +20,19 @@ def lambda_handler(event, context):
 
     logger.info("create_game_stack")
 
+    # Add in game monitoring dynamodb table start server event
+    dynamodbGameMonitoring = boto3.resource("dynamodb")
+    tableGameMonitoring = dynamodbGameMonitoring.Table(os.environ["GAME_MONITORING_TABLE_NAME"])
+    
+    #inserting values into table 
+    response = tableGameMonitoring.put_item( 
+      Item={ 
+            os.environ['TIMESTAMP_COLUMN_NAME']: str(datetime.now()),
+            os.environ['USERNAME_COLOMN_NAME']: event['requestContext']['authorizer']['jwt']['claims']['username'],
+            os.environ['ACTION_COLUMN_NAME']: os.environ['START_ACTION_COLUMN_NAME'],                   
+            } 
+    )
+
     try:
         route_key = event['routeKey']
         
@@ -100,19 +113,7 @@ def lambda_handler(event, context):
           responseBody.append("Game server starting .. ")
           body = responseBody
 
-          # Add in game monitoring dynamodb table start server event
-          dynamodbGameMonitoring = boto3.resource("dynamodb")
-
-          tableGameMonitoring = dynamodbGameMonitoring.Table(os.environ["GAME_MONITORING_TABLE_NAME"])
           
-          #inserting values into table 
-          response = table.put_item( 
-            Item={ 
-                  os.environ['TIMESTAMP_COLUMN_NAME']: str(datetime.now()),
-                  os.environ['USERNAME_COLOMN_NAME']: event['requestContext']['authorizer']['jwt']['claims']['username'],
-                  os.environ['ACTION_COLUMN_NAME']: os.environ['START_ACTION_COLUMN_NAME'],                   
-                  } 
-          )
 
           # Send SNS notification
 
