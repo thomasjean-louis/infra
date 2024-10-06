@@ -255,12 +255,12 @@ module "homepage" {
   deployment_branch     = var.deployment_branch
 }
 
-
 # Ses, to send notification mails
 module "ses" {
   source           = "./ses"
   hosted_zone_name = var.hosted_zone_name
   hosted_zone_id   = local.hosted_zone_id
+  region = var.region
 }
 
 
