@@ -256,6 +256,13 @@ module "homepage" {
 }
 
 
+# Ses, to send notification mails
+module "ses" {
+  source           = "./ses"
+  hosted_zone_name = var.hosted_zone_name
+  hosted_zone_id   = local.hosted_zone_id
+}
+
 
 
 

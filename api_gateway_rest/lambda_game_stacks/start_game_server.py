@@ -9,6 +9,26 @@ from datetime import *
 logger = logging.getLogger()
 logger.setLevel("INFO")
 
+def send_email(subject, body, sender, recipient):
+    client = boto3.client('ses')
+    response = client.send_email(
+        Source=sender,
+        Destination={
+            'ToAddresses': [recipient]
+        },
+        Message={
+            'Subject': {
+                'Data': subject
+            },
+            'Body': {
+                'Text': {
+                    'Data': body
+                }
+            }
+        }
+    )
+    return response['MessageId']
+
 
 def lambda_handler(event, context):
     
