@@ -824,19 +824,13 @@ resource "aws_lambda_function" "lambda_start_game_server" {
       STOP_SERVER_TIME_COLUMN_NAME = var.stop_server_time_column_name
       MESSAGE_COLUMN_NAME          = var.message_column_name
 
-      PENDING_VALUE                    = var.pending_value
-      DETECT_SERVICE_FUNCTION_NAME     = aws_lambda_function.lambda_detect_service_ready.function_name
-      NB_SECONDS_BEFORE_SERVER_STOPPED = var.nb_seconds_before_server_stopped
-      STATE_MACHINE_ARN                = var.wait_step_function_arn
-      ARN_STOPPED_SERVER_FUNCTION      = aws_lambda_function.lambda_stop_game_server.arn
+      PENDING_VALUE                       = var.pending_value
+      DETECT_SERVICE_FUNCTION_NAME        = aws_lambda_function.lambda_detect_service_ready.function_name
+      SEND_SES_NOTIFICATION_FUNCTION_NAME = aws_lambda_function.lambda_send_ses_notification.function_name
+      NB_SECONDS_BEFORE_SERVER_STOPPED    = var.nb_seconds_before_server_stopped
+      STATE_MACHINE_ARN                   = var.wait_step_function_arn
+      ARN_STOPPED_SERVER_FUNCTION         = aws_lambda_function.lambda_stop_game_server.arn
 
-      ADMIN_MAIL                 = var.admin_mail
-      GAME_MONITORING_TABLE_NAME = var.game_monitoring_table_name
-      ID_COLUMN_NAME             = var.game_stacks_id_column_name
-      TIMESTAMP_COLUMN_NAME      = var.timestamp_column_name
-      USERNAME_COLOMN_NAME       = var.username_colomn_name
-      ACTION_COLUMN_NAME         = var.action_column_name
-      START_ACTION_COLUMN_NAME   = var.start_action_column_name
 
     }
   }
@@ -874,8 +868,54 @@ resource "aws_lambda_function" "lambda_detect_service_ready" {
   }
 }
 
+# DetectServiceReady lambda function
+data "archive_file" "send_ses_notification_zip" {
+  type        = "zip"
+  source_file = "${path.module}/send_ses_notification.py"
+  output_path = "${path.module}/send_ses_notification.zip"
+}
+
+resource "aws_lambda_function" "lambda_send_ses_notification" {
+  function_name    = "send_ses_notification"
+  filename         = data.archive_file.send_ses_notification_zip.output_path
+  source_code_hash = data.archive_file.send_ses_notification_zip.output_base64sha256
+  role             = aws_iam_role.lambda_api_service_role.arn
+  handler          = "send_ses_notification.lambda_handler"
+  runtime          = "python3.9"
+  timeout          = 300
+
+  environment {
+    variables = {
+      ADMIN_MAIL                 = var.admin_mail
+      GAME_MONITORING_TABLE_NAME = var.game_monitoring_table_name
+      ID_COLUMN_NAME             = var.game_stacks_id_column_name
+      TIMESTAMP_COLUMN_NAME      = var.timestamp_column_name
+      USERNAME_COLOMN_NAME       = var.username_colomn_name
+      ACTION_COLUMN_NAME         = var.action_column_name
+      START_ACTION_COLUMN_NAME   = var.start_action_column_name
+    }
+  }
+}
+
+
 resource "aws_cloudwatch_log_group" "log_group" {
-  name = "/aws/lambda/${aws_lambda_function.lambda_detect_service_ready.function_name}"
+  name              = "/aws/lambda/${aws_lambda_function.lambda_detect_service_ready.function_name}"
+  retention_in_days = 2
+
+  lifecycle {
+    create_before_destroy = true
+    prevent_destroy       = false
+  }
+}
+
+resource "aws_cloudwatch_log_group" "log_group" {
+  name              = "/aws/lambda/${aws_lambda_function.lambda_send_ses_notification.function_name}"
+  retention_in_days = 2
+
+  lifecycle {
+    create_before_destroy = true
+    prevent_destroy       = false
+  }
 }
 
 

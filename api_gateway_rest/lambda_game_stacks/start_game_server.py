@@ -9,26 +9,6 @@ from datetime import *
 logger = logging.getLogger()
 logger.setLevel("INFO")
 
-def send_email(subject, body, sender, recipient):
-    client = boto3.client('ses')
-    response = client.send_email(
-        Source=sender,
-        Destination={
-            'ToAddresses': [recipient]
-        },
-        Message={
-            'Subject': {
-                'Data': subject
-            },
-            'Body': {
-                'Text': {
-                    'Data': body
-                }
-            }
-        }
-    )
-    return response['MessageId']
-
 
 def lambda_handler(event, context):
     
@@ -39,30 +19,7 @@ def lambda_handler(event, context):
     body = {}
     statusCode = 200
 
-    logger.info("create_game_stack")
-
-    # Add in game monitoring dynamodb table start server event
-    dynamodbGameMonitoring = boto3.resource("dynamodb")
-    tableGameMonitoring = dynamodbGameMonitoring.Table(os.environ["GAME_MONITORING_TABLE_NAME"])
-    
-    #inserting values into table 
-    cognito_username = event['requestContext']['authorizer']['jwt']['claims']['username']
-    datetime_now = str(datetime.now())
-    response = tableGameMonitoring.put_item( 
-      Item={ 
-            os.environ['ID_COLUMN_NAME']: str(uuid.uuid4()),
-            os.environ['TIMESTAMP_COLUMN_NAME']: datetime_now,
-            os.environ['USERNAME_COLOMN_NAME']: cognito_username,
-            os.environ['ACTION_COLUMN_NAME']: os.environ['START_ACTION_COLUMN_NAME'],                   
-            } 
-    )
-
-    # Send mail from SES
-    subject = cognito_username+"has started the ECS server"
-    body = cognito_username+" has started the ECS server at "+datetime_now
-    sender = os.environ['ADMIN_MAIL']
-    recipient = os.environ['ADMIN_MAIL']
-    send_email(subject, body, sender, recipient)
+    logger.info("create_game_stack")    
 
     try:
         route_key = event['routeKey']
@@ -140,12 +97,20 @@ def lambda_handler(event, context):
                  InvocationType='Event',
                  Payload=json.dumps(cfn_event)
           )
-          
+
+          # Invoke lambda that send ses notification
+          cfn_event_ses = {
+                "cognito_username": event['requestContext']['authorizer']['jwt']['claims']['username']
+          }
+
+           lambda_client.invoke( 
+                 FunctionName=os.environ["SEND_SES_NOTIFICATION_FUNCTION_NAME"],
+                 InvocationType='Event',
+                 Payload=json.dumps(cfn_event_ses)
+          )
+
           responseBody.append("Game server starting .. ")
-          body = responseBody       
-
-          
-
+          body = responseBody  
 
         else:
             raise ValueError(f"Unsupported routee: '{route_key}'")
@@ -154,6 +119,8 @@ def lambda_handler(event, context):
       body = str(err)
     finally:
       body = json.dumps(body)
+
+    
 
 
     body = json.dumps(body)
