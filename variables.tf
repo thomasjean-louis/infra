@@ -228,6 +228,12 @@ variable "pending_value" {
   default = "pending"
 }
 
+# SES
+variable "admin_mail" {
+  type      = string
+  sensitive = true
+}
+
 # Game Monitoring DB
 variable "game_monitoring_table_name" {
   default = "gamemonitoring"

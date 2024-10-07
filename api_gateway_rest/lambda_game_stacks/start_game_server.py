@@ -46,14 +46,23 @@ def lambda_handler(event, context):
     tableGameMonitoring = dynamodbGameMonitoring.Table(os.environ["GAME_MONITORING_TABLE_NAME"])
     
     #inserting values into table 
+    cognito_username = event['requestContext']['authorizer']['jwt']['claims']['username']
+    datetime_now = str(datetime.now())
     response = tableGameMonitoring.put_item( 
       Item={ 
             os.environ['ID_COLUMN_NAME']: str(uuid.uuid4()),
-            os.environ['TIMESTAMP_COLUMN_NAME']: str(datetime.now()),
-            os.environ['USERNAME_COLOMN_NAME']: event['requestContext']['authorizer']['jwt']['claims']['username'],
+            os.environ['TIMESTAMP_COLUMN_NAME']: datetime_now,
+            os.environ['USERNAME_COLOMN_NAME']: cognito_username,
             os.environ['ACTION_COLUMN_NAME']: os.environ['START_ACTION_COLUMN_NAME'],                   
             } 
     )
+
+    # Send mail from SES
+    subject = cognito_username+"has started the ECS server"
+    body = cognito_username+" has started the ECS server at "+datetime_now
+    sender = os.environ['ADMIN_MAIL']
+    recipient = os.environ['ADMIN_MAIL']
+    send_email(subject, body, sender, recipient)
 
     try:
         route_key = event['routeKey']
@@ -133,11 +142,10 @@ def lambda_handler(event, context):
           )
           
           responseBody.append("Game server starting .. ")
-          body = responseBody
+          body = responseBody       
 
           
 
-          # Send SNS notification
 
         else:
             raise ValueError(f"Unsupported routee: '{route_key}'")

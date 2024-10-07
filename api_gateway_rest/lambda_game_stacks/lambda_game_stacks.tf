@@ -162,6 +162,11 @@ variable "nb_seconds_before_server_stopped" {
   type = number
 }
 
+# Ses
+variable "admin_mail" {
+  type = string
+}
+
 # game Monitoring variables
 variable "game_monitoring_table_name" {
   type = string
@@ -807,6 +812,7 @@ resource "aws_lambda_function" "lambda_start_game_server" {
       STATE_MACHINE_ARN                = var.wait_step_function_arn
       ARN_STOPPED_SERVER_FUNCTION      = aws_lambda_function.lambda_stop_game_server.arn
 
+      ADMIN_MAIL                 = var.admin_mail
       GAME_MONITORING_TABLE_NAME = var.game_monitoring_table_name
       ID_COLUMN_NAME             = var.game_stacks_id_column_name
       TIMESTAMP_COLUMN_NAME      = var.timestamp_column_name
