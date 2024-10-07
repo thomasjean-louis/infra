@@ -900,7 +900,7 @@ resource "aws_lambda_function" "lambda_send_ses_notification" {
 
 resource "aws_cloudwatch_log_group" "log_group_detect_service_ready" {
   name              = "/aws/lambda/${aws_lambda_function.lambda_detect_service_ready.function_name}"
-  retention_in_days = 2
+  retention_in_days = 1
 
   lifecycle {
     create_before_destroy = true
@@ -910,7 +910,7 @@ resource "aws_cloudwatch_log_group" "log_group_detect_service_ready" {
 
 resource "aws_cloudwatch_log_group" "log_group_ses" {
   name              = "/aws/lambda/${aws_lambda_function.lambda_send_ses_notification.function_name}"
-  retention_in_days = 2
+  retention_in_days = 1
 
   lifecycle {
     create_before_destroy = true
