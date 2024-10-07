@@ -10,8 +10,7 @@ logger = logging.getLogger()
 logger.setLevel("INFO")
 
 
-def lambda_handler(event, context):
-    
+def lambda_handler(event, context):    
 
    # Get Item ID from API request
 
@@ -98,16 +97,17 @@ def lambda_handler(event, context):
                  Payload=json.dumps(cfn_event)
           )
 
-          # Invoke lambda that send ses notification
-          cfn_event_ses = {
-                "cognito_username": event['requestContext']['authorizer']['jwt']['claims']['username']
-          }
-
-          lambda_client.invoke( 
-                 FunctionName=os.environ["SEND_SES_NOTIFICATION_FUNCTION_NAME"],
-                 InvocationType='Event',
-                 Payload=json.dumps(cfn_event_ses)
-          )
+          # Invoke lambda that send ses notification (prod only)
+          if(os.environ["DEPLOYMENT_BRANCH"] == "prod"):
+            cfn_event_ses = {
+                  "cognito_username": event['requestContext']['authorizer']['jwt']['claims']['username']
+            }
+  
+            lambda_client.invoke( 
+                   FunctionName=os.environ["SEND_SES_NOTIFICATION_FUNCTION_NAME"],
+                   InvocationType='Event',
+                   Payload=json.dumps(cfn_event_ses)
+            )
 
           responseBody.append("Game server starting .. ")
           body = responseBody  

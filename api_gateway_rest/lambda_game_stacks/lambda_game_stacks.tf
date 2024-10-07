@@ -834,8 +834,7 @@ resource "aws_lambda_function" "lambda_start_game_server" {
       NB_SECONDS_BEFORE_SERVER_STOPPED    = var.nb_seconds_before_server_stopped
       STATE_MACHINE_ARN                   = var.wait_step_function_arn
       ARN_STOPPED_SERVER_FUNCTION         = aws_lambda_function.lambda_stop_game_server.arn
-
-
+      DEPLOYMENT_BRANCH                   = var.deployment_branch
     }
   }
 }
