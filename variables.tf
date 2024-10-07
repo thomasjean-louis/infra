@@ -88,11 +88,11 @@ variable "proxy_server_port" {
 }
 
 variable "proxy_server_cpu" {
-  default = 512
+  default = 256
 }
 
 variable "proxy_server_ram" {
-  default = 1024
+  default = 512
 }
 
 variable "proxy_server_tag" {
@@ -227,6 +227,39 @@ variable "stopped_value" {
 variable "pending_value" {
   default = "pending"
 }
+
+# SES
+variable "admin_mail" {
+  type      = string
+  sensitive = true
+}
+
+variable "send_mail" {
+  type      = string
+  sensitive = true
+}
+
+# Game Monitoring DB
+variable "game_monitoring_table_name" {
+  default = "gamemonitoring"
+}
+
+variable "timestamp_column_name" {
+  default = "timestamp"
+}
+
+variable "username_colomn_name" {
+  default = "username"
+}
+
+variable "action_column_name" {
+  default = "action"
+}
+
+variable "start_action_column_name" {
+  default = "start"
+}
+
 
 ## Lambda
 variable "create_game_stack_cf_stack_name" {

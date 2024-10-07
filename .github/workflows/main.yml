@@ -11,6 +11,8 @@ jobs:
       AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY_INFRA }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY_INFRA }}
       TF_VAR_deployment_branch: ${{secrets.DEPLOYMENT_BRANCH}}
+      TF_VAR_admin_mail: ${{secrets.ADMIN_MAIL}}
+      TF_VAR_send_mail: ${{secrets.SEND_MAIL}}
       TF_VAR_proxy_server_tag: ${{ vars.PROXY_SERVER_TAG }}
       TF_VAR_uri_proxy_repo: ${{ secrets.URI_PROXY_REPO }}
       TF_VAR_game_server_tag: ${{ vars.GAME_SERVER_TAG }}

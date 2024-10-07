@@ -162,6 +162,35 @@ variable "nb_seconds_before_server_stopped" {
   type = number
 }
 
+# Ses
+variable "admin_mail" {
+  type = string
+}
+
+variable "send_mail" {
+  type = string
+}
+
+# game Monitoring variables
+variable "game_monitoring_table_name" {
+  type = string
+}
+
+variable "timestamp_column_name" {
+  type = string
+}
+
+variable "username_colomn_name" {
+  type = string
+}
+
+variable "action_column_name" {
+  type = string
+}
+
+variable "start_action_column_name" {
+  type = string
+}
 
 ## Lambda scripts
 
@@ -265,6 +294,24 @@ resource "aws_iam_role_policy" "wafv2_service_policy" {
   })
 }
 
+resource "aws_iam_role_policy" "ses_service_policy" {
+  name = "${var.app_name}_lambda_ses_${var.deployment_branch}"
+  role = aws_iam_role.lambda_api_service_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "ses:SendEmail",
+        ]
+        Effect   = "Allow"
+        Resource = "arn:aws:ses:${var.region}:${var.account_id}:identity/*"
+      },
+    ]
+  })
+}
+
 resource "aws_iam_role_policy" "ec2_service_policy" {
   name = "${var.app_name}_lambda_ec2_service_${var.deployment_branch}"
   role = aws_iam_role.lambda_api_service_role.id
@@ -321,6 +368,16 @@ resource "aws_iam_role_policy" "dynamodb_service_policy" {
         ]
         Effect   = "Allow"
         Resource = "arn:aws:dynamodb:${var.region}:${var.account_id}:table/${var.gamestacks_table_name}"
+      },
+      {
+        Action = [
+          "dynamodb:Scan",
+          "dynamodb:PutItem",
+          "dynamodb:GetItem",
+          "dynamodb:UpdateItem"
+        ]
+        Effect   = "Allow"
+        Resource = "arn:aws:dynamodb:${var.region}:${var.account_id}:table/${var.game_monitoring_table_name}"
       },
     ]
   })
@@ -416,6 +473,7 @@ resource "aws_iam_role_policy" "alb_service_policy" {
         }, {
         Action = [
           "elasticloadbalancing:CreateTargetGroup",
+          "elasticloadbalancing:ModifyTargetGroupAttributes",
         ]
         Effect   = "Allow"
         Resource = "arn:aws:elasticloadbalancing:${var.region}:${var.account_id}:targetgroup/*"
@@ -770,11 +828,13 @@ resource "aws_lambda_function" "lambda_start_game_server" {
       STOP_SERVER_TIME_COLUMN_NAME = var.stop_server_time_column_name
       MESSAGE_COLUMN_NAME          = var.message_column_name
 
-      PENDING_VALUE                    = var.pending_value
-      DETECT_SERVICE_FUNCTION_NAME     = aws_lambda_function.lambda_detect_service_ready.function_name
-      NB_SECONDS_BEFORE_SERVER_STOPPED = var.nb_seconds_before_server_stopped
-      STATE_MACHINE_ARN                = var.wait_step_function_arn
-      ARN_STOPPED_SERVER_FUNCTION      = aws_lambda_function.lambda_stop_game_server.arn
+      PENDING_VALUE                       = var.pending_value
+      DETECT_SERVICE_FUNCTION_NAME        = aws_lambda_function.lambda_detect_service_ready.function_name
+      SEND_SES_NOTIFICATION_FUNCTION_NAME = aws_lambda_function.lambda_send_ses_notification.function_name
+      NB_SECONDS_BEFORE_SERVER_STOPPED    = var.nb_seconds_before_server_stopped
+      STATE_MACHINE_ARN                   = var.wait_step_function_arn
+      ARN_STOPPED_SERVER_FUNCTION         = aws_lambda_function.lambda_stop_game_server.arn
+      DEPLOYMENT_BRANCH                   = var.deployment_branch
     }
   }
 }
@@ -811,8 +871,55 @@ resource "aws_lambda_function" "lambda_detect_service_ready" {
   }
 }
 
-resource "aws_cloudwatch_log_group" "log_group" {
-  name = "/aws/lambda/${aws_lambda_function.lambda_detect_service_ready.function_name}"
+# DetectServiceReady lambda function
+data "archive_file" "send_ses_notification_zip" {
+  type        = "zip"
+  source_file = "${path.module}/send_ses_notification.py"
+  output_path = "${path.module}/send_ses_notification.zip"
+}
+
+resource "aws_lambda_function" "lambda_send_ses_notification" {
+  function_name    = "send_ses_notification"
+  filename         = data.archive_file.send_ses_notification_zip.output_path
+  source_code_hash = data.archive_file.send_ses_notification_zip.output_base64sha256
+  role             = aws_iam_role.lambda_api_service_role.arn
+  handler          = "send_ses_notification.lambda_handler"
+  runtime          = "python3.9"
+  timeout          = 300
+
+  environment {
+    variables = {
+      ADMIN_MAIL                 = var.admin_mail
+      SEND_MAIL                  = var.send_mail
+      GAME_MONITORING_TABLE_NAME = var.game_monitoring_table_name
+      ID_COLUMN_NAME             = var.game_stacks_id_column_name
+      TIMESTAMP_COLUMN_NAME      = var.timestamp_column_name
+      USERNAME_COLOMN_NAME       = var.username_colomn_name
+      ACTION_COLUMN_NAME         = var.action_column_name
+      START_ACTION_COLUMN_NAME   = var.start_action_column_name
+    }
+  }
+}
+
+
+resource "aws_cloudwatch_log_group" "log_group_detect_service_ready" {
+  name              = "/aws/lambda/${aws_lambda_function.lambda_detect_service_ready.function_name}"
+  retention_in_days = 1
+
+  lifecycle {
+    create_before_destroy = true
+    prevent_destroy       = false
+  }
+}
+
+resource "aws_cloudwatch_log_group" "log_group_ses" {
+  name              = "/aws/lambda/${aws_lambda_function.lambda_send_ses_notification.function_name}"
+  retention_in_days = 1
+
+  lifecycle {
+    create_before_destroy = true
+    prevent_destroy       = false
+  }
 }
 
 

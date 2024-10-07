@@ -192,6 +192,15 @@ module "lambda_game_stacks" {
 
   wait_step_function_arn           = module.step_function.wait_step_function_arn
   nb_seconds_before_server_stopped = var.nb_seconds_before_server_stopped
+
+  admin_mail                 = var.admin_mail
+  send_mail                  = var.send_mail
+  game_monitoring_table_name = var.game_monitoring_table_name
+  timestamp_column_name      = var.timestamp_column_name
+  username_colomn_name       = var.username_colomn_name
+  action_column_name         = var.action_column_name
+  start_action_column_name   = var.start_action_column_name
+
 }
 
 module "api_gateway_rest" {

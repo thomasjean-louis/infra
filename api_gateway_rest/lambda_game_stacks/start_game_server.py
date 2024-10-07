@@ -4,13 +4,13 @@ import boto3
 import json
 import time
 import datetime
+import uuid
 from datetime import *
 logger = logging.getLogger()
 logger.setLevel("INFO")
 
 
-def lambda_handler(event, context):
-    
+def lambda_handler(event, context):    
 
    # Get Item ID from API request
 
@@ -18,7 +18,7 @@ def lambda_handler(event, context):
     body = {}
     statusCode = 200
 
-    logger.info("create_game_stack")
+    logger.info("create_game_stack")    
 
     try:
         route_key = event['routeKey']
@@ -96,9 +96,21 @@ def lambda_handler(event, context):
                  InvocationType='Event',
                  Payload=json.dumps(cfn_event)
           )
-          
+
+          # Invoke lambda that send ses notification (prod only)
+          if(os.environ["DEPLOYMENT_BRANCH"] == "prod"):
+            cfn_event_ses = {
+                  "cognito_username": event['requestContext']['authorizer']['jwt']['claims']['username']
+            }
+  
+            lambda_client.invoke( 
+                   FunctionName=os.environ["SEND_SES_NOTIFICATION_FUNCTION_NAME"],
+                   InvocationType='Event',
+                   Payload=json.dumps(cfn_event_ses)
+            )
+
           responseBody.append("Game server starting .. ")
-          body = responseBody
+          body = responseBody  
 
         else:
             raise ValueError(f"Unsupported routee: '{route_key}'")
@@ -107,6 +119,8 @@ def lambda_handler(event, context):
       body = str(err)
     finally:
       body = json.dumps(body)
+
+    
 
 
     body = json.dumps(body)
