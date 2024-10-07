@@ -103,7 +103,7 @@ def lambda_handler(event, context):
                 "cognito_username": event['requestContext']['authorizer']['jwt']['claims']['username']
           }
 
-           lambda_client.invoke( 
+          lambda_client.invoke( 
                  FunctionName=os.environ["SEND_SES_NOTIFICATION_FUNCTION_NAME"],
                  InvocationType='Event',
                  Payload=json.dumps(cfn_event_ses)
