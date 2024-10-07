@@ -167,6 +167,10 @@ variable "admin_mail" {
   type = string
 }
 
+variable "send_mail" {
+  type = string
+}
+
 # game Monitoring variables
 variable "game_monitoring_table_name" {
   type = string
@@ -887,6 +891,7 @@ resource "aws_lambda_function" "lambda_send_ses_notification" {
   environment {
     variables = {
       ADMIN_MAIL                 = var.admin_mail
+      SEND_MAIL                  = var.send_mail
       GAME_MONITORING_TABLE_NAME = var.game_monitoring_table_name
       ID_COLUMN_NAME             = var.game_stacks_id_column_name
       TIMESTAMP_COLUMN_NAME      = var.timestamp_column_name

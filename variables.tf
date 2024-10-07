@@ -234,6 +234,11 @@ variable "admin_mail" {
   sensitive = true
 }
 
+variable "send_mail" {
+  type      = string
+  sensitive = true
+}
+
 # Game Monitoring DB
 variable "game_monitoring_table_name" {
   default = "gamemonitoring"

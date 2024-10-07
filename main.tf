@@ -194,6 +194,7 @@ module "lambda_game_stacks" {
   nb_seconds_before_server_stopped = var.nb_seconds_before_server_stopped
 
   admin_mail                 = var.admin_mail
+  send_mail                  = var.send_mail
   game_monitoring_table_name = var.game_monitoring_table_name
   timestamp_column_name      = var.timestamp_column_name
   username_colomn_name       = var.username_colomn_name

@@ -59,7 +59,7 @@ def lambda_handler(event, context):
     subject = cognito_username+" has started the ECS server"
     body = cognito_username+" has started the ECS server at "+datetime_now
     sender = os.environ['ADMIN_MAIL']
-    recipient = os.environ['ADMIN_MAIL']
+    recipient = os.environ['SEND_MAIL']
 
     logger.info("send ses mail")
     send_email(subject, body, sender, recipient)
