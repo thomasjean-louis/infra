@@ -59,17 +59,18 @@ def lambda_handler(event, context):
             raise e
 
           # Start step function, to stop automatically the server after X s
-          step_function_client = boto3.client('stepfunctions')
-          input_dict = {
-            'ArnStopServerFunction': os.environ["ARN_STOPPED_SERVER_FUNCTION"],
-            'SecondsToWait': int(os.environ["NB_SECONDS_BEFORE_SERVER_STOPPED"]),
-            'GAME_STACK_ID': path_params['id'],
-          }
-
-          response = step_function_client.start_execution(
-            stateMachineArn = os.environ["STATE_MACHINE_ARN"],
-            input = json.dumps(input_dict)
-          )
+          if(os.environ["DEPLOYMENT_BRANCH"] == "prod"):
+            step_function_client = boto3.client('stepfunctions')
+            input_dict = {
+              'ArnStopServerFunction': os.environ["ARN_STOPPED_SERVER_FUNCTION"],
+              'SecondsToWait': int(os.environ["NB_SECONDS_BEFORE_SERVER_STOPPED"]),
+              'GAME_STACK_ID': path_params['id'],
+            }
+  
+            response = step_function_client.start_execution(
+              stateMachineArn = os.environ["STATE_MACHINE_ARN"],
+              input = json.dumps(input_dict)
+            )
           
           # Set Pending status
           table.update_item(
