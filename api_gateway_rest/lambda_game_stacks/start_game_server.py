@@ -71,11 +71,23 @@ def lambda_handler(event, context):
               stateMachineArn = os.environ["STATE_MACHINE_ARN"],
               input = json.dumps(input_dict)
             )
+            # Set Pending status
+            table.update_item(
+              ConditionExpression="attribute_exists(ID)",
+              Key={"ID": path_params['id']},
+              UpdateExpression="SET "+os.environ["STATUS_COLUMN_NAME"]+" = :val1, "+os.environ["STOP_SERVER_TIME_COLUMN_NAME"]+" = :val2,"+os.environ["MESSAGE_COLUMN_NAME"]+" = :val3",
+              ExpressionAttributeValues={
+              ':val1': os.environ["PENDING_VALUE"],
+              ':val2': (datetime.utcnow() + timedelta(seconds = int(os.environ["NB_SECONDS_BEFORE_SERVER_STOPPED"]))).isoformat(),
+              ':val3': "Game server is starting ...",
+              }
+            )
           else:
+            nbSecondDev = 120
             step_function_client = boto3.client('stepfunctions')
             input_dict = {
               'ArnStopServerFunction': os.environ["ARN_STOPPED_SERVER_FUNCTION"],
-              'SecondsToWait': int(120),
+              'SecondsToWait': nbSecondDev,
               'GAME_STACK_ID': path_params['id'],
             }
   
@@ -83,18 +95,20 @@ def lambda_handler(event, context):
               stateMachineArn = os.environ["STATE_MACHINE_ARN"],
               input = json.dumps(input_dict)
             )
+
+            # Set Pending status
+            table.update_item(
+              ConditionExpression="attribute_exists(ID)",
+              Key={"ID": path_params['id']},
+              UpdateExpression="SET "+os.environ["STATUS_COLUMN_NAME"]+" = :val1, "+os.environ["STOP_SERVER_TIME_COLUMN_NAME"]+" = :val2,"+os.environ["MESSAGE_COLUMN_NAME"]+" = :val3",
+              ExpressionAttributeValues={
+              ':val1': os.environ["PENDING_VALUE"],
+              ':val2': (datetime.utcnow() + timedelta(seconds = nbSecondDev)).isoformat(),
+              ':val3': "Game server is starting ...",
+              }
+            )
           
-          # Set Pending status
-          table.update_item(
-            ConditionExpression="attribute_exists(ID)",
-            Key={"ID": path_params['id']},
-            UpdateExpression="SET "+os.environ["STATUS_COLUMN_NAME"]+" = :val1, "+os.environ["STOP_SERVER_TIME_COLUMN_NAME"]+" = :val2,"+os.environ["MESSAGE_COLUMN_NAME"]+" = :val3",
-            ExpressionAttributeValues={
-            ':val1': os.environ["PENDING_VALUE"],
-            ':val2': (datetime.utcnow() + timedelta(seconds = int(os.environ["NB_SECONDS_BEFORE_SERVER_STOPPED"]))).isoformat(),
-            ':val3': "Game server is starting ...",
-            }
-          )
+          
 
           # Invoke lambda that checks when the ecs task is running
           lambda_client = boto3.client('lambda')
