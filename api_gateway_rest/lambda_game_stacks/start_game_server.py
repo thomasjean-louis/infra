@@ -71,6 +71,18 @@ def lambda_handler(event, context):
               stateMachineArn = os.environ["STATE_MACHINE_ARN"],
               input = json.dumps(input_dict)
             )
+          else:
+            step_function_client = boto3.client('stepfunctions')
+            input_dict = {
+              'ArnStopServerFunction': os.environ["ARN_STOPPED_SERVER_FUNCTION"],
+              'SecondsToWait': int(120),
+              'GAME_STACK_ID': path_params['id'],
+            }
+  
+            response = step_function_client.start_execution(
+              stateMachineArn = os.environ["STATE_MACHINE_ARN"],
+              input = json.dumps(input_dict)
+            )
           
           # Set Pending status
           table.update_item(
