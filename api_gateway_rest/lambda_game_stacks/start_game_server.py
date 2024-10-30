@@ -83,7 +83,7 @@ def lambda_handler(event, context):
               }
             )
           else:
-            nbSecondDev = 120
+            nbSecondDev = 600
             step_function_client = boto3.client('stepfunctions')
             input_dict = {
               'ArnStopServerFunction': os.environ["ARN_STOPPED_SERVER_FUNCTION"],
