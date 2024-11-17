@@ -1,5 +1,5 @@
 # Infra
-Terraform repository to manage resources used by the "Serverless multi-player game" demo project. The resources are auto-deployed based on schedule rule in Prod account and deploywed when needed, in Dev account. 
+Terraform repository to manage resources used by the "Serverless multi-player game" demo project. The resources are auto-deployed based on schedule rule in Prod account and deployed when needed, in Dev account. 
 
 ## Architecture
 ![alt text](https://p.thomasjeanlouis.com/wp-content/uploads/2024/09/serverlessMultiplayerGame.architecture_V2.png)
