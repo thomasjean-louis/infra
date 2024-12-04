@@ -208,9 +208,9 @@ Resources:
     Properties:
       LogGroupName: !Join
         - ""
-        - - /aws/lambda/"
+        - - "/aws/lambda/"
           - !Sub Call_lambda_when_stack_created_${RandomString}
-      RetentionInDays: 2
+      RetentionInDays: 1
 
   Primerinvoke:
     Type: AWS::CloudFormation::CustomResource
