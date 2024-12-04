@@ -201,6 +201,17 @@ Resources:
       Runtime: python3.9
       Timeout: 5
 
+  LambdaInvokerLogGroup:
+    DependsOn:
+      - LambdaInvoker
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Join
+        - ""
+        - - /aws/lambda/"
+          - !Sub Call_lambda_when_stack_created_${RandomString}
+      RetentionInDays: 2
+
   Primerinvoke:
     Type: AWS::CloudFormation::CustomResource
     DependsOn: LambdaInvoker
