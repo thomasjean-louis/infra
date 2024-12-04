@@ -312,6 +312,25 @@ resource "aws_iam_role_policy" "ses_service_policy" {
   })
 }
 
+resource "aws_iam_role_policy" "cloudatch_service_policy" {
+  name = "${var.app_name}_lambda_cloudwatch_${var.deployment_branch}"
+  role = aws_iam_role.lambda_api_service_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "logs:PutRetentionPolicy",
+          "logs:DeleteLogGroup"
+        ]
+        Effect   = "Allow"
+        Resource = "arn:aws:logs:${var.region}:${var.account_id}:log-group/*"
+      },
+    ]
+  })
+}
+
 resource "aws_iam_role_policy" "ec2_service_policy" {
   name = "${var.app_name}_lambda_ec2_service_${var.deployment_branch}"
   role = aws_iam_role.lambda_api_service_role.id
