@@ -325,7 +325,7 @@ resource "aws_iam_role_policy" "cloudatch_service_policy" {
           "logs:DeleteLogGroup"
         ]
         Effect   = "Allow"
-        Resource = "arn:aws:logs:${var.region}:${var.account_id}:log-group/*"
+        Resource = "arn:aws:logs:${var.region}:${var.account_id}:log-group:/*"
       },
     ]
   })
